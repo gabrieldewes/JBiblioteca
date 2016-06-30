@@ -6,3 +6,4 @@ então, é só copiar os arquivos e executar.
 
 Conta com os módulos de controle de pessoas, livros, 
 exemplares de livros e empréstimos para uma biblioteca interna.
+Possui backup e recuperação de dados.
