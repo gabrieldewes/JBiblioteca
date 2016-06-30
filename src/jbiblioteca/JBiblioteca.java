@@ -5,13 +5,8 @@
  */
 package jbiblioteca;
 
-import database.DBHelper;
 import database.DBUtil;
 import database.Database;
-import java.io.File;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import view.MainFrame;
 
 /**
@@ -22,31 +17,32 @@ public class JBiblioteca {
        
     public static void main(String[] args) {
  
-        try { 
-            MainFrame.OpenMainFrame();
-            
-            java.io.File file = new java.io.File(
-                            System.getProperty("user.home")
-                            + System.getProperty("file.separator")
-                            + ".jbiblioteca"
-                            + System.getProperty("file.separator")
-                            + "jbiblioteca_bkp.db");
-            
-            Database.checkDatabase();
-            //Database.backupDatabase(file
-            //Database.recoverBackupDatabase(file);
-            
-            //DBUtil du = new DBUtil();
-            //du.dropDDL();
-            //du.createDDL();
-            //du.populate();
-            //du.clear();
-        } catch (SQLException ex) {
-            Logger.getLogger(JBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (Exception ex) {
-            Logger.getLogger(JBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        Runnable t1 = () -> {
+            try {
+                Database.checkDatabase();
+                DBUtil du = new DBUtil();
+                du.createDDL();
+            } catch (Exception e1) {}
+        };
+        new Thread(t1).start();
+        MainFrame.OpenMainFrame();
+        /*
+        java.io.File file = new java.io.File(
+                        System.getProperty("user.home")
+                        + System.getProperty("file.separator")
+                        + ".jbiblioteca"
+                        + System.getProperty("file.separator")
+                        + "jbiblioteca_bkp.db");
 
+        //Database.backupDatabase(file);
+        //Database.recoverBackupDatabase(file);
+
+        //DBUtil du = new DBUtil();
+        //du.dropDDL();
+        //du.createDDL();
+        //du.populate();
+        //du.clear();
+        */
     }
-    
 }
+   
