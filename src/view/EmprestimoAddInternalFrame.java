@@ -498,6 +498,8 @@ public class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame {
             model.removeAllElements();
             livroList.setModel(model);
             selecionados.clear(); 
+            exemplares = ExemplarController.ArrayExemplar("");
+            updateLivroBox();
             //System.out.println(" LISTA VAZIA? "+ selecionados.isEmpty() );
         }
         else limparLivroList.setEnabled(false);
@@ -510,6 +512,8 @@ public class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame {
             for (Exemplar s:selecionados) {
                 if (selecionados.indexOf(s) == index) {
                     selecionados.remove( s );
+                    exemplares.add(s);
+                    updateLivroBox();
                     //System.out.println(" INDEX "+ selecionados.indexOf(s) +" - REMOVER "+ s.toString() );
                     break;
                 }
