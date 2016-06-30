@@ -5,10 +5,17 @@
  */
 package view;
 
+import control.ExemplarController;
+import control.LivroController;
 import control.TurmaController;
 import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import model.Livro;
+import static view.LivrosInternalFrame.titulos;
 
 /**
  *
@@ -40,13 +47,14 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         desktop = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem2 = new javax.swing.JMenuItem();
         associadosMenu = new javax.swing.JMenu();
         verPessoasMenuItem = new javax.swing.JMenuItem();
         cadastrarMenuItem = new javax.swing.JMenuItem();
-        jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        turmasMenuItem = new javax.swing.JMenuItem();
         LivrosMenu = new javax.swing.JMenu();
         verLivrosMenuItem = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
         addLivroMenuItem = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
@@ -78,6 +86,18 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
 
+        jMenu1.setText("Turmas");
+
+        jMenuItem2.setText("Ver e Editar Turmas");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu1);
+
         associadosMenu.setText("Pessoas");
 
         verPessoasMenuItem.setText("Ver Pessoas");
@@ -95,19 +115,10 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         associadosMenu.add(cadastrarMenuItem);
-        associadosMenu.add(jSeparator2);
-
-        turmasMenuItem.setText("Ver e Editar Turmas");
-        turmasMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                turmasMenuItemActionPerformed(evt);
-            }
-        });
-        associadosMenu.add(turmasMenuItem);
 
         jMenuBar1.add(associadosMenu);
 
-        LivrosMenu.setText("Livros e Exemplares");
+        LivrosMenu.setText("Títulos e Exemplares");
 
         verLivrosMenuItem.setText("Ver Todos");
         verLivrosMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -116,8 +127,9 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         LivrosMenu.add(verLivrosMenuItem);
+        LivrosMenu.add(jSeparator3);
 
-        addLivroMenuItem.setText("Novo Livro");
+        addLivroMenuItem.setText("Novo Título");
         addLivroMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addLivroMenuItemActionPerformed(evt);
@@ -137,7 +149,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenu4.setText("Empréstimos");
 
-        verEmprestimosMenuItem.setText("Ver Todos");
+        verEmprestimosMenuItem.setText("Ver Empréstimos");
         verEmprestimosMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 verEmprestimosMenuItemActionPerformed(evt);
@@ -145,7 +157,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         jMenu4.add(verEmprestimosMenuItem);
 
-        novoEmprestimoMenuItem.setText("Novo empréstimo");
+        novoEmprestimoMenuItem.setText("Novo Empréstimo");
         novoEmprestimoMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 novoEmprestimoMenuItemActionPerformed(evt);
@@ -208,23 +220,6 @@ public class MainFrame extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_verPessoasMenuItemActionPerformed
 
-    private void turmasMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_turmasMenuItemActionPerformed
-        if (tif == null || tif.isClosed()) {
-            tif = new TurmasInternalFrame();
-            tif.setVisible(true);
-            desktop.add(tif);
-        }
-        else 
-            try {
-                if (tif.isIcon())
-                    tif.setIcon(false);
-            } 
-            catch (PropertyVetoException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }//GEN-LAST:event_turmasMenuItemActionPerformed
-
     private void novoEmprestimoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoEmprestimoMenuItemActionPerformed
         eaif = new EmprestimoAddInternalFrame();
         eaif.setVisible(true);
@@ -249,7 +244,43 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_verLivrosMenuItemActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        // TODO add your handling code here:
+        JComboBox titulo = new JComboBox();
+            JTextField codigoField = new JTextField();
+            JTextField xField = new JTextField();
+            JTextField yField = new JTextField();
+            Object[] message = {
+                "Selecione o Título: ", titulo,
+                "Código único:", codigoField,
+                "Coordenada X:", xField,
+                "Coordenada Y:", yField
+            };
+            
+            titulos = LivroController.ArrayLivro();
+            titulos.stream().forEach((l) -> {
+                titulo.addItem( l.getTitulo() );
+            });
+            int id_livro=0;
+            int option = 1;
+            while (option != JOptionPane.OK_CANCEL_OPTION) {
+                option = JOptionPane.showConfirmDialog(null, message, "Novo Exemplar", JOptionPane.OK_CANCEL_OPTION);
+                if (option == JOptionPane.OK_OPTION) {
+                    for (Livro t:titulos) {
+                        if (t.getTitulo().equals( titulo.getSelectedItem().toString() )) {
+                            id_livro = t.getId_livro();
+                        }
+                    }
+                    String codigo = codigoField.getText();
+                    String x = xField.getText();
+                    String y = yField.getText();
+                    if (ExemplarController.Salvar(id_livro, codigo, x, y)) {
+                        option = JOptionPane.OK_CANCEL_OPTION;
+                        if (lif != null) {
+                            lif.updateLivroTableModel("");
+                            lif.updateExemplarTableModel("");
+                        }
+                    }
+                }
+            }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void verEmprestimosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verEmprestimosMenuItemActionPerformed
@@ -281,6 +312,22 @@ public class MainFrame extends javax.swing.JFrame {
         desktop.add(cif);
     }//GEN-LAST:event_configMenuItemActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        if (tif == null || tif.isClosed()) {
+            tif = new TurmasInternalFrame();
+            tif.setVisible(true);
+            desktop.add(tif);
+        }
+        else 
+            try {
+                if (tif.isIcon())
+                    tif.setIcon(false);
+            } 
+            catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     public static void OpenMainFrame() {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -305,14 +352,15 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu configMenu;
     private javax.swing.JMenuItem configMenuItem;
     public javax.swing.JDesktopPane desktop;
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JPopupMenu.Separator jSeparator2;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JMenuItem novoEmprestimoMenuItem;
-    private javax.swing.JMenuItem turmasMenuItem;
     private javax.swing.JMenuItem verEmprestimosMenuItem;
     private javax.swing.JMenuItem verLivrosMenuItem;
     private javax.swing.JMenuItem verPessoasMenuItem;

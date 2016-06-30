@@ -16,6 +16,21 @@
         </Property>
       </Properties>
       <SubComponents>
+        <Menu class="javax.swing.JMenu" name="jMenu1">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Turmas"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ver e Editar Turmas"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="associadosMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="Pessoas"/>
@@ -37,21 +52,11 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cadastrarMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="turmasMenuItem">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Ver e Editar Turmas"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="turmasMenuItemActionPerformed"/>
-              </Events>
-            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="LivrosMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Livros e Exemplares"/>
+            <Property name="text" type="java.lang.String" value="T&#xed;tulos e Exemplares"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="verLivrosMenuItem">
@@ -62,9 +67,11 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verLivrosMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator3">
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="addLivroMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Novo Livro"/>
+                <Property name="text" type="java.lang.String" value="Novo T&#xed;tulo"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addLivroMenuItemActionPerformed"/>
@@ -87,7 +94,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="verEmprestimosMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Ver Todos"/>
+                <Property name="text" type="java.lang.String" value="Ver Empr&#xe9;stimos"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verEmprestimosMenuItemActionPerformed"/>
@@ -95,7 +102,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="novoEmprestimoMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Novo empr&#xe9;stimo"/>
+                <Property name="text" type="java.lang.String" value="Novo Empr&#xe9;stimo"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="novoEmprestimoMenuItemActionPerformed"/>
