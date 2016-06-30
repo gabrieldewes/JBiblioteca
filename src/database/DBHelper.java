@@ -1,6 +1,11 @@
 package database;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -20,14 +25,18 @@ import org.sqlite.SQLiteConnection;
  */
 public class DBHelper extends SQLiteConnection {
     
-    public static int DB_VERSION = 1;
-    private static final String DB_NAME = "jbiblioteca_db.db";
     private static final String DB_DRIVER = "jdbc:sqlite:";
-
-    public DBHelper() throws SQLException {
-        super(DB_DRIVER, DB_NAME);
-    }
+    public static final java.io.File DATABASE = new java.io.File(
+            System.getProperty("user.home")
+            + System.getProperty("file.separator")
+            + ".jbiblioteca"
+            + System.getProperty("file.separator")
+            + "jbiblioteca_db.db");
     
+    public DBHelper() throws SQLException {
+        super(DB_DRIVER, DATABASE.getAbsolutePath());
+    }
+ 
     public boolean rawSQL(String query) {
         try {
             try (PreparedStatement stmt = this.prepareStatement(query)) {

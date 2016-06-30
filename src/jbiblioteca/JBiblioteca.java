@@ -5,11 +5,13 @@
  */
 package jbiblioteca;
 
-import dao.EmprestimoDAO;
+import database.DBHelper;
 import database.DBUtil;
-import java.util.ArrayList;
-import model.Emprestimo;
-import org.joda.time.LocalDateTime;
+import database.Database;
+import java.io.File;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import view.MainFrame;
 
 /**
@@ -20,12 +22,30 @@ public class JBiblioteca {
        
     public static void main(String[] args) {
  
-        //DBUtil du = new DBUtil();
-        //du.dropDDL();
-        //du.createDDL();
-        //du.populate();
-        //du.clear();
-        MainFrame.OpenMainFrame();
+        try { 
+            MainFrame.OpenMainFrame();
+            
+            java.io.File file = new java.io.File(
+                            System.getProperty("user.home")
+                            + System.getProperty("file.separator")
+                            + ".jbiblioteca"
+                            + System.getProperty("file.separator")
+                            + "jbiblioteca_bkp.db");
+            
+            Database.checkDatabase();
+            //Database.backupDatabase(file
+            //Database.recoverBackupDatabase(file);
+            
+            //DBUtil du = new DBUtil();
+            //du.dropDDL();
+            //du.createDDL();
+            //du.populate();
+            //du.clear();
+        } catch (SQLException ex) {
+            Logger.getLogger(JBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(JBiblioteca.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
     
