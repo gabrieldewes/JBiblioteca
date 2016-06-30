@@ -1,2 +1,3 @@
 # JBiblioteca
-Trabalho de Algoritmos e Programação 3 utilizando Java Swing, JDBC e SQLite.
+* Sistema para auxílio de bibliotecas pequenas.
+* Controle de Pessoas, Livros, Exemplares de livros e Empŕestimos.
