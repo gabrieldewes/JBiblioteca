@@ -1,5 +1,6 @@
 # JBiblioteca
-* Sistema para auxílio de bibliotecas itnernas
+Aplicação para auxílio de bibliotecas internas
+
 Aplicação desktop portável com banco embarcado SQLite, 
 então, é só copiar os arquivos e executar.
 
