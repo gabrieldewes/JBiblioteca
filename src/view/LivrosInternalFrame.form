@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JInternalFrameFormInfo">
+  <Properties>
+    <Property name="closable" type="boolean" value="true"/>
+    <Property name="iconifiable" type="boolean" value="true"/>
+    <Property name="maximizable" type="boolean" value="true"/>
+    <Property name="resizable" type="boolean" value="true"/>
+    <Property name="title" type="java.lang.String" value="Livros"/>
+    <Property name="inheritsPopupMenu" type="boolean" value="true"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="jTabbedPane1" alignment="0" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="jTabbedPane1" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JTabbedPane" name="jTabbedPane1">
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
+      <SubComponents>
+        <Container class="javax.swing.JPanel" name="jPanel1">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="T&#xed;tulos">
+                <Property name="tabTitle" type="java.lang.String" value="T&#xed;tulos"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="DelLivroBtn" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="AttLivroBtn" alignment="1" pref="152" max="32767" attributes="0"/>
+                                  </Group>
+                                  <Component id="AddLivroBtn" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <Component id="AddExemplarLivroBtn" min="-2" pref="152" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                              <Component id="BuscaLivroField" min="-2" pref="240" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="BuscaLivroBtn" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="jScrollPane2" pref="502" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="BuscaLivroBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="BuscaLivroField" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                              <Component id="jScrollPane2" pref="315" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="AddLivroBtn" min="-2" pref="42" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                              <Component id="AttLivroBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="AddExemplarLivroBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="DelLivroBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTable" name="LivroTable">
+                  <Properties>
+                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                      <Table columnCount="4" rowCount="4">
+                        <Column editable="true" title="Title 1" type="java.lang.Object"/>
+                        <Column editable="true" title="Title 2" type="java.lang.Object"/>
+                        <Column editable="true" title="Title 3" type="java.lang.Object"/>
+                        <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                      </Table>
+                    </Property>
+                    <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                      <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                      </TableColumnModel>
+                    </Property>
+                    <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                      <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="LivroTableMouseClicked"/>
+                  </Events>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JTextField" name="BuscaLivroField">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BuscaLivroFieldActionPerformed"/>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="BuscaLivroFieldKeyReleased"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="BuscaLivroBtn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Buscar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BuscaLivroBtnActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="AddLivroBtn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cadastrar T&#xed;tulo"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AddLivroBtnActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="AttLivroBtn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Alterar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AttLivroBtnActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="DelLivroBtn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Excluir"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DelLivroBtnActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="AddExemplarLivroBtn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Novo exemplar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AddExemplarLivroBtnActionPerformed"/>
+              </Events>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="jPanel3">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Exemplares">
+                <Property name="tabTitle" type="java.lang.String" value="Exemplares"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout>
+            <DimensionLayout dim="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="AttExemplarBtn" alignment="0" max="32767" attributes="0"/>
+                          <Component id="DelExemplarBtn" alignment="0" max="32767" attributes="0"/>
+                          <Component id="AddExemplarBtn" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                              <Component id="BuscaExemplarField" min="-2" pref="240" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="BuscaExemplarBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="151" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                              <Component id="jScrollPane3" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+            <DimensionLayout dim="1">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="AddExemplarBtn" min="-2" pref="42" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="43" max="-2" attributes="0"/>
+                              <Component id="AttExemplarBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="DelExemplarBtn" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="206" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="BuscaExemplarBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="BuscaExemplarField" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jScrollPane3" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+            </DimensionLayout>
+          </Layout>
+          <SubComponents>
+            <Container class="javax.swing.JScrollPane" name="jScrollPane3">
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+              <SubComponents>
+                <Component class="javax.swing.JTable" name="ExemplarTable">
+                  <Properties>
+                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                      <Table columnCount="4" rowCount="4">
+                        <Column editable="true" title="Title 1" type="java.lang.Object"/>
+                        <Column editable="true" title="Title 2" type="java.lang.Object"/>
+                        <Column editable="true" title="Title 3" type="java.lang.Object"/>
+                        <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                      </Table>
+                    </Property>
+                    <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                      <TableColumnModel selectionModel="0">
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                        <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                          <Title/>
+                          <Editor/>
+                          <Renderer/>
+                        </Column>
+                      </TableColumnModel>
+                    </Property>
+                    <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                      <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="ExemplarTableMouseClicked"/>
+                  </Events>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Component class="javax.swing.JTextField" name="BuscaExemplarField">
+              <Events>
+                <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="BuscaExemplarFieldKeyReleased"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="BuscaExemplarBtn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Buscar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BuscaExemplarBtnActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="AddExemplarBtn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Cadastrar Novo"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AddExemplarBtnActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="AttExemplarBtn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Alterar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AttExemplarBtnActionPerformed"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="DelExemplarBtn">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Excluir"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="DelExemplarBtnActionPerformed"/>
+              </Events>
+            </Component>
+          </SubComponents>
+        </Container>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>

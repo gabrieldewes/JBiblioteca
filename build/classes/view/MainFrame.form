@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.JSeparator" name="jSeparator1">
+    </Component>
+    <Component class="javax.swing.JMenuItem" name="jMenuItem1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="jMenuItem1"/>
+      </Properties>
+    </Component>
+    <Menu class="javax.swing.JMenuBar" name="jMenuBar1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Arial" size="14" style="1"/>
+        </Property>
+      </Properties>
+      <SubComponents>
+        <Menu class="javax.swing.JMenu" name="associadosMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Pessoas"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="verPessoasMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ver Pessoas"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verPessoasMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="cadastrarMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Nova Pessoa"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cadastrarMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="turmasMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ver e Editar Turmas"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="turmasMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="LivrosMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Livros e Exemplares"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="verLivrosMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ver Todos"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verLivrosMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="addLivroMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Novo Livro"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addLivroMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem3">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Novo Exemplar"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem3ActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenu4">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Empr&#xe9;stimos"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="verEmprestimosMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ver Todos"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verEmprestimosMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="novoEmprestimoMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Novo empr&#xe9;stimo"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="novoEmprestimoMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="configMenu">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Op&#xe7;&#xf5;es"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="configMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Configura&#xe7;&#xf5;es"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="configMenuItemActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+      </SubComponents>
+    </Menu>
+  </NonVisualComponents>
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="title" type="java.lang.String" value="JBiblioteca"/>
+    <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
+      <Color id="Cursor Padr&#xe3;o"/>
+    </Property>
+    <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+      <Font name="Arial" size="12" style="0"/>
+    </Property>
+    <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+      <Color blue="40" green="40" id="darkGray" palette="1" red="40" type="palette"/>
+    </Property>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="menuBar" type="java.lang.String" value="jMenuBar1"/>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="desktop" alignment="0" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Component id="desktop" alignment="0" max="32767" attributes="0"/>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Container class="javax.swing.JDesktopPane" name="desktop">
+      <Properties>
+        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+          <Color blue="cc" green="cc" red="cc" type="rgb"/>
+        </Property>
+      </Properties>
+      <AccessibilityProperties>
+        <Property name="AccessibleContext.accessibleParent" type="javax.accessibility.Accessible" editor="org.netbeans.modules.form.ComponentChooserEditor">
+          <ComponentRef name="desktop"/>
+        </Property>
+      </AccessibilityProperties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>
+      </AuxValues>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="709" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <EmptySpace min="0" pref="488" max="32767" attributes="0"/>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+    </Container>
+  </SubComponents>
+</Form>
