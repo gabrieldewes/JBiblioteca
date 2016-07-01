@@ -7,10 +7,14 @@ package view;
 
 import control.ExemplarController;
 import control.LivroController;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import model.Livro;
@@ -33,6 +37,7 @@ public class MainFrame extends javax.swing.JFrame {
 
     public MainFrame() {
         initComponents();
+        
     }
     
 
@@ -66,8 +71,6 @@ public class MainFrame extends javax.swing.JFrame {
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         setForeground(java.awt.Color.darkGray);
-
-        desktop.setBackground(new java.awt.Color(204, 204, 204));
 
         javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(desktop);
         desktop.setLayout(desktopLayout);
@@ -185,9 +188,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(desktop))
+            .addComponent(desktop, javax.swing.GroupLayout.Alignment.TRAILING)
         );
 
         desktop.getAccessibleContext().setAccessibleParent(desktop);
@@ -364,7 +365,7 @@ public class MainFrame extends javax.swing.JFrame {
     public static void OpenMainFrame() {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

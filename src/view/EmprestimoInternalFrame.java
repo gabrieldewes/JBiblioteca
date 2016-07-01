@@ -6,12 +6,16 @@
 package view;
 
 import control.EmprestimoController;
+import control.ExemplarController;
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import model.Exemplar;
 import static view.MainFrame.eaif;
-import static view.MainFrame.eif;
+import static view.MainFrame.lif;
 
 /**
  *
@@ -25,6 +29,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
         initComponents();
         mfthis=mf;
         updateEmprestimoTable("");
+        livroList.setModel(new DefaultListModel());
     }
 
     void updateEmprestimoTable(String buscar) {
@@ -48,9 +53,11 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
         emprestimoTable = new javax.swing.JTable();
         novoEmprestimoBtn = new javax.swing.JButton();
         DelEmprestimoBtn = new javax.swing.JButton();
-        DetalheBtn = new javax.swing.JButton();
         buscaEmprestimoField = new javax.swing.JTextField();
         buscaEmprestinoBtn = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        livroList = new javax.swing.JList<>();
 
         setClosable(true);
         setIconifiable(true);
@@ -91,9 +98,25 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
-        DetalheBtn.setText("Detalhes");
-
         buscaEmprestinoBtn.setText("Buscar");
+
+        livroList.setModel(new javax.swing.AbstractListModel<String>() {
+            String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
+            public int getSize() { return strings.length; }
+            public String getElementAt(int i) { return strings[i]; }
+        });
+        jScrollPane1.setViewportView(livroList);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -109,12 +132,12 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(buscaEmprestinoBtn)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(DelEmprestimoBtn, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(DetalheBtn, javax.swing.GroupLayout.Alignment.TRAILING))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(DelEmprestimoBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -129,14 +152,13 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(49, 49, 49)
-                        .addComponent(DelEmprestimoBtn)
+                        .addComponent(DelEmprestimoBtn))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(DetalheBtn)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(9, 9, 9)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
-                        .addContainerGap())))
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -147,7 +169,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -157,11 +179,18 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
         int idx[] = emprestimoTable.getSelectedRows();
         if (idx.length > 0) {
             DelEmprestimoBtn.setEnabled(true); 
-            DetalheBtn.setEnabled(true); 
+            //DetalheBtn.setEnabled(true); 
+            int id_emprestimo = Integer.valueOf(emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 0).toString());
+            ArrayList<Exemplar> exemplares = ExemplarController.ArrayExemplar("el.id_emprestimo", id_emprestimo, null);
+            DefaultListModel model = new DefaultListModel();
+            for (Exemplar e:exemplares) {
+                model.addElement(e.getCodigo() +" - "+ e.getL().getTitulo());
+            }            
+            livroList.setModel(model);
         }
         else { 
             DelEmprestimoBtn.setEnabled(false); 
-            DetalheBtn.setEnabled(false); 
+            //DetalheBtn.setEnabled(false); 
         }
     }//GEN-LAST:event_emprestimoTableMouseClicked
 
@@ -175,6 +204,8 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                 if (id_emprestimo != 0) {
                     if (EmprestimoController.Apagar(id_emprestimo)) {
                         updateEmprestimoTable("");
+                        if (lif != null)
+                            lif.updateExemplarTableModel("");
                     }
                 }
             } 
@@ -200,12 +231,14 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton DelEmprestimoBtn;
-    private javax.swing.JButton DetalheBtn;
     private javax.swing.JTextField buscaEmprestimoField;
     private javax.swing.JButton buscaEmprestinoBtn;
     private javax.swing.JTable emprestimoTable;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JList<String> livroList;
     private javax.swing.JButton novoEmprestimoBtn;
     // End of variables declaration//GEN-END:variables
 }

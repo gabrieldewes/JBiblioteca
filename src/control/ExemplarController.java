@@ -68,9 +68,9 @@ public class ExemplarController {
         return dao.exists(codigo);
     }
     
-    public static ArrayList<Exemplar> ArrayExemplar(String like) {
+    public static ArrayList<Exemplar> ArrayExemplar(String column, int id, String like) {
         dao = new ExemplarDAO();
-        return dao.getArray(like);
+        return dao.getArray(column, id, like);
     }
     
 }

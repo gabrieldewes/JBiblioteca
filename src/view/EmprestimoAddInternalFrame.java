@@ -39,7 +39,7 @@ public class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame {
         selecionados = new ArrayList<>();
         filtrados = new ArrayList<>();
         pessoas = PessoaController.ArrayPessoa("");
-        exemplares = ExemplarController.ArrayExemplar("");
+        exemplares = ExemplarController.ArrayExemplar(null, 0, "");
         updatePessoaBox();
         updateLivroBox();
         
@@ -450,10 +450,10 @@ public class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_escolhePessoaBtnActionPerformed
 
     private void buscaLivroFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscaLivroFieldKeyReleased
-        filtrados = ExemplarController.ArrayExemplar("");
+        filtrados = ExemplarController.ArrayExemplar(null, 0, "");
         String str = buscaLivroField.getText();
         if (!"".equals(str) && str.length() > 3) {
-            filtrados = ExemplarController.ArrayExemplar(str);
+            filtrados = ExemplarController.ArrayExemplar(null, 0, str);
             updateLivroFiltradoBox();
         }
         else {
@@ -498,7 +498,7 @@ public class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame {
             model.removeAllElements();
             livroList.setModel(model);
             selecionados.clear(); 
-            exemplares = ExemplarController.ArrayExemplar("");
+            exemplares = ExemplarController.ArrayExemplar(null, 0, "");
             updateLivroBox();
             //System.out.println(" LISTA VAZIA? "+ selecionados.isEmpty() );
         }

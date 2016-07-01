@@ -212,10 +212,14 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
         int response = JOptionPane.showConfirmDialog(null, "Deseja realmente apagar todos os dados? ", "Atenção",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (response == JOptionPane.YES_OPTION) {
-            DBUtil du = new DBUtil();
-            du.dropDDL();
-            du.createDDL();
-            JOptionPane.showMessageDialog(null, "A aplicação foi reiniciada com êxito.");
+            try {
+                DBUtil du = new DBUtil();
+                du.dropDDL();
+                du.createDDL();
+                JOptionPane.showMessageDialog(null, "A aplicação foi reiniciada com êxito.");
+            } catch (Exception ex) {
+                Logger.getLogger(configInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } 
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -232,6 +236,7 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
                 Database.recoverBackupDatabase(file);
                 JOptionPane.showMessageDialog(null, "O arquivo de backup foi recuperado com êxito.");
             } catch (Exception e1) {
+                JOptionPane.showMessageDialog(null, "Não foi encontrado arquivo de backup! ");
             }
         };
         new Thread(t1).start();

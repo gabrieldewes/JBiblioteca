@@ -124,20 +124,27 @@ public class ExemplarDAO {
         return helper.getTableModel(query);
     }
     
-    public ArrayList<Exemplar> getArray(String like) {
+    public ArrayList<Exemplar> getArray(String column, int id, String like) {
         String query;
-        if ("".equals(like))
+        if (!"".equals(column) && id != 0)
+            query = "SELECT * FROM exemplar e "
+                    + " INNER JOIN livro l ON e.id_livro = l.id_livro "
+                    + " INNER JOIN emprestimo_livro el ON e.id_exemplar = el.id_exemplar "
+                    + " WHERE "+ column +"="+ id +" ORDER BY e.codigo ASC; ";
+        else if ("".equals(like))
             query = 
                 "SELECT * FROM exemplar e "
               + "INNER JOIN livro l ON e.id_livro = l.id_livro "
-              + "WHERE e.disponivel='' ORDER BY l.titulo ASC; ";
-        else
+              + "WHERE id_exemplar NOT IN (SELECT id_exemplar FROM emprestimo_livro) ORDER BY e.codigo ASC; ";
+        else if (!"".equals(like))
             query = "SELECT * FROM exemplar e "
                 + " INNER JOIN livro l ON e.id_livro = l.id_livro WHERE  "
                 + " l.titulo LIKE '%"+ like +"%' OR l.titulo LIKE '"+ like +"%' OR l.titulo LIKE '%"+ like +"' OR "
                 + " l.autor LIKE '%"+ like +"%' OR l.autor LIKE '"+ like +"%' OR l.autor LIKE '%"+ like +"' OR "
-                + " e.codigo LIKE '%"+ like +"%' OR e.codigo LIKE '"+ like +"%' OR e.codigo LIKE '%"+ like +"' "
-                + " GROUP BY e.id_exemplar  HAVING e.disponivel='' ORDER BY l.titulo ASC; ";
+                + " e.codigo LIKE '%"+ like +"%' OR e.codigo LIKE '"+ like +"%' OR e.codigo LIKE '%"+ like +"' AND "
+                + " id_exemplar NOT IN (SELECT id_exemplar FROM emprestimo_livro) ORDER BY e.codigo ASC; ";
+        else
+            query = "SELECT * FROM exemplar";
         
         ArrayList<Exemplar> exemplares = new ArrayList<>();
         Exemplar e;
@@ -181,5 +188,6 @@ public class ExemplarDAO {
         }
         return helper.rawLineSQL(query_batch);
     }
+    
     
 }

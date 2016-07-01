@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -36,7 +37,7 @@ public class Database {
      * O parâmetro arquivo_dkp é o novo arquivo que receberá os dados de backup. */
     public static void backupDatabase(File arquivo_dkp) throws Exception {
         if (!DATABASE.exists()) {
-            throw new Exception("Não foi possível fazer backup. Arquivo de dados não foi localizado!");
+            checkDatabase();
         }
         if (!arquivo_dkp.isDirectory() && !arquivo_dkp.getName().toLowerCase().endsWith(".db")) {
             arquivo_dkp = new File(arquivo_dkp.getPath() + ".db");
@@ -93,6 +94,7 @@ public class Database {
                 throw new Exception("Erro ao gravar o arquivo de banco de dados.");
             }
         } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, "Erro na criação do banco de dados.");
             throw new Exception("Erro na criação do banco de dados.\n"+ ex.getMessage());
         }
     }

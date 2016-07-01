@@ -107,13 +107,14 @@ public class PessoaDAO {
     public ArrayList<Pessoa> getArray(String str) {
         String query;
         if ("".equals(str))
-            query = "SELECT * FROM pessoa; ";
+            query = "SELECT * FROM pessoa WHERE id_pessoa NOT IN (SELECT id_pessoa FROM emprestimo); ";
         else
             query = "SELECT * FROM pessoa p "
                 + " LEFT JOIN turma t ON p.id_turma = t.id_turma WHERE "
                 + " p.nome LIKE '%"+ str +"%' OR p.nome LIKE '"+ str +"%' OR p.nome LIKE '%"+ str +"' OR "
                 + " p.codigo LIKE '%"+ str +"%' OR p.codigo LIKE '"+ str +"%' OR p.codigo LIKE '%"+ str +"' OR "
-                + " t.nome LIKE '%"+ str +"%' OR t.nome LIKE '"+ str +"%' OR t.nome LIKE '%"+ str +"' ORDER BY p.nome ASC; ";
+                + " t.nome LIKE '%"+ str +"%' OR t.nome LIKE '"+ str +"%' OR t.nome LIKE '%"+ str +"' "
+                + "AND id_pessoa NOT IN (SELECT id_pessoa FROM emprestimo) ORDER BY p.nome ASC; ";
         
         ArrayList<Pessoa> pessoas = new ArrayList<>();
         Pessoa p;
