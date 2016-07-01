@@ -6,6 +6,9 @@
 package view;
 
 import control.EmprestimoController;
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import static view.MainFrame.eaif;
 import static view.MainFrame.eif;
@@ -98,19 +101,20 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(novoEmprestimoBtn)
-                .addGap(64, 64, 64)
-                .addComponent(buscaEmprestimoField, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buscaEmprestinoBtn)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(DelEmprestimoBtn, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(DetalheBtn, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(novoEmprestimoBtn)
+                        .addGap(64, 64, 64)
+                        .addComponent(buscaEmprestimoField, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buscaEmprestinoBtn)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(DelEmprestimoBtn, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(DetalheBtn, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -130,8 +134,8 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                         .addComponent(DetalheBtn)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 361, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
                         .addContainerGap())))
         );
 
@@ -185,6 +189,11 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
             eaif = new EmprestimoAddInternalFrame();
             eaif.setVisible(true);
             mfthis.desktop.add(eaif);
+            try {
+                eaif.setSelected(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(EmprestimoInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }//GEN-LAST:event_novoEmprestimoBtnActionPerformed
 

@@ -7,6 +7,11 @@ package view;
 
 import database.DBUtil;
 import database.Database;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Year;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -128,9 +133,25 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
         jTabbedPane1.addTab("Dados e Backup", jPanel3);
 
         footer.setText("jLabel1");
+        footer.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                footerMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                footerMouseEntered(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 48)); // NOI18N
         jLabel1.setText("jBiblioteca");
+        jLabel1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jLabel1MouseEntered(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -229,6 +250,30 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
         new Thread(t1).start();
         
     }//GEN-LAST:event_populateBtnActionPerformed
+
+    private void footerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_footerMouseClicked
+        try {
+            Desktop.getDesktop().browse(new URI("http://gabrieldewes.github.io"));
+        } catch (IOException | URISyntaxException ex) {
+            Logger.getLogger(configInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_footerMouseClicked
+
+    private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
+        try {
+            Desktop.getDesktop().browse(new URI("http://gabrieldewes.github.io"));
+        } catch (IOException | URISyntaxException ex) {
+            Logger.getLogger(configInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jLabel1MouseClicked
+
+    private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
+        jLabel1.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_jLabel1MouseEntered
+
+    private void footerMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_footerMouseEntered
+        footer.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_footerMouseEntered
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

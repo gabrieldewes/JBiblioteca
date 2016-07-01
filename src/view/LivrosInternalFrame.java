@@ -7,7 +7,10 @@ package view;
 
 import control.ExemplarController;
 import control.LivroController;
+import java.beans.PropertyVetoException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -321,6 +324,11 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
         paif = new LivrosAddInternalFrame();
         paif.setVisible(true);
         mfthis.desktop.add(paif);
+        try {
+                paif.setSelected(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(LivrosInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         
     }//GEN-LAST:event_AddLivroBtnActionPerformed
 

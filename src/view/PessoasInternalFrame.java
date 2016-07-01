@@ -6,6 +6,9 @@
 package view;
 
 import control.PessoaController;
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -183,6 +186,11 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
             paif = new PessoasAddInternalFrame();
             paif.setVisible(true);
             mfthis.desktop.add(paif);
+            try {
+                paif.setSelected(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(PessoasInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
     }//GEN-LAST:event_AddPessoaBtnActionPerformed
@@ -215,6 +223,11 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
             patif = new PessoasAttInternalFrame( Integer.parseInt( PessoaTable.getValueAt( PessoaTable.getSelectedRow() , 0).toString() ) );
             patif.setVisible(true);
             mfthis.desktop.add(patif);
+            try {
+                patif.setSelected(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(PessoasInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         else { AttPessoaBtn.setEnabled(false); }
     }//GEN-LAST:event_AttPessoaBtnActionPerformed

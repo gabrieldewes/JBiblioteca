@@ -7,7 +7,6 @@ package view;
 
 import control.ExemplarController;
 import control.LivroController;
-import control.TurmaController;
 import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -36,9 +35,6 @@ public class MainFrame extends javax.swing.JFrame {
         initComponents();
     }
     
-    public void updateTableModel() {
-        
-    }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -77,11 +73,11 @@ public class MainFrame extends javax.swing.JFrame {
         desktop.setLayout(desktopLayout);
         desktopLayout.setHorizontalGroup(
             desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 709, Short.MAX_VALUE)
+            .addGap(0, 736, Short.MAX_VALUE)
         );
         desktopLayout.setVerticalGroup(
             desktopLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 488, Short.MAX_VALUE)
+            .addGap(0, 497, Short.MAX_VALUE)
         );
 
         jMenuBar1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
@@ -189,7 +185,9 @@ public class MainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktop)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addComponent(desktop))
         );
 
         desktop.getAccessibleContext().setAccessibleParent(desktop);
@@ -208,6 +206,11 @@ public class MainFrame extends javax.swing.JFrame {
             pif = new PessoasInternalFrame(this);
             pif.setVisible(true);
             desktop.add(pif);
+            try {
+                pif.setSelected(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         else
             try {
@@ -224,6 +227,11 @@ public class MainFrame extends javax.swing.JFrame {
         eaif = new EmprestimoAddInternalFrame();
         eaif.setVisible(true);
         desktop.add(eaif);
+        try {
+                eaif.setSelected(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }//GEN-LAST:event_novoEmprestimoMenuItemActionPerformed
 
     private void verLivrosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verLivrosMenuItemActionPerformed
@@ -231,6 +239,11 @@ public class MainFrame extends javax.swing.JFrame {
             lif = new LivrosInternalFrame(this);
             lif.setVisible(true);
             desktop.add(lif);
+            try {
+                lif.setSelected(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         else
             try {
@@ -288,6 +301,11 @@ public class MainFrame extends javax.swing.JFrame {
             eif = new EmprestimoInternalFrame(this);
             eif.setVisible(true);
             desktop.add(eif);
+            try {
+                eif.setSelected(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         else
             try {
@@ -304,12 +322,22 @@ public class MainFrame extends javax.swing.JFrame {
         laif = new LivrosAddInternalFrame();
         laif.setVisible(true);
         desktop.add(laif);
+        try {
+                laif.setSelected(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }//GEN-LAST:event_addLivroMenuItemActionPerformed
 
     private void configMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configMenuItemActionPerformed
         configInternalFrame cif = new configInternalFrame();
         cif.setVisible(true);
         desktop.add(cif);
+        try {
+                cif.setSelected(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
     }//GEN-LAST:event_configMenuItemActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -317,6 +345,11 @@ public class MainFrame extends javax.swing.JFrame {
             tif = new TurmasInternalFrame();
             tif.setVisible(true);
             desktop.add(tif);
+            try {
+                tif.setSelected(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         else 
             try {
@@ -331,7 +364,7 @@ public class MainFrame extends javax.swing.JFrame {
     public static void OpenMainFrame() {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
