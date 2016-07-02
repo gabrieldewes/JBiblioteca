@@ -74,6 +74,8 @@ public class MainFrame extends javax.swing.JFrame {
         setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         setForeground(java.awt.Color.darkGray);
 
+        desktop.setBackground(new java.awt.Color(204, 204, 204));
+
         javax.swing.GroupLayout desktopLayout = new javax.swing.GroupLayout(desktop);
         desktop.setLayout(desktopLayout);
         desktopLayout.setHorizontalGroup(
@@ -367,7 +369,7 @@ public class MainFrame extends javax.swing.JFrame {
     public static void OpenMainFrame() {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Windows".equals(info.getName())) {
+                if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
