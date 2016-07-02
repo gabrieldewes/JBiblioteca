@@ -119,7 +119,6 @@ public class DBUtil {
             "id_pessoa          INTEGER NOT NULL, "+
             "data_inicio	TEXT NOT NULL, "+
             "data_fim	        TEXT, "+
-            //"PRIMARY KEY(id_emprestimo,id_pessoa), "+
             "FOREIGN KEY(id_pessoa) REFERENCES pessoa(id_pessoa)); ",
         
         "CREATE TABLE IF NOT EXISTS emprestimo_livro ( "+
@@ -127,7 +126,10 @@ public class DBUtil {
             "id_exemplar	INTEGER NOT NULL, "+
             "PRIMARY KEY(id_emprestimo,id_exemplar), "+
             "FOREIGN KEY(id_emprestimo) REFERENCES emprestimo(id_emprestimo), "+
-            "FOREIGN KEY(id_exemplar) REFERENCES exemplar(id_exemplar) ); "    
+            "FOREIGN KEY(id_exemplar) REFERENCES exemplar(id_exemplar) ); ",
+        
+        "CREATE TABLE IF NOT EXISTS app_config ( " +
+            "taxa_juros_dia REAL DEFAULT 0.0 ); "
     };
     
     static String[] drop_ddl = {

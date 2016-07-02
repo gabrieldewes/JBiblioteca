@@ -92,6 +92,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
         setTitle("Livros");
         setInheritsPopupMenu(true);
 
+        LivroTable.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
         LivroTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -129,6 +130,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        AddLivroBtn.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         AddLivroBtn.setText("Cadastrar Título");
         AddLivroBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,6 +138,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        AttLivroBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         AttLivroBtn.setText("Alterar");
         AttLivroBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,6 +146,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        DelLivroBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         DelLivroBtn.setText("Excluir");
         DelLivroBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -150,6 +154,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        AddExemplarLivroBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         AddExemplarLivroBtn.setText("Novo exemplar");
         AddExemplarLivroBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -208,6 +213,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
 
         jTabbedPane1.addTab("Títulos", jPanel1);
 
+        ExemplarTable.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
         ExemplarTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -233,6 +239,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        BuscaExemplarBtn.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         BuscaExemplarBtn.setText("Buscar");
         BuscaExemplarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -240,6 +247,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        AddExemplarBtn.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         AddExemplarBtn.setText("Cadastrar Novo");
         AddExemplarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -247,6 +255,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        AttExemplarBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         AttExemplarBtn.setText("Alterar");
         AttExemplarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -254,6 +263,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        DelExemplarBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         DelExemplarBtn.setText("Excluir");
         DelExemplarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -277,7 +287,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                         .addComponent(BuscaExemplarField, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(BuscaExemplarBtn)
-                        .addContainerGap(151, Short.MAX_VALUE))
+                        .addContainerGap(133, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(jScrollPane3)
@@ -294,7 +304,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                         .addComponent(AttExemplarBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(DelExemplarBtn)
-                        .addGap(0, 206, Short.MAX_VALUE))
+                        .addGap(0, 202, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(BuscaExemplarBtn)

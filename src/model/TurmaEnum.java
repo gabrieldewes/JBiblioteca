@@ -18,7 +18,10 @@ public enum TurmaEnum {
     sex(6, "Sexto"), 
     set(7, "Sétimo"), 
     oit(8, "Oitavo"), 
-    non(9, "Nono");
+    non(9, "Nono"),
+    primseg(10, "Primeiro, 2º Grau"),
+    segseg(11, "Segundo, 2º Grau"),
+    terseg(12, "Terceiro, 2º Grau");
     
     private final int value;
     private final String desc;

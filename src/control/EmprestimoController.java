@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 import model.Emprestimo;
 import model.Exemplar;
+import org.joda.time.Days;
 import org.joda.time.LocalDateTime;
 
 /**
@@ -84,28 +85,47 @@ public class EmprestimoController {
         } else JOptionPane.showMessageDialog(null, "Ocorreu um erro interno. Não retornou empréstimo para o ID "+ id_emprestimo +".", "Atenção", JOptionPane.WARNING_MESSAGE);
            
         return false;
-    }    
+    }  
+    
     public static TableModel Listar(String busca) {
+        LocalDateTime hoje = new LocalDateTime(System.currentTimeMillis());
         TableModel tb;
         dao = new EmprestimoDAO();
         if (!"".equals(busca)) {
             tb = dao.list(busca);
             for (int i=0; i<tb.getRowCount(); i++){
-                String data = tb.getValueAt(i, 3).toString();
-                LocalDateTime ldt = new LocalDateTime(data);
-                tb.setValueAt(""+ldt.getDayOfMonth()+"/"+ldt.getMonthOfYear()+"/"+ldt.getYear()+"", i, 3);
+                String in = tb.getValueAt(i, 3).toString();
+                String out = tb.getValueAt(i, 4).toString();
+                LocalDateTime inicio = new LocalDateTime(in);
+                LocalDateTime fim = new LocalDateTime(out);
+                int dias = Days.daysBetween(hoje, fim).getDays();   
+                tb.setValueAt(""+inicio.getDayOfMonth()+"/"+inicio.getMonthOfYear()+"/"+inicio.getYear()+"", i, 3);
+                if (dias >= 0)
+                    tb.setValueAt(""+fim.getDayOfMonth()+"/"+fim.getMonthOfYear()+"/"+fim.getYear()+"", i, 4);
+                else
+                    tb.setValueAt("Atrasado "+dias*-1+" dias.", i, 4);
             }
         }
         else {
             tb = dao.list("");
             for (int i=0; i<tb.getRowCount(); i++){
-                String data = tb.getValueAt(i, 3).toString();
-                LocalDateTime ldt = new LocalDateTime(data);
-                tb.setValueAt(""+ldt.getDayOfMonth()+"/"+ldt.getMonthOfYear()+"/"+ldt.getYear()+"", i, 3);
+                String in = tb.getValueAt(i, 3).toString();
+                String out = tb.getValueAt(i, 4).toString();
+                LocalDateTime inicio = new LocalDateTime(in);
+                LocalDateTime fim = new LocalDateTime(out);
+                int dias = Days.daysBetween(hoje, fim).getDays();   
+                tb.setValueAt(""+inicio.getDayOfMonth()+"/"+inicio.getMonthOfYear()+"/"+inicio.getYear()+"", i, 3);
+                if (dias >= 0)
+                    tb.setValueAt(""+fim.getDayOfMonth()+"/"+fim.getMonthOfYear()+"/"+fim.getYear()+"", i, 4);
+                else
+                    tb.setValueAt("Atrasado "+dias*-1+" dias.", i, 4);
             }
         }
         return tb;
     }
     
-    
+    public static double appConfigTaxaJuros() {
+        dao = new EmprestimoDAO();
+        return dao.getTaxaJurosDia();
+    }
 }

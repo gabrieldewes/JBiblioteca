@@ -52,7 +52,6 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
         AddPessoaBtn = new javax.swing.JButton();
         AttPessoaBtn = new javax.swing.JButton();
         DelPessoaBtn = new javax.swing.JButton();
-        EmpPessoaBtn = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -61,6 +60,7 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
         setTitle("Pessoas");
         setInheritsPopupMenu(true);
 
+        PessoaTable.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
         PessoaTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -86,6 +86,7 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        BuscaPessoaBtn.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         BuscaPessoaBtn.setText("Buscar");
         BuscaPessoaBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -93,13 +94,15 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
-        AddPessoaBtn.setText("Adicionar");
+        AddPessoaBtn.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        AddPessoaBtn.setText("Adicionar Nova");
         AddPessoaBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 AddPessoaBtnActionPerformed(evt);
             }
         });
 
+        AttPessoaBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         AttPessoaBtn.setText("Alterar");
         AttPessoaBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,17 +110,11 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        DelPessoaBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         DelPessoaBtn.setText("Excluir");
         DelPessoaBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 DelPessoaBtnActionPerformed(evt);
-            }
-        });
-
-        EmpPessoaBtn.setText("Empréstimo");
-        EmpPessoaBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                EmpPessoaBtnActionPerformed(evt);
             }
         });
 
@@ -128,21 +125,19 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(EmpPessoaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(AttPessoaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(DelPessoaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(AddPessoaBtn))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(BuscaPessoaField, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(BuscaPessoaBtn)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
-                        .addContainerGap())))
+                    .addComponent(DelPessoaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(AddPessoaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(BuscaPessoaField, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BuscaPessoaBtn)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -162,9 +157,7 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
                         .addComponent(AttPessoaBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(DelPessoaBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(EmpPessoaBtn)
-                        .addContainerGap(198, Short.MAX_VALUE))))
+                        .addContainerGap(231, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -248,14 +241,6 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
         else updateTableModel("");
     }//GEN-LAST:event_BuscaPessoaBtnActionPerformed
 
-    private void EmpPessoaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EmpPessoaBtnActionPerformed
-        int idx[] = PessoaTable.getSelectedRows();
-        if (idx.length > 0) {
-            
-        }
-        else { EmpPessoaBtn.setEnabled(false); }
-    }//GEN-LAST:event_EmpPessoaBtnActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddPessoaBtn;
@@ -263,7 +248,6 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
     private javax.swing.JButton BuscaPessoaBtn;
     private javax.swing.JTextField BuscaPessoaField;
     private javax.swing.JButton DelPessoaBtn;
-    private javax.swing.JButton EmpPessoaBtn;
     private javax.swing.JTable PessoaTable;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;

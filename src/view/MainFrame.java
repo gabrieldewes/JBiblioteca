@@ -7,12 +7,18 @@ package view;
 
 import control.ExemplarController;
 import control.LivroController;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Toolkit;
 import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import model.Livro;
 import static view.LivrosInternalFrame.titulos;
 
@@ -361,7 +367,7 @@ public class MainFrame extends javax.swing.JFrame {
     public static void OpenMainFrame() {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }

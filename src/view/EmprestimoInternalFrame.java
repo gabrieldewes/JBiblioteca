@@ -13,7 +13,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
+import model.Emprestimo;
 import model.Exemplar;
+import org.joda.time.Days;
+import org.joda.time.LocalDateTime;
 import static view.MainFrame.eaif;
 import static view.MainFrame.lif;
 
@@ -24,15 +27,19 @@ import static view.MainFrame.lif;
 public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
 
     static MainFrame mfthis;
+    static double juros_dia;
     
     public EmprestimoInternalFrame( MainFrame mf ) {
         initComponents();
         mfthis=mf;
         updateEmprestimoTable("");
         livroList.setModel(new DefaultListModel());
+        
+        juros_dia = EmprestimoController.appConfigTaxaJuros();
+
     }
 
-    void updateEmprestimoTable(String buscar) {
+    final void updateEmprestimoTable(String buscar) {
         if (!"".equals(buscar)) {
             emprestimoTable.setModel(EmprestimoController.Listar(buscar));
         }
@@ -52,7 +59,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         emprestimoTable = new javax.swing.JTable();
         novoEmprestimoBtn = new javax.swing.JButton();
-        DelEmprestimoBtn = new javax.swing.JButton();
+        DevolveEmprestimoBtn = new javax.swing.JButton();
         buscaEmprestimoField = new javax.swing.JTextField();
         buscaEmprestinoBtn = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
@@ -65,6 +72,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Empréstimos");
 
+        emprestimoTable.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
         emprestimoTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -84,6 +92,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(emprestimoTable);
 
+        novoEmprestimoBtn.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         novoEmprestimoBtn.setText("Novo Empréstimo");
         novoEmprestimoBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -91,15 +100,18 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
-        DelEmprestimoBtn.setText("Devolução");
-        DelEmprestimoBtn.addActionListener(new java.awt.event.ActionListener() {
+        DevolveEmprestimoBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        DevolveEmprestimoBtn.setText("Devolução");
+        DevolveEmprestimoBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                DelEmprestimoBtnActionPerformed(evt);
+                DevolveEmprestimoBtnActionPerformed(evt);
             }
         });
 
+        buscaEmprestinoBtn.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         buscaEmprestinoBtn.setText("Buscar");
 
+        livroList.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         livroList.setModel(new javax.swing.AbstractListModel<String>() {
             String[] strings = { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5" };
             public int getSize() { return strings.length; }
@@ -133,7 +145,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                         .addComponent(buscaEmprestinoBtn)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(DelEmprestimoBtn)
+                        .addComponent(DevolveEmprestimoBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -152,7 +164,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(49, 49, 49)
-                        .addComponent(DelEmprestimoBtn))
+                        .addComponent(DevolveEmprestimoBtn))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -178,42 +190,60 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
     private void emprestimoTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_emprestimoTableMouseClicked
         int idx[] = emprestimoTable.getSelectedRows();
         if (idx.length > 0) {
-            DelEmprestimoBtn.setEnabled(true); 
+            DevolveEmprestimoBtn.setEnabled(true); 
             //DetalheBtn.setEnabled(true); 
             int id_emprestimo = Integer.valueOf(emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 0).toString());
             ArrayList<Exemplar> exemplares = ExemplarController.ArrayExemplar("el.id_emprestimo", id_emprestimo, null);
             DefaultListModel model = new DefaultListModel();
-            for (Exemplar e:exemplares) {
+            exemplares.stream().forEach((e) -> {
                 model.addElement(e.getCodigo() +" - "+ e.getL().getTitulo());
-            }            
+            });            
             livroList.setModel(model);
         }
         else { 
-            DelEmprestimoBtn.setEnabled(false); 
+            DevolveEmprestimoBtn.setEnabled(false); 
             //DetalheBtn.setEnabled(false); 
         }
     }//GEN-LAST:event_emprestimoTableMouseClicked
 
-    private void DelEmprestimoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelEmprestimoBtnActionPerformed
+    private void DevolveEmprestimoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DevolveEmprestimoBtnActionPerformed
         int idx[] = emprestimoTable.getSelectedRows();
         if (idx.length > 0) {
-            int response = JOptionPane.showConfirmDialog(null, "Devolução de "+ emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 1) +". Continuar? ", "Atenção",
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (response == JOptionPane.YES_OPTION) {
-                int id_emprestimo = Integer.valueOf(emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 0).toString());
-                if (id_emprestimo != 0) {
+            int id_emprestimo = Integer.valueOf(emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 0).toString());
+            if (id_emprestimo != 0) {
+                Emprestimo e = EmprestimoController.Pegar(id_emprestimo);
+                LocalDateTime hoje = new LocalDateTime(System.currentTimeMillis());
+                LocalDateTime fim = new LocalDateTime( e.getData_fim());
+                int dias = Days.daysBetween(hoje, fim).getDays();  
+                dias=dias*-1;
+                System.out.println(" DIAS DE ATRASO: "+dias);
+                double total=0.0;
+                int response;
+                if (dias > 0) {
+                    for (int i=0; i<dias; i++) {
+                        total = e.getId_exemplar().stream().map((_item) -> juros_dia).reduce(total, (accumulator, _item) -> accumulator + _item);
+                    }
+                }
+                System.out.println(" TOTAL JUROS: "+ total);
+                if (total > 0.0)
+                    response = JOptionPane.showConfirmDialog(null, "Devolução de "+ emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 1) +". Total de juros a pagar: "+total+". Continuar? ", "Atenção",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                else
+                    response = JOptionPane.showConfirmDialog(null, "Devolução de "+ emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 1) +". Continuar? ", "Atenção",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (response == JOptionPane.YES_OPTION) { 
                     if (EmprestimoController.Apagar(id_emprestimo)) {
                         updateEmprestimoTable("");
                         if (lif != null)
                             lif.updateExemplarTableModel("");
-                    }
-                }
-            } 
+                    }                              
+                } 
+                
+            }
+            
         }
         else { 
-            DelEmprestimoBtn.setEnabled(false);  
+            DevolveEmprestimoBtn.setEnabled(false);  
         }
-    }//GEN-LAST:event_DelEmprestimoBtnActionPerformed
+    }//GEN-LAST:event_DevolveEmprestimoBtnActionPerformed
 
     private void novoEmprestimoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoEmprestimoBtnActionPerformed
         if (eaif == null || eaif.isClosed()) {
@@ -230,7 +260,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton DelEmprestimoBtn;
+    private javax.swing.JButton DevolveEmprestimoBtn;
     private javax.swing.JTextField buscaEmprestimoField;
     private javax.swing.JButton buscaEmprestinoBtn;
     private javax.swing.JTable emprestimoTable;

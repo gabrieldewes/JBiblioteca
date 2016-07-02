@@ -38,7 +38,7 @@ public class EmprestimoDAO {
         String query = "INSERT INTO emprestimo (id_pessoa, data_inicio, data_fim) VALUES ("
                 + "'"+ e.getId_pessoa()+"', "
                 + "'"+ e.getData_inicio()+"', "
-                + " "+ e.getData_fim()+"); ";
+                + " '"+ e.getData_fim()+"'); ";
         return helper.rawSQLreturnGenKey(query);
     }
     
@@ -104,14 +104,16 @@ public class EmprestimoDAO {
         String query;
         if (!"".equals(like))
             query = 
-                "SELECT e.id_emprestimo, p.nome AS 'Locador', e.data_inicio AS 'Data' COUNT(el.id_exemplar) AS 'Total de Exemplares' FROM emprestimo e " +
+                "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Data de Início', e.data_fim as 'Data p/ Devolução', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
+                    "FROM emprestimo e " +
                     "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
                     "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
                     "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
                     "GROUP BY e.id_emprestimo; ";
         else
             query = 
-                "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Data', COUNT(el.id_exemplar) AS 'Total de Exemplares' FROM emprestimo e " +
+                "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Data de Início', e.data_fim as 'Data p/ Devolução', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
+                    "FROM emprestimo e " +
                     "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
                     "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
                     "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
@@ -119,6 +121,20 @@ public class EmprestimoDAO {
         return helper.getTableModel(query);
     }
 
-
+    public double getTaxaJurosDia() {
+        String query = "SELECT taxa_juros_dia FROM app_config; ";
+        double taxa = 0.0;
+        try {
+            PreparedStatement stmt = helper.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next())
+                taxa = rs.getDouble("taxa_juros_dia");
+            helper.close();
+            System.out.println("Return "+ taxa +" from query "+ query);
+        } catch (SQLException ex) {
+            Logger.getLogger(EmprestimoDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return taxa;
+    }
 
 }

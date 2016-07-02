@@ -6,9 +6,6 @@
 package view;
 
 import control.LivroController;
-import javax.swing.JOptionPane;
-import model.Exemplar;
-import model.Livro;
 import static view.MainFrame.lif;
 
 /**
