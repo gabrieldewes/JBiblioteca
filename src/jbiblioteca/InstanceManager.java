@@ -22,12 +22,12 @@ public class InstanceManager {
     private static int PORT = 44121;  
     /** Constante, que indica até que porta no máximo será permitida a conexão*/  
     private static final int MAX_PORT = 44140;  
-    /**Endereço do Host */  
+    /** Endereço do Host */  
     private static InetAddress localhost;  
     /** Mensagem para notificar nova instancia. PRECISA terminar com \n */  
-    private static final String MENSAGEM = "Malandramente? \n";  
+    private static final String MENSAGEM = "Malandramente?\n";  
     /** Resposta enviada quando detectar nova instancia. PRECISA terminar com \n */  
-    private static final String RESPOSTA = "Vai Safada! \n";  
+    private static final String RESPOSTA = "Vai Safada!\n";  
     /** Conectado como servidor? */  
     private static boolean started;  
     /** Conectado como cliente? */  
@@ -49,8 +49,7 @@ public class InstanceManager {
      * retorna o valor de erro caso ocorra algum. 
      */  
     public static boolean registerInstance() {  
-        try { localhost = InetAddress.getByAddress("localhost", new byte[]{127, 0, 0, 1});  
-        } 
+        try { localhost = InetAddress.getByAddress("localhost", new byte[]{127, 0, 0, 1});} 
         catch (UnknownHostException e) {  
             e.printStackTrace(System.err);  
             return ERRO;  
@@ -61,7 +60,7 @@ public class InstanceManager {
             startClient();  
             if (connected) return false;  
             if (PORT > MAX_PORT) {  
-               System.err.println("Nenhuma porta disponível! (44121~44140)");  
+               System.err.println("Nenhuma porta disponível! ("+PORT+" ~ "+MAX_PORT+").");  
                break;  
             }  
         }  
@@ -73,9 +72,9 @@ public class InstanceManager {
      */  
     private static void startServer() {  
         try {  
-            System.out.println("Abrindo novo Servidor em "+ PORT +"...");  
+            System.out.println("Iniciando novo servidor em "+ PORT +"...");  
             socket = new ServerSocket(PORT, 20, localhost);  
-            System.out.println("Conectado, escutando novas instâncias em: "+ localhost + " : " + PORT);  
+            System.out.println("Conectado. Escutando novas instâncias em: "+ localhost + " : " + PORT);  
             new InstanceThread().start();  
             started = true;  
         } catch (IOException ex) {  
@@ -96,18 +95,19 @@ public class InstanceManager {
      */  
     private static void startClient() {  
         System.out.println("Porta já está aberta, notificando a primeira instância...");  
-        try (Socket clientSocket = new Socket(localhost, PORT);  
-                OutputStream out = clientSocket.getOutputStream();  
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()))) {  
+        try (
+            Socket clientSocket = new Socket(localhost, PORT);  
+            OutputStream out = clientSocket.getOutputStream();  
+            BufferedReader in = new BufferedReader( new InputStreamReader( clientSocket.getInputStream() ) ) ) 
+        {  
             out.write(MENSAGEM.getBytes());  
             String resposta = in.readLine();  
             System.out.println("Primeira instância notificada! ");  
-            connected = !(resposta == null || !RESPOSTA.trim().equals(resposta.trim()));  
-  
+            connected = !( resposta == null || !RESPOSTA.trim().equals(resposta.trim()) );  
             if (connected) {  
-                System.err.println("Resposta Correta: \"" + resposta + "\"\n Aplicação encerrada.");  
+                System.err.println("Resposta Correta! \""+ resposta +"\"\nAplicação encerrada.");  
             } else {  
-                System.err.println("Resposta Incorreta: \"" + resposta + "\"");  
+                System.err.println("Resposta Incorreta: \""+ resposta +"\"");  
                 PORT++;  
             }  
         } catch (IOException ex) {  
@@ -161,16 +161,18 @@ public class InstanceManager {
         @Override  
         public void run() {  
             while (!socket.isClosed()) {  
-  
-                try (Socket client = socket.accept();  
-                        BufferedReader in = new BufferedReader(new InputStreamReader(client.getInputStream()));  
-                        OutputStream out = client.getOutputStream()) {  
+                try (
+                    Socket client = socket.accept();  
+                    BufferedReader in = new BufferedReader( new InputStreamReader( client.getInputStream() ) );  
+                    OutputStream out = client.getOutputStream()) 
+                {  
                     String message = in.readLine();  
                     if (MENSAGEM.trim().equals(message.trim())) {  
                         System.err.println("Nova instância do programa detectada: \"" + message + "\"\n => Resposta enviada.");  
                         out.write(RESPOSTA.getBytes());  
                         fireNewInstance();  
-                    } else {  
+                    } 
+                    else {  
                         System.err.println("Conexão desconhecida detectada: \"" + message + "\"");  
                         out.write("Vá embora meu filho! ".getBytes());  
                     }  
