@@ -5,9 +5,11 @@
  */
 package view;
 
+import control.ConfigController;
 import control.EmprestimoController;
 import control.ExemplarController;
 import java.beans.PropertyVetoException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,7 +37,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
         updateEmprestimoTable("");
         livroList.setModel(new DefaultListModel());
         
-        juros_dia = EmprestimoController.appConfigTaxaJuros();
+        juros_dia = ConfigController.appConfigTaxaJuros();
 
     }
 
@@ -108,8 +110,19 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        buscaEmprestimoField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                buscaEmprestimoFieldKeyReleased(evt);
+            }
+        });
+
         buscaEmprestinoBtn.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         buscaEmprestinoBtn.setText("Buscar");
+        buscaEmprestinoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscaEmprestinoBtnActionPerformed(evt);
+            }
+        });
 
         livroList.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         livroList.setModel(new javax.swing.AbstractListModel<String>() {
@@ -216,7 +229,6 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                 LocalDateTime fim = new LocalDateTime( e.getData_fim());
                 int dias = Days.daysBetween(hoje, fim).getDays();  
                 dias=dias*-1;
-                System.out.println(" DIAS DE ATRASO: "+dias);
                 double total=0.0;
                 int response;
                 if (dias > 0) {
@@ -226,9 +238,14 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                 }
                 System.out.println(" TOTAL JUROS: "+ total);
                 if (total > 0.0)
-                    response = JOptionPane.showConfirmDialog(null, "Devolução de "+ emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 1) +". Total de juros a pagar: "+total+". Continuar? ", "Atenção",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    response = JOptionPane.showConfirmDialog(null, 
+                            "Devolução de "+ emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 1) +
+                            ". Total de juros a pagar: "+NumberFormat.getCurrencyInstance().format(total)+
+                            ". Continuar? ", "Atenção", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 else
-                    response = JOptionPane.showConfirmDialog(null, "Devolução de "+ emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 1) +". Continuar? ", "Atenção",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    response = JOptionPane.showConfirmDialog(null, 
+                            "Devolução de "+ emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 1) +
+                            ". Continuar? ", "Atenção",JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (response == JOptionPane.YES_OPTION) { 
                     if (EmprestimoController.Apagar(id_emprestimo)) {
                         updateEmprestimoTable("");
@@ -257,6 +274,22 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
             }
         }
     }//GEN-LAST:event_novoEmprestimoBtnActionPerformed
+
+    private void buscaEmprestinoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaEmprestinoBtnActionPerformed
+        String search = buscaEmprestimoField.getText();
+        if (!"".equals(search)) {
+            updateEmprestimoTable(search);
+        }
+        else updateEmprestimoTable("");
+    }//GEN-LAST:event_buscaEmprestinoBtnActionPerformed
+
+    private void buscaEmprestimoFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscaEmprestimoFieldKeyReleased
+        String search = buscaEmprestimoField.getText();
+        if (search.length() > 3) {
+            updateEmprestimoTable(search);
+        }
+        else updateEmprestimoTable("");
+    }//GEN-LAST:event_buscaEmprestimoFieldKeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

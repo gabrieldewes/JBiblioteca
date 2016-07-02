@@ -5,6 +5,7 @@
  */
 package view;
 
+import control.ConfigController;
 import database.DBUtil;
 import database.Database;
 import java.awt.Cursor;
@@ -17,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import org.joda.time.LocalDate;
+import org.joda.time.LocalDateTime;
 
 /**
  *
@@ -30,10 +32,17 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
     public configInternalFrame() {
         initComponents();
         
-        Double valor = 0.0;
-        NumberFormat f = NumberFormat.getCurrencyInstance();
-        jTextField.setText(f.format(valor));
+        salvarBtn.setEnabled(false);
         
+        String last_backup = ConfigController.getLastBackupDate();
+        if (last_backup != null)
+            backupLabel.setText(last_backup);
+        
+        Double valor = ConfigController.appConfigTaxaJuros();
+        String s = String.format("%1$,.2f", valor);
+        //String s = NumberFormat.getCurrencyInstance().format(valor);
+        taxaField.setText(""+s);
+       
         LocalDate date = new LocalDate(System.currentTimeMillis());
         footer.setText(date.getYear() + " - Gabriel Dewes - JBiblioteca ");
     }
@@ -47,15 +56,18 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        backupTab = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField = new javax.swing.JTextField();
+        salvarBtn = new javax.swing.JButton();
+        taxaField = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         BackupBtn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         populateBtn = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        backupLabel = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         footer = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -63,9 +75,22 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
         setClosable(true);
         setTitle("Configurações");
 
-        jLabel2.setText("Taxa de Juros por dia de atraso:");
+        jLabel2.setText("Taxa por dias de atraso: ");
 
-        jTextField.setText("jTextField1");
+        salvarBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        salvarBtn.setText("Salvar Alterações");
+        salvarBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salvarBtnActionPerformed(evt);
+            }
+        });
+
+        taxaField.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
+        taxaField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                taxaFieldKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -73,22 +98,32 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(salvarBtn))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(taxaField, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jLabel2))
+                        .addGap(0, 229, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(33, 33, 33)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(202, Short.MAX_VALUE))
+                .addGap(40, 40, 40)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(taxaField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 117, Short.MAX_VALUE)
+                .addComponent(salvarBtn)
+                .addContainerGap())
         );
 
-        jTabbedPane1.addTab("Preferências", jPanel2);
+        backupTab.addTab("Preferências", jPanel2);
 
         BackupBtn.setText("Realizar Backup Agora");
         BackupBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -104,19 +139,23 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton2.setText("Reiniciar Aplicação");
+        jButton2.setText("Reiniciar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
             }
         });
 
-        populateBtn.setText("Popular para Testes");
+        populateBtn.setText("Popular");
         populateBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 populateBtnActionPerformed(evt);
             }
         });
+
+        jLabel3.setText("Último backup:");
+
+        backupLabel.setText("jLabel4");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -124,34 +163,40 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(populateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(BackupBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton1)
-                            .addComponent(BackupBtn))
-                        .addContainerGap(177, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(populateBtn)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(jLabel3)
+                    .addComponent(backupLabel))
+                .addContainerGap(54, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(BackupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(38, 38, 38)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(BackupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(backupLabel)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(populateBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addContainerGap())
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(populateBtn)
+                    .addComponent(jButton2))
+                .addContainerGap(99, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Dados e Backup", jPanel3);
+        backupTab.addTab("Dados e Backup", jPanel3);
 
         footer.setText("jLabel1");
         footer.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -195,17 +240,17 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
                 .addContainerGap(148, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Sobre", jPanel4);
+        backupTab.addTab("Sobre", jPanel4);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(backupTab)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1)
+            .addComponent(backupTab)
         );
 
         pack();
@@ -223,6 +268,16 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
                 Database.checkDatabase();
                 Database.backupDatabase(file);
                 JOptionPane.showMessageDialog(null, "O arquivo de backup foi salvo com êxito.");
+                Runnable t2 = () -> {
+                    try {
+                        LocalDateTime ldt = new LocalDateTime(System.currentTimeMillis());
+                        ConfigController.saveLastBackup("'"+ldt.toString()+"'");
+                        backupLabel.setText(ldt.toDate().toLocaleString());
+                            
+                    } catch (Exception e1) {
+                    }
+                };
+                new Thread(t2).start();
             } catch (Exception e1) {
             }
         };
@@ -234,9 +289,8 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (response == JOptionPane.YES_OPTION) {
             try {
-                DBUtil du = new DBUtil();
-                du.dropDDL();
-                du.createDDL();
+                DBUtil.dropDDL();
+                DBUtil.createDDL();
                 JOptionPane.showMessageDialog(null, "A aplicação foi reiniciada com êxito.");
             } catch (Exception ex) {
                 Logger.getLogger(configInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
@@ -266,9 +320,8 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
     private void populateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_populateBtnActionPerformed
         Runnable t1 = () -> {
             try {
-                DBUtil du = new DBUtil();
-                du.createDDL();
-                du.populate();
+                DBUtil.createDDL();
+                DBUtil.populate();
                 JOptionPane.showMessageDialog(null, "Os dados foram inseridos com êxito.");
             } catch (Exception e1) {
             }
@@ -301,19 +354,44 @@ public class configInternalFrame extends javax.swing.JInternalFrame {
         footer.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }//GEN-LAST:event_footerMouseEntered
 
+    private void taxaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_taxaFieldKeyReleased
+        salvarBtn.setEnabled(true);
+    }//GEN-LAST:event_taxaFieldKeyReleased
+
+    private void salvarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salvarBtnActionPerformed
+        String taxa = taxaField.getText();
+        taxa = taxa.replaceAll(",", ".");
+        try {
+            Double d = Double.valueOf(taxa);
+            if (ConfigController.saveTaxaJuros(d)) {
+                String s = String.format("%1$,.2f", d);
+                taxaField.setText(""+s);
+                salvarBtn.setEnabled(false);
+            }
+        }
+        catch (NumberFormatException n) {
+            System.err.println("Exception "+n.getMessage());
+            JOptionPane.showMessageDialog(null, "Formato de dinheiro inválido.");
+        }       
+        
+    }//GEN-LAST:event_salvarBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackupBtn;
+    private javax.swing.JLabel backupLabel;
+    private javax.swing.JTabbedPane backupTab;
     private javax.swing.JLabel footer;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField;
     private javax.swing.JButton populateBtn;
+    private javax.swing.JButton salvarBtn;
+    private javax.swing.JTextField taxaField;
     // End of variables declaration//GEN-END:variables
 }

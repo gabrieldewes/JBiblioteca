@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  */
 public class DBUtil {
     
-    public void createDDL() {
+    public static void createDDL() {
         try {
             DBHelper db = new DBHelper();
             db.rawLineSQL(create_ddl);
@@ -25,7 +25,7 @@ public class DBUtil {
         
     }
     
-    public void dropDDL() {
+    public static void dropDDL() {
         try {
             DBHelper db = new DBHelper();
             db.rawLineSQL(drop_ddl);
@@ -34,7 +34,7 @@ public class DBUtil {
         }
     }
     
-    public void populate() {
+    public static void populate() {
         try {
             DBHelper db = new DBHelper();
             db.rawLineSQL(insert_data);
@@ -43,7 +43,7 @@ public class DBUtil {
         }
     }
     
-    public void clear() {
+    public static void clear() {
         try {
             DBHelper db = new DBHelper();
             db.rawLineSQL(clear_data);
@@ -129,7 +129,9 @@ public class DBUtil {
             "FOREIGN KEY(id_exemplar) REFERENCES exemplar(id_exemplar) ); ",
         
         "CREATE TABLE IF NOT EXISTS app_config ( " +
-            "taxa_juros_dia REAL DEFAULT 0.0 ); "
+            "taxa_juros  REAL DEFAULT 0.0,"+
+            "last_backup TEXT, "+
+	    "db_version	 INTEGER); "
     };
     
     static String[] drop_ddl = {

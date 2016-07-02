@@ -26,9 +26,24 @@ public class GenericDAO {
         }
     }
     
+    public boolean save(String table, String column, String content) {
+        String query = "INSERT INTO "+table+"("+column+") VALUES ("+content+"); ";
+        return helper.rawSQL(query);
+    }
+    
+    public boolean update(String table, String column, String content) {
+        String query = "UPDATE "+table+" SET "+column+"="+content+"; ";
+        return helper.rawSQL(query);
+    }
+    
     public boolean restrict(String table, String column, int id) {
         String restrict = "SELECT * FROM "+ table +" WHERE "+ column +"="+ id +"; ";
         return helper.rowExists(restrict);
+    }
+    
+    public String get(String table, String column) {
+        String query = "SELECT "+column+" FROM "+table+"; ";
+        return helper.get(query);
     }
     
     public boolean delete(String table, String column, int id) {

@@ -168,6 +168,9 @@
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="buscaEmprestimoField">
+          <Events>
+            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="buscaEmprestimoFieldKeyReleased"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="buscaEmprestinoBtn">
           <Properties>
@@ -176,6 +179,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Buscar"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buscaEmprestinoBtnActionPerformed"/>
+          </Events>
         </Component>
         <Container class="javax.swing.JPanel" name="jPanel1">
 

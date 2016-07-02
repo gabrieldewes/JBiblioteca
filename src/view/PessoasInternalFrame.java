@@ -227,7 +227,7 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
 
     private void BuscaPessoaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BuscaPessoaFieldKeyReleased
         String search = BuscaPessoaField.getText();
-        if (search.length() > 2) {
+        if (search.length() > 3) {
             updateTableModel(search);
         }
         else updateTableModel("");

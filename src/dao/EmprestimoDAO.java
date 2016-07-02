@@ -109,6 +109,10 @@ public class EmprestimoDAO {
                     "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
                     "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
                     "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
+                    "WHERE "+
+                    "p.nome LIKE '%"+ like +"%' OR p.nome LIKE '"+ like +"%' OR p.nome LIKE '%"+ like +"' OR "+
+                    "p.codigo LIKE '%"+ like +"%' OR p.codigo LIKE '"+ like +"%' OR p.codigo LIKE '%"+ like +"' OR "+
+                    "ex.codigo LIKE '%"+ like +"%' OR ex.codigo LIKE '"+ like +"%' OR ex.codigo LIKE '%"+ like +"'" +
                     "GROUP BY e.id_emprestimo; ";
         else
             query = 
@@ -121,20 +125,6 @@ public class EmprestimoDAO {
         return helper.getTableModel(query);
     }
 
-    public double getTaxaJurosDia() {
-        String query = "SELECT taxa_juros_dia FROM app_config; ";
-        double taxa = 0.0;
-        try {
-            PreparedStatement stmt = helper.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next())
-                taxa = rs.getDouble("taxa_juros_dia");
-            helper.close();
-            System.out.println("Return "+ taxa +" from query "+ query);
-        } catch (SQLException ex) {
-            Logger.getLogger(EmprestimoDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return taxa;
-    }
+    
 
 }

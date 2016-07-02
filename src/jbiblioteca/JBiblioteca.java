@@ -19,7 +19,7 @@ public class JBiblioteca {
     static MainFrame mf;
     public static void main(String[] args) throws IOException {
         if (!InstanceManager.registerInstance()) {  
-            JOptionPane.showMessageDialog(null, "Já existe uma instancia aberta. ", "Atenção", JOptionPane.INFORMATION_MESSAGE);             
+            JOptionPane.showMessageDialog(null, "Já existe uma instancia aberta. ", "JBiblioteca", JOptionPane.INFORMATION_MESSAGE);             
             System.exit(0);  
         } 
         
@@ -27,8 +27,7 @@ public class JBiblioteca {
         Runnable t1 = () -> {
             try {
                 Database.checkDatabase();
-                DBUtil du = new DBUtil();
-                du.createDDL();
+                DBUtil.createDDL();
             } catch (Exception e1) {}
         };
         new Thread(t1).start();

@@ -123,9 +123,5 @@ public class EmprestimoController {
         }
         return tb;
     }
-    
-    public static double appConfigTaxaJuros() {
-        dao = new EmprestimoDAO();
-        return dao.getTaxaJurosDia();
-    }
+        
 }

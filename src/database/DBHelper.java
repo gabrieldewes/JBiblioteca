@@ -139,5 +139,21 @@ public class DBHelper extends SQLiteConnection {
         return false;
     }
     
+    public String get(String query) {
+        String s=null;
+        try {
+            PreparedStatement stmt = this.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next())
+                s=rs.getString(1);
+            System.out.println("Return "+ s +" from query "+ query);
+            this.close();
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return s;
+    }
+    
     
 }

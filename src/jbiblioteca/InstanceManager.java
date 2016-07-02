@@ -23,7 +23,7 @@ public class InstanceManager {
     /** Constante, que indica até que porta no máximo será permitida a conexão*/  
     private static final int MAX_PORT = 44140;  
     /** Endereço do Host */  
-    private static InetAddress localhost;  
+    private static InetAddress ip_host;  
     /** Mensagem para notificar nova instancia. PRECISA terminar com \n */  
     private static final String MENSAGEM = "Malandramente?\n";  
     /** Resposta enviada quando detectar nova instancia. PRECISA terminar com \n */  
@@ -49,7 +49,7 @@ public class InstanceManager {
      * retorna o valor de erro caso ocorra algum. 
      */  
     public static boolean registerInstance() {  
-        try { localhost = InetAddress.getByAddress("localhost", new byte[]{127, 0, 0, 1});} 
+        try { ip_host = InetAddress.getByAddress("localhost", new byte[]{127, 0, 0, 1});} 
         catch (UnknownHostException e) {  
             e.printStackTrace(System.err);  
             return ERRO;  
@@ -73,8 +73,8 @@ public class InstanceManager {
     private static void startServer() {  
         try {  
             System.out.println("Iniciando novo servidor em "+ PORT +"...");  
-            socket = new ServerSocket(PORT, 20, localhost);  
-            System.out.println("Conectado. Escutando novas instâncias em: "+ localhost + " : " + PORT);  
+            socket = new ServerSocket(PORT, 20, ip_host);  
+            System.out.println("Conectado, escutando novas instâncias em "+ ip_host +":"+ PORT);  
             new InstanceThread().start();  
             started = true;  
         } catch (IOException ex) {  
@@ -96,7 +96,7 @@ public class InstanceManager {
     private static void startClient() {  
         System.out.println("Porta já está aberta, notificando a primeira instância...");  
         try (
-            Socket clientSocket = new Socket(localhost, PORT);  
+            Socket clientSocket = new Socket(ip_host, PORT);  
             OutputStream out = clientSocket.getOutputStream();  
             BufferedReader in = new BufferedReader( new InputStreamReader( clientSocket.getInputStream() ) ) ) 
         {  
@@ -106,7 +106,8 @@ public class InstanceManager {
             connected = !( resposta == null || !RESPOSTA.trim().equals(resposta.trim()) );  
             if (connected) {  
                 System.err.println("Resposta Correta! \""+ resposta +"\"\nAplicação encerrada.");  
-            } else {  
+            } 
+            else {  
                 System.err.println("Resposta Incorreta: \""+ resposta +"\"");  
                 PORT++;  
             }  
@@ -121,7 +122,8 @@ public class InstanceManager {
      */  
     public static void setListener(InstanceListener listener) {  
         sub_listener = listener;  
-    }  
+    } 
+    
     /** 
      * Notifica o listener que uma nova instancia foi detectada. 
      */  
@@ -129,6 +131,7 @@ public class InstanceManager {
         if (sub_listener != null)
             sub_listener.newInstanceCreated();   
     }  
+    
     /** 
      * Thread para aceitar conexões e receber mensagens pelo socket 
      *  
@@ -145,7 +148,7 @@ public class InstanceManager {
      */  
     static class InstanceThread extends Thread {  
         public InstanceThread() {  
-            super("Socket Listener");  
+            super();  
             /** 
              * Se esta for a única Thread ainda em execução na aplicação, 
              * não faz sentido continuar. 
@@ -157,7 +160,6 @@ public class InstanceManager {
              */  
             setDaemon(true);  
         }  
-  
         @Override  
         public void run() {  
             while (!socket.isClosed()) {  
@@ -168,7 +170,7 @@ public class InstanceManager {
                 {  
                     String message = in.readLine();  
                     if (MENSAGEM.trim().equals(message.trim())) {  
-                        System.err.println("Nova instância do programa detectada: \"" + message + "\"\n => Resposta enviada.");  
+                        System.err.println("Nova instância do programa detectada: \n\"" + message + "\" => Resposta enviada.");  
                         out.write(RESPOSTA.getBytes());  
                         fireNewInstance();  
                     } 
@@ -182,4 +184,5 @@ public class InstanceManager {
             }  
         }  
     }  
+    
 }
