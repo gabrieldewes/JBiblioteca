@@ -12,4 +12,5 @@ Conta com os módulos:
 * Controle de pessoas e turmas;
 * Controle de livros e exemplares de livros; 
 * Controle empréstimos e devoluções;
+* Taxa de juros por dias de atraso p/ cada exemplar;
 * Backup e recuperação de dados.
