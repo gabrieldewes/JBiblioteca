@@ -20,12 +20,9 @@ import javax.swing.JOptionPane;
 public class Database {
     
     public static int DB_VERSION = 1;
-    public static final java.io.File DATABASE = new java.io.File(
-            System.getProperty("user.home")
-            + System.getProperty("file.separator")
-            + ".jbiblioteca"
-            + System.getProperty("file.separator")
-            + "jbiblioteca_db.db");
+    public static final java.io.File DATABASE = new java.io.File(System.getProperty("user.home")
+            + System.getProperty("file.separator") + ".jbiblioteca"
+            + System.getProperty("file.separator") + "jbiblioteca_db.db");
     
    
     public static void checkDatabase() throws Exception {
@@ -93,8 +90,9 @@ public class Database {
             if (!DATABASE.exists()) {          /* Caso o arquivo ainda não exista, após os comandos acima, dispara exceção */
                 throw new Exception("Erro ao gravar o arquivo de banco de dados.");
             }
+            System.out.println("Banco de dados criado em '"+DATABASE.getAbsolutePath()+"' ");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Erro na criação do banco de dados.");
+            JOptionPane.showMessageDialog(null, "Erro na criação do banco de dados. ERRO: "+ ex.getMessage());
             throw new Exception("Erro na criação do banco de dados.\n"+ ex.getMessage());
         }
     }
