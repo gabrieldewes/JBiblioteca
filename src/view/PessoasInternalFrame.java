@@ -6,9 +6,11 @@
 package view;
 
 import control.PessoaController;
+import java.awt.Font;
 import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -191,7 +193,18 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
     private void DelPessoaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelPessoaBtnActionPerformed
         int idx[] = PessoaTable.getSelectedRows();
         if (idx.length > 0) {
-            int response = JOptionPane.showConfirmDialog(null, "Apagar "+ PessoaTable.getValueAt(PessoaTable.getSelectedRow(), 2) +"?", "Atenção",
+            JLabel nome = new JLabel();
+            nome.setFont(new Font("Dialog", Font.BOLD, 14));
+            JLabel codigo = new JLabel();
+            codigo.setFont(new Font("Dialog", Font.BOLD, 14));
+            Object[] message = {
+                "Nome:", nome,
+                "Código: ", codigo,
+                "Tem certeza que deseja excluir?"
+            };
+            nome.setText( PessoaTable.getValueAt(PessoaTable.getSelectedRow(), 2).toString() );
+            codigo.setText( PessoaTable.getValueAt(PessoaTable.getSelectedRow(), 1).toString() );
+            int response = JOptionPane.showConfirmDialog(null, message, "Confirmar Exclusão",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.YES_OPTION) {
                 int id = Integer.valueOf( PessoaTable.getValueAt( PessoaTable.getSelectedRow() , 0 ).toString() );

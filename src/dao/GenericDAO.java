@@ -43,7 +43,7 @@ public class GenericDAO {
     
     public String get(String table, String column) {
         String query = "SELECT "+column+" FROM "+table+"; ";
-        return helper.get(query);
+        return helper.getString(query);
     }
     
     public boolean delete(String table, String column, int id) {

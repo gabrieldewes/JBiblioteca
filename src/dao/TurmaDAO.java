@@ -8,14 +8,13 @@ import javax.swing.table.TableModel;
 import database.DBHelper;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import model.Livro;
 import model.Turma;
 
 /**
  *
  * @author Dewes
  */
-public class TurmaDAO {
+public class TurmaDAO implements DAO {
     
     private static DBHelper helper;
     private static PreparedStatement stmt;
@@ -43,11 +42,13 @@ public class TurmaDAO {
         return helper.rowExists(restrict);
     }
     
+    @Override
     public boolean delete(int id) {
         String query = "DELETE FROM turma WHERE id_turma="+ id +"; ";
         return helper.rawSQL(query);
     } 
     
+    @Override
     public Turma get(int id) {
         final String select = "SELECT * FROM turma WHERE id_turma=?; ";
         Turma t=null;
@@ -110,6 +111,26 @@ public class TurmaDAO {
             Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return turmas;
+    }
+
+    @Override
+    public boolean save(Object obj) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean update(Object obj) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public TableModel getAll(String like) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Object> getArray(String like) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     

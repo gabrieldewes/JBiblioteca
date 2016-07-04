@@ -27,27 +27,26 @@ public class JBiblioteca {
         Runnable t1 = () -> {
             try {
                 Database.checkDatabase();
-                DBUtil.createDDL();
+                //DBUtil.updateDDL(1, 2);
+                //DBUtil.dropDDL();
+                //DBUtil.createDDL();
+                //DBUtil.populate();
+                //DBUtil.clear();
+                /*
+                java.io.File file = new java.io.File(
+                                System.getProperty("user.home")
+                                + System.getProperty("file.separator")
+                                + ".jbiblioteca"
+                                + System.getProperty("file.separator")
+                                + "jbiblioteca_bkp.db");
+
+                //Database.backupDatabase(file);
+                //Database.recoverBackupDatabase(file);
+                */ 
             } catch (Exception e1) {}
         };
         new Thread(t1).start();
-        /*
-        java.io.File file = new java.io.File(
-                        System.getProperty("user.home")
-                        + System.getProperty("file.separator")
-                        + ".jbiblioteca"
-                        + System.getProperty("file.separator")
-                        + "jbiblioteca_bkp.db");
-
-        //Database.backupDatabase(file);
-        //Database.recoverBackupDatabase(file);
-
-        //DBUtil du = new DBUtil();
-        //du.dropDDL();
-        //du.createDDL();
-        //du.populate();
-        //du.clear();
-        */
+        
     }
 }
    

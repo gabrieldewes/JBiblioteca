@@ -5,6 +5,7 @@
  */
 package view;
 
+import control.ConfigController;
 import control.EmprestimoController;
 import control.ExemplarController;
 import control.PessoaController;
@@ -21,7 +22,7 @@ import static view.MainFrame.lif;
  *
  * @author gabriel
  */
-public class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame {
+public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame {
 
     static ArrayList<Pessoa> pessoas;
     static ArrayList<Exemplar> exemplares;
@@ -33,7 +34,10 @@ public class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame {
     
     public EmprestimoAddInternalFrame() {
         initComponents();
-        diaSpinner.setValue(7);
+        /* Passando valor default salvo em Opções>Preferencias>Prazo Default */
+        int prazo_default = ConfigController.getPrazoDefault();
+        diaSpinner.setValue(prazo_default);
+        
         model = new DefaultListModel();
         livroList.setModel(model);
         
@@ -50,7 +54,7 @@ public class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame {
 
     }
     
-    public void updatePessoaBox() {
+    void updatePessoaBox() {
         pessoaBox.removeAllItems();
         pessoas.stream().forEach((p) -> {
             pessoaBox.addItem( p.getCodigo() );
@@ -58,7 +62,7 @@ public class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame {
         
     }
     
-    public void updateLivroBox() {
+    void updateLivroBox() {
         livroBox.removeAllItems();
         exemplares.stream().forEach((e) -> {
             livroBox.addItem( e.getCodigo() );
@@ -443,18 +447,23 @@ public class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_buscaPessoaFieldKeyReleased
 
     private void escolhePessoaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_escolhePessoaBtnActionPerformed
-        String codigo = pessoaBox.getSelectedItem().toString();
-        if (!"".equals(codigo) && codigo != null) {
-            for (Pessoa p:pessoas) {
-                if (codigo.equals(p.getCodigo())) {
-                    buscaPessoaField.setText(p.getNome());
-                    escolhePessoaBtn.setEnabled(false);
-                    pessoaLabel.setText("Escolhido: ");
-                    codigoLabel.setText("Código: ");
-                    pessoaBox.setEnabled(false);
+        if (pessoaBox.getSelectedIndex() != -1) {
+            String codigo = pessoaBox.getSelectedItem().toString();
+            if (!"".equals(codigo) && codigo != null) {
+                if (!pessoas.isEmpty()) {
+                    for (Pessoa p:pessoas) {
+                        if (codigo.equals(p.getCodigo())) {
+                            buscaPessoaField.setText(p.getNome());
+                            escolhePessoaBtn.setEnabled(false);
+                            pessoaLabel.setText("Escolhido: ");
+                            codigoLabel.setText("Código: ");
+                            pessoaBox.setEnabled(false);
+                        }
+                    }
                 }
             }
         }
+        else JOptionPane.showMessageDialog(null, "Não há pessoas cadastradas! . ", "Atenção", JOptionPane.WARNING_MESSAGE);
     }//GEN-LAST:event_escolhePessoaBtnActionPerformed
 
     private void buscaLivroFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscaLivroFieldKeyReleased

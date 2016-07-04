@@ -31,32 +31,32 @@ public class ConfigDAO {
     
     public boolean saveTaxaJuros(double d) {
         String query = "UPDATE app_config SET taxa_juros="+d+"; ";
-        try {
-            stmt = helper.prepareStatement(query);
-            stmt.executeUpdate();
-            helper.close();
-            System.out.println("Save config "+ query);
-            return true;
-        } catch (SQLException ex) {
-            Logger.getLogger(EmprestimoDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return false;
+        return helper.rawSQL(query);
+    }
+    
+    public boolean savePrazoDefault(int i) {
+        String query = "UPDATE app_config SET prazo_default="+i+"; ";
+        return helper.rawSQL(query);
+    }
+    
+    public boolean saveDBVersion(int i) {
+        String query = "UPDATE app_config SET db_version="+i+"; ";
+        return helper.rawSQL(query);
     }
     
     public double getTaxaJuros() {
         String query = "SELECT taxa_juros FROM app_config; ";
-        double taxa = 0.0;
-        try {
-            stmt = helper.prepareStatement(query);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next())
-                taxa = rs.getDouble("taxa_juros");
-            helper.close();
-            System.out.println("Return "+ taxa +" from query "+ query);
-        } catch (SQLException ex) {
-            Logger.getLogger(EmprestimoDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return taxa;
+        return helper.getDouble(query);
+    }
+    
+    public int getPrazoDefault() {
+        String query = "SELECT prazo_default FROM app_config; ";
+        return helper.getInt(query);
+    }
+    
+    public int getDBVersion() {
+        String query = "SELECT db_version FROM app_config; ";
+        return helper.getInt(query);
     }
     
     

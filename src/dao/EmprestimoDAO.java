@@ -42,6 +42,15 @@ public class EmprestimoDAO {
         return helper.rawSQLreturnGenKey(query);
     }
     
+    public boolean update(Emprestimo e) {
+        String query = "UPDATE emprestimo "
+                + "SET id_pessoa="+ e.getId_pessoa()+", "
+                + "data_inicio='"+ e.getData_inicio()+"', "
+                + "data_fim='"+ e.getData_fim()+"' "
+                + "WHERE id_emprestimo="+ e.getId_emprestimo() +"; ";
+        return helper.rawSQL(query);
+    }
+    
     public boolean saveForeignBatch(Emprestimo e) {
         String query = "INSERT INTO emprestimo_livro (id_emprestimo, id_exemplar) VALUES ";
         ArrayList id = e.getId_exemplar();

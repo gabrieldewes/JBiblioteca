@@ -7,6 +7,7 @@ package view;
 
 import control.ExemplarController;
 import control.LivroController;
+import java.awt.Font;
 import java.beans.PropertyVetoException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -345,7 +346,18 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
     private void DelLivroBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelLivroBtnActionPerformed
         int idx[] = LivroTable.getSelectedRows();
         if (idx.length > 0) {
-            int response = JOptionPane.showConfirmDialog(null, "Apagar '"+ LivroTable.getValueAt(LivroTable.getSelectedRow(), 1) +"' e todos seus exemplares? Esta ação não pode ser revertida.", "Atenção",
+            JLabel titulo = new JLabel();
+            titulo.setFont(new Font("Dialog", Font.BOLD, 14));
+            JLabel exemplares = new JLabel();
+            exemplares.setFont(new Font("Dialog", Font.BOLD, 14));
+            Object[] message = {
+                "Título:", titulo,
+                "Total de Exemplares: ", exemplares,
+                "Tem certeza que deseja excluir?"
+            };
+            titulo.setText( LivroTable.getValueAt(LivroTable.getSelectedRow(), 1).toString() );
+            exemplares.setText( LivroTable.getValueAt(LivroTable.getSelectedRow(), 3).toString() );
+            int response = JOptionPane.showConfirmDialog(null, message, "Confirmar Exclusão",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.YES_OPTION) {
                 int id = Integer.valueOf( LivroTable.getValueAt( LivroTable.getSelectedRow() , 0 ).toString() );
@@ -419,6 +431,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
         int idx[] = LivroTable.getSelectedRows();
         if (idx.length > 0) {
             JLabel titulo = new JLabel();
+            titulo.setFont(new Font("Dialog", Font.BOLD, 14));
             JTextField codigoField = new JTextField();
             JTextField xField = new JTextField();
             JTextField yField = new JTextField();
@@ -521,8 +534,19 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
     private void DelExemplarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelExemplarBtnActionPerformed
         int idx[] = ExemplarTable.getSelectedRows();
          if (idx.length > 0) {
-             int response = JOptionPane.showConfirmDialog(null, "Apagar '"+ ExemplarTable.getValueAt(ExemplarTable.getSelectedRow(), 2) +"' ?", "Atenção",
-                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            JLabel titulo = new JLabel();
+            titulo.setFont(new Font("Dialog", Font.BOLD, 14));
+            JLabel codigo = new JLabel();
+            codigo.setFont(new Font("Dialog", Font.BOLD, 14));
+            Object[] message = {
+                "Título:", titulo,
+                "Código: ", codigo,
+                "Tem certeza que deseja excluir?"
+            };
+            titulo.setText( ExemplarTable.getValueAt(ExemplarTable.getSelectedRow(), 2).toString() );
+            codigo.setText( ExemplarTable.getValueAt(ExemplarTable.getSelectedRow(), 1).toString() );
+            int response = JOptionPane.showConfirmDialog(null, message, "Confirmar Exclusão",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
              if (response == JOptionPane.YES_OPTION) {
                  int id = Integer.valueOf( ExemplarTable.getValueAt( ExemplarTable.getSelectedRow() , 0 ).toString() );
                  if (ExemplarController.Apagar(id)) {

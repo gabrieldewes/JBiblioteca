@@ -28,6 +28,7 @@ public class Database {
         if (!DATABASE.exists()) {
             createNewDatabase();
         }
+        else System.out.println("Banco \""+ DATABASE.getCanonicalPath() +"\" OK.");
     }
     /* Cria um backup do banco de dados.
      * O parâmetro arquivo_dkp é o novo arquivo que receberá os dados de backup. */
@@ -90,6 +91,7 @@ public class Database {
                 throw new Exception("Erro ao gravar o arquivo de banco de dados.");
             }
             System.out.println("Banco de dados criado em '"+DATABASE.getAbsolutePath()+"' ");
+            DBUtil.createDDL();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Erro na criação do banco de dados. ERRO: "+ ex.getMessage());
             throw new Exception("Erro na criação do banco de dados.\n"+ ex.getMessage());

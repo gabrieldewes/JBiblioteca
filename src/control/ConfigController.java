@@ -23,7 +23,17 @@ public class ConfigController {
         return cdao.saveTaxaJuros(d);
     }
     
-    public static boolean saveLastBackup(String date) {
+    public static boolean savePrazoDefault(int i) {
+        cdao = new ConfigDAO();
+        return cdao.savePrazoDefault(i);
+    }
+    
+    public static boolean saveDBVers(int i) {
+        cdao = new ConfigDAO();
+        return cdao.saveDBVersion(i);
+    }
+    
+    public static boolean saveLastBackupDate(String date) {
         dao = new GenericDAO();
         return dao.update("app_config", "last_backup", date);
     }
@@ -36,10 +46,18 @@ public class ConfigController {
         return s;
     }
     
-    public static double appConfigTaxaJuros() {
+    public static double getAppConfigTaxaJuros() {
         cdao = new ConfigDAO();
         return cdao.getTaxaJuros();
     }
     
+    public static int getVers() {
+        cdao = new ConfigDAO();
+        return cdao.getDBVersion();
+    }
     
+    public static int getPrazoDefault() {
+        cdao = new ConfigDAO();
+        return cdao.getPrazoDefault();
+    }
 }

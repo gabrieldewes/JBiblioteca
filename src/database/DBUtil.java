@@ -15,6 +15,15 @@ import java.util.logging.Logger;
  */
 public class DBUtil {
     
+    public static void updateDDL(int current_ver, int new_ver) {
+        try {
+            DBHelper db = new DBHelper();
+            db.onUpgrade(db, current_ver, new_ver);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public static void createDDL() {
         try {
             DBHelper db = new DBHelper();
@@ -51,35 +60,25 @@ public class DBUtil {
             Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+   
+    public static String VER_1[] =  {"emprestimo", "situation", "TEXT", ""};
+    public static String VER_2[] =  {"app_config", "prazo_default", "INTEGER", "0"};
     
-    public void onUpgrade(DBHelper db, int oldVersion, int newVersion) {
-        String vers[];
-        try {
-            for (int i=oldVersion; i<newVersion; i++) {
-                vers = DBUtil.selectScript(i);
-                DBUtil.updateTabelasBanco(db, vers[0], vers[1], vers[2], vers[3]);
-            }
-
-        } catch (Exception e) {
-        }
-    }
-    
-    public static String VER_1[] =  {"pessoa", "generated", "TEXT", "gabriel"};
     public static String[] selectScript(int ver){
         switch (ver) {
-        case 1:
+        case 1: 
             return VER_1;
+        case 2:
+            return VER_2;
         default:
             return null;         
         }
-
     }
     
     public static void updateTabelasBanco(DBHelper db, String table, String column, String typ, String valor) {
         try {
             db.rawSQL("ALTER TABLE " + table + " ADD " + column + " " + typ);
             if (!"".equals(valor)){
-                db = new DBHelper();
                 db.rawSQL("UPDATE "+ table +" SET "+ column +" = '"+ valor +"'");
             }
         } catch (Exception e) {
@@ -119,6 +118,7 @@ public class DBUtil {
             "id_pessoa          INTEGER NOT NULL, "+
             "data_inicio	TEXT NOT NULL, "+
             "data_fim	        TEXT, "+
+            "situation          TEXT, "+
             "FOREIGN KEY(id_pessoa) REFERENCES pessoa(id_pessoa)); ",
         
         "CREATE TABLE IF NOT EXISTS emprestimo_livro ( "+
@@ -129,9 +129,12 @@ public class DBUtil {
             "FOREIGN KEY(id_exemplar) REFERENCES exemplar(id_exemplar) ); ",
         
         "CREATE TABLE IF NOT EXISTS app_config ( " +
-            "taxa_juros  REAL DEFAULT 0.0,"+
-            "last_backup TEXT, "+
-	    "db_version	 INTEGER); "
+            "taxa_juros    REAL,"+
+            "last_backup   TEXT, "+
+	    "db_version	   INTEGER, "+
+            "prazo_default INTEGER); ",
+        
+        "INSERT INTO app_config (taxa_juros, db_version, prazo_default) VALUES (0.0, 1, 7); "
     };
     
     static String[] drop_ddl = {

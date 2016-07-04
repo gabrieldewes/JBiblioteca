@@ -30,6 +30,18 @@ public class DBHelper extends SQLiteConnection {
     public DBHelper() throws SQLException {
         super(DB_DRIVER, DATABASE.getAbsolutePath());
     }
+    
+    public void onUpgrade(DBHelper db, int oldVersion, int newVersion) {
+        String vers[];
+        try {
+            for (int i=oldVersion; i<newVersion; i++) {
+                vers = DBUtil.selectScript(i);
+                DBUtil.updateTabelasBanco(db, vers[0], vers[1], vers[2], vers[3]);
+            }
+
+        } catch (Exception e) {
+        }
+    }
  
     public boolean rawSQL(String query) {
         try {
@@ -139,13 +151,45 @@ public class DBHelper extends SQLiteConnection {
         return false;
     }
     
-    public String get(String query) {
+    public String getString(String query) {
         String s=null;
         try {
             PreparedStatement stmt = this.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next())
                 s=rs.getString(1);
+            System.out.println("Return "+ s +" from query "+ query);
+            this.close();
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return s;
+    }
+    
+    public int getInt(String query) {
+        int s=0;
+        try {
+            PreparedStatement stmt = this.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next())
+                s=rs.getInt(1);
+            System.out.println("Return "+ s +" from query "+ query);
+            this.close();
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return s;
+    }
+    
+    public double getDouble(String query) {
+        double s=0;
+        try {
+            PreparedStatement stmt = this.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next())
+                s=rs.getDouble(1);
             System.out.println("Return "+ s +" from query "+ query);
             this.close();
         } 

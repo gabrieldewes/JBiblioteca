@@ -58,6 +58,24 @@ public class EmprestimoController {
         return false;
     }
     
+    public static boolean Renovar(int id, int plus_days) {
+        dao = new EmprestimoDAO();
+        Emprestimo e = dao.get(id);
+        if (e != null) {
+            LocalDateTime hoje = new LocalDateTime( System.currentTimeMillis() );
+            LocalDateTime fim = new LocalDateTime( e.getData_fim() );
+            int dias = Days.daysBetween(hoje, fim).getDays();
+            dias=dias*-1;
+            if (dias > 0)
+                e.setData_fim(hoje.plusDays(plus_days));
+            else
+                e.setData_fim(fim.plusDays(plus_days));
+            dao = new EmprestimoDAO();
+            return dao.update(e);
+        }
+        return false;
+    }
+    
     public static Emprestimo Pegar(int id) {
         dao = new EmprestimoDAO();
         return dao.get(id);
