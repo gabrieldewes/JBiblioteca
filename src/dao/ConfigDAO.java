@@ -29,6 +29,16 @@ public class ConfigDAO {
         }
     }
     
+    public boolean setAutoBkp(boolean flag) {
+        String query = "UPDATE app_config SET auto_bkp='"+flag+"'; ";
+        return helper.rawSQL(query);
+    }
+    
+    public boolean isSetAutoBackup() {
+        String query = "SELECT auto_bkp FROM app_config WHERE auto_bkp='true'; ";
+        return helper.rowExists(query);
+    }
+    
     public boolean saveTaxaJuros(double d) {
         String query = "UPDATE app_config SET taxa_juros="+d+"; ";
         return helper.rawSQL(query);

@@ -46,6 +46,16 @@ public class ConfigController {
         return s;
     }
     
+    public static boolean setAutoBackup(boolean flag) {
+        cdao = new ConfigDAO();
+        return cdao.setAutoBkp(flag);
+    }
+    
+    public static boolean AutoBackupIsActived() {
+        cdao = new ConfigDAO();
+        return cdao.isSetAutoBackup();
+    }
+    
     public static double getAppConfigTaxaJuros() {
         cdao = new ConfigDAO();
         return cdao.getTaxaJuros();

@@ -5,9 +5,13 @@
  */
 package jbiblioteca;
 
+import control.ConfigController;
 import database.DBUtil;
 import database.Database;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import view.MainFrame;
 
@@ -46,7 +50,6 @@ public class JBiblioteca {
             } catch (Exception e1) {}
         };
         new Thread(t1).start();
-        
     }
 }
    

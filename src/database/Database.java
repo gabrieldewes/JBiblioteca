@@ -28,7 +28,6 @@ public class Database {
         if (!DATABASE.exists()) {
             createNewDatabase();
         }
-        else System.out.println("Banco \""+ DATABASE.getCanonicalPath() +"\" OK.");
     }
     /* Cria um backup do banco de dados.
      * O parâmetro arquivo_dkp é o novo arquivo que receberá os dados de backup. */

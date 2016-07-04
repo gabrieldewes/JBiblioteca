@@ -31,11 +31,12 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
     
     static DefaultListModel model;
     static LocalDateTime ldt;
+    static int prazo_default;
     
     public EmprestimoAddInternalFrame() {
         initComponents();
         /* Passando valor default salvo em Opções>Preferencias>Prazo Default */
-        int prazo_default = ConfigController.getPrazoDefault();
+        prazo_default = ConfigController.getPrazoDefault();
         diaSpinner.setValue(prazo_default);
         
         model = new DefaultListModel();
@@ -123,8 +124,10 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
         jPanel5 = new javax.swing.JPanel();
         salvarEmprestimoBtn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        loadLabel = new javax.swing.JLabel();
 
         setClosable(true);
+        setResizable(true);
         setTitle("Novo Empréstimo");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("  Pessoa  "));
@@ -164,7 +167,7 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
                     .addComponent(pessoaLabel)
                     .addComponent(codigoLabel)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGap(0, 134, Short.MAX_VALUE)
                         .addComponent(escolhePessoaBtn)))
                 .addContainerGap())
         );
@@ -179,8 +182,8 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
                 .addComponent(codigoLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pessoaBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(escolhePessoaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(escolhePessoaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -217,7 +220,7 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 151, Short.MAX_VALUE)
+                        .addGap(0, 119, Short.MAX_VALUE)
                         .addComponent(addListLivroBtn))
                     .addComponent(buscaLivroField)
                     .addComponent(jLabel1)
@@ -402,10 +405,13 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(loadLabel)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -414,15 +420,17 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(10, 10, 10)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(loadLabel)))
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -566,7 +574,6 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
                int plus_days = Integer.valueOf(diaSpinner.getValue().toString());
                LocalDateTime inicio = new LocalDateTime(System.currentTimeMillis());
                LocalDateTime fim = inicio.plusDays(plus_days);
-               System.out.println(""+inicio.toString() + " -- "+ fim.toString());
                if (EmprestimoController.Salvar(alugador.getId_pessoa(), selecionados, inicio, fim)) {
                    Runnable t1 = () -> {
                         if (eif != null)
@@ -578,7 +585,7 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
                         updatePessoaBox();
                         selecionados.clear();
                         model = new DefaultListModel();
-                        diaSpinner.setValue(7);
+                        diaSpinner.setValue(prazo_default);
                         livroList.setModel(model);
                     };
                     new Thread(t1).start();
@@ -638,6 +645,7 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
     private javax.swing.JButton limparLivroList;
     private javax.swing.JComboBox<String> livroBox;
     private javax.swing.JList<String> livroList;
+    private javax.swing.JLabel loadLabel;
     private javax.swing.JRadioButton mesRadio;
     private javax.swing.JComboBox<String> pessoaBox;
     private javax.swing.JLabel pessoaLabel;

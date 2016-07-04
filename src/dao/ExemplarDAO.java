@@ -105,7 +105,7 @@ public class ExemplarDAO {
     }
     
     public TableModel list() {
-        final String query = "SELECT e.id_exemplar, e.codigo AS 'Código', l.titulo AS 'Título', e.coordenada_x AS 'X', e.coordenada_y AS 'Y', e.disponivel AS 'Status' " +
+        final String query = "SELECT e.id_exemplar, e.codigo AS 'Código', l.titulo AS 'Título', e.coordenada_x AS 'Corredor', e.coordenada_y AS 'Prateleira', e.disponivel AS 'Status' " +
                 "FROM exemplar e " +
                 "INNER JOIN livro l ON e.id_livro = l.id_livro "+
                 "ORDER BY l.titulo ASC; ";
@@ -114,7 +114,7 @@ public class ExemplarDAO {
     
     public TableModel listLike(String like) {
         final String query = 
-                "SELECT e.id_exemplar, e.codigo AS 'Código', l.titulo AS 'Título', e.coordenada_x AS 'X', e.coordenada_y AS 'Y', e.disponivel AS 'Status' "+ 
+                "SELECT e.id_exemplar, e.codigo AS 'Código', l.titulo AS 'Título', e.coordenada_x AS 'Corredor', e.coordenada_y AS 'Prateleira', e.disponivel AS 'Status' "+ 
                 "FROM exemplar e "+
                     "INNER JOIN livro l ON e.id_livro = l.id_livro " +
                 "WHERE l.titulo LIKE '%"+ like +"%' OR l.titulo LIKE '"+ like +"%' OR l.titulo LIKE '%"+ like +"' OR "+

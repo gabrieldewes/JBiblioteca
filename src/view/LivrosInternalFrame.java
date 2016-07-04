@@ -438,8 +438,8 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             Object[] message = {
                 "Título: ", titulo,
                 "Código único:", codigoField,
-                "Coordenada X:", xField,
-                "Coordenada Y:", yField
+                "Corredor:", xField,
+                "Prateleira:", yField
             };
             
             int id = Integer.valueOf( LivroTable.getValueAt(LivroTable.getSelectedRow(), 0).toString() );
@@ -495,8 +495,8 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             Object[] message = {
                 "Selecione o Título: ", titulo,
                 "Código único:", codigoField,
-                "Coordenada X:", xField,
-                "Coordenada Y:", yField
+                "Corredor:", xField,
+                "Prateleira:", yField
             };
             
             titulos = LivroController.ArrayLivro();

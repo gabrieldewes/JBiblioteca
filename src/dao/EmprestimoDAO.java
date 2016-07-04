@@ -113,7 +113,7 @@ public class EmprestimoDAO {
         String query;
         if (!"".equals(like))
             query = 
-                "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Data de Início', e.data_fim as 'Data p/ Devolução', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
+                "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Data de Início', e.data_fim as 'Data p/ Devolução', situation as 'Situação', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
                     "FROM emprestimo e " +
                     "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
                     "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
@@ -125,7 +125,7 @@ public class EmprestimoDAO {
                     "GROUP BY e.id_emprestimo; ";
         else
             query = 
-                "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Data de Início', e.data_fim as 'Data p/ Devolução', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
+                "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Data de Início', e.data_fim as 'Data p/ Devolução', situation as 'Situação', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
                     "FROM emprestimo e " +
                     "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
                     "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +

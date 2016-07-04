@@ -5,21 +5,18 @@
  */
 package view;
 
+import control.ConfigController;
 import control.ExemplarController;
 import control.LivroController;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Toolkit;
+import database.Database;
 import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 import model.Livro;
+import org.joda.time.LocalDateTime;
 import static view.LivrosInternalFrame.titulos;
 
 /**
@@ -68,11 +65,16 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuItem1.setText("jMenuItem1");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setTitle("JBiblioteca");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
         setForeground(java.awt.Color.darkGray);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         desktop.setBackground(new java.awt.Color(204, 204, 204));
 
@@ -192,7 +194,7 @@ public class MainFrame extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(desktop, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addComponent(desktop)
         );
 
         desktop.getAccessibleContext().setAccessibleParent(desktop);
@@ -335,7 +337,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_addLivroMenuItemActionPerformed
 
     private void configMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configMenuItemActionPerformed
-        configInternalFrame cif = new configInternalFrame();
+        ConfigInternalFrame cif = new ConfigInternalFrame();
         cif.setVisible(true);
         desktop.add(cif);
         try {
@@ -365,6 +367,28 @@ public class MainFrame extends javax.swing.JFrame {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        if (JOptionPane.showConfirmDialog(this, 
+            "Deseja realmente encerrar?", "JBiblioteca", 
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+            if (ConfigController.AutoBackupIsActived()) {
+                java.io.File file = new java.io.File(
+                        System.getProperty("user.home")+ System.getProperty("file.separator")
+                        + ".jbiblioteca"+ System.getProperty("file.separator")+ "jbiblioteca_bkp.db");
+                try {  
+                    Database.backupDatabase(file);
+                    LocalDateTime ldt = new LocalDateTime(System.currentTimeMillis());
+                    ConfigController.saveLastBackupDate("'"+ldt.toString()+"'");
+                    System.out.println("Backup \""+ file.getCanonicalPath() +"\" salvo. ");
+                } catch (Exception ex) {
+                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+            System.exit(0);
+        }
+    }//GEN-LAST:event_formWindowClosing
 
     public static void OpenMainFrame() {
         try {

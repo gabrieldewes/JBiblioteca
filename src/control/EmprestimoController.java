@@ -118,10 +118,9 @@ public class EmprestimoController {
                 LocalDateTime fim = new LocalDateTime(out);
                 int dias = Days.daysBetween(hoje, fim).getDays();   
                 tb.setValueAt(""+inicio.getDayOfMonth()+"/"+inicio.getMonthOfYear()+"/"+inicio.getYear()+"", i, 3);
-                if (dias >= 0)
-                    tb.setValueAt(""+fim.getDayOfMonth()+"/"+fim.getMonthOfYear()+"/"+fim.getYear()+"", i, 4);
-                else
-                    tb.setValueAt("Atrasado "+dias*-1+" dias.", i, 4);
+                tb.setValueAt(""+fim.getDayOfMonth()+"/"+fim.getMonthOfYear()+"/"+fim.getYear()+"", i, 4);
+                if (dias < 0)
+                    tb.setValueAt("Atraso "+dias*-1+" dias.", i, 5); 
             }
         }
         else {
@@ -133,10 +132,9 @@ public class EmprestimoController {
                 LocalDateTime fim = new LocalDateTime(out);
                 int dias = Days.daysBetween(hoje, fim).getDays();   
                 tb.setValueAt(""+inicio.getDayOfMonth()+"/"+inicio.getMonthOfYear()+"/"+inicio.getYear()+"", i, 3);
-                if (dias >= 0)
-                    tb.setValueAt(""+fim.getDayOfMonth()+"/"+fim.getMonthOfYear()+"/"+fim.getYear()+"", i, 4);
-                else
-                    tb.setValueAt("Atrasado "+dias*-1+" dias.", i, 4);
+                tb.setValueAt(""+fim.getDayOfMonth()+"/"+fim.getMonthOfYear()+"/"+fim.getYear()+"", i, 4);
+                if (dias < 0)
+                    tb.setValueAt("Atraso "+dias*-1+" dias.", i, 5);   
             }
         }
         return tb;
