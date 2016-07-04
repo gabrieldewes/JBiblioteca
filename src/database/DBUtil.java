@@ -135,7 +135,7 @@ public class DBUtil {
             "prazo_default INTEGER, "+
             "auto_bkp      BLOB ); ",
         
-        "INSERT INTO app_config (taxa_juros, db_version, prazo_default, auto_bkp) VALUES (0.0, 1, 7, true); "
+        "INSERT INTO app_config (taxa_juros, db_version, prazo_default, auto_bkp) VALUES (0.0, 1, 7, 'true'); "
     };
     
     static String[] drop_ddl = {
@@ -144,8 +144,7 @@ public class DBUtil {
         "DROP TABLE IF EXISTS turma; ",
         "DROP TABLE IF EXISTS exemplar; ",
         "DROP TABLE IF EXISTS emprestimo_livro; ",
-        "DROP TABLE IF EXISTS emprestimo; ",
-        "DROP TABLE IF EXISTS app_config; "
+        "DROP TABLE IF EXISTS emprestimo; "
     };
     
     static String[] clear_data = {
@@ -154,8 +153,7 @@ public class DBUtil {
         "DELETE FROM turma; ",
         "DELETE FROM exemplar; ",
         "DELETE FROM emprestimo_livro; ",
-        "DELETE FROM emprestimo; ",
-        "DELETE FROM app_config; "
+        "DELETE FROM emprestimo; "
     };
     
     static String[] insert_data= {
