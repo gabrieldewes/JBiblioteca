@@ -128,9 +128,9 @@ public class ExemplarDAO {
         String query;
         if (!"".equals(column) && id != 0)
             query = "SELECT * FROM exemplar e "
-                    + " INNER JOIN livro l ON e.id_livro = l.id_livro "
-                    + " INNER JOIN emprestimo_livro el ON e.id_exemplar = el.id_exemplar "
-                    + " WHERE "+ column +"="+ id +" ORDER BY e.codigo ASC; ";
+                    + "INNER JOIN livro l ON e.id_livro = l.id_livro "
+                    + "INNER JOIN emprestimo_livro el ON e.id_exemplar = el.id_exemplar "
+                    + "WHERE "+ column +"="+ id +" ORDER BY e.codigo ASC; ";
         else if ("".equals(like))
             query = 
                 "SELECT * FROM exemplar e "
@@ -138,11 +138,11 @@ public class ExemplarDAO {
               + "WHERE id_exemplar NOT IN (SELECT id_exemplar FROM emprestimo_livro) ORDER BY e.codigo ASC; ";
         else if (!"".equals(like))
             query = "SELECT * FROM exemplar e "
-                + " INNER JOIN livro l ON e.id_livro = l.id_livro WHERE  "
-                + " l.titulo LIKE '%"+ like +"%' OR l.titulo LIKE '"+ like +"%' OR l.titulo LIKE '%"+ like +"' OR "
-                + " l.autor LIKE '%"+ like +"%' OR l.autor LIKE '"+ like +"%' OR l.autor LIKE '%"+ like +"' OR "
-                + " e.codigo LIKE '%"+ like +"%' OR e.codigo LIKE '"+ like +"%' OR e.codigo LIKE '%"+ like +"' AND "
-                + " id_exemplar NOT IN (SELECT id_exemplar FROM emprestimo_livro) ORDER BY e.codigo ASC; ";
+                + "INNER JOIN livro l ON e.id_livro = l.id_livro WHERE "
+                + "e.codigo LIKE '%"+ like +"%' OR e.codigo LIKE '"+ like +"%' OR e.codigo LIKE '%"+ like +"' OR "
+                + "l.titulo LIKE '%"+ like +"%' OR l.titulo LIKE '"+ like +"%' OR l.titulo LIKE '%"+ like +"' OR "
+                + "l.autor LIKE '%"+ like +"%' OR l.autor LIKE '"+ like +"%' OR l.autor LIKE '%"+ like +"' "
+                + "GROUP BY e.id_exemplar HAVING e.disponivel='' ORDER BY e.codigo ASC; ";
         else
             query = "SELECT * FROM exemplar";
         
