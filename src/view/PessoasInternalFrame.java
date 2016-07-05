@@ -88,7 +88,7 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
-        BuscaPessoaBtn.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        BuscaPessoaBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         BuscaPessoaBtn.setText("Buscar");
         BuscaPessoaBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

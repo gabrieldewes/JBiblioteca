@@ -20,7 +20,6 @@ import view.MainFrame;
  * @author Dewes
  */
 public class JBiblioteca {
-    static MainFrame mf;
     public static void main(String[] args) throws IOException {
         if (!InstanceManager.registerInstance()) {  
             JOptionPane.showMessageDialog(null, "Já existe uma instancia aberta. ", "JBiblioteca", JOptionPane.INFORMATION_MESSAGE);             

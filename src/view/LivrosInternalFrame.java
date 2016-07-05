@@ -124,6 +124,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        BuscaLivroBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         BuscaLivroBtn.setText("Buscar");
         BuscaLivroBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -240,7 +241,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
-        BuscaExemplarBtn.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        BuscaExemplarBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         BuscaExemplarBtn.setText("Buscar");
         BuscaExemplarBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -288,7 +289,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                         .addComponent(BuscaExemplarField, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(BuscaExemplarBtn)
-                        .addContainerGap(133, Short.MAX_VALUE))
+                        .addContainerGap(156, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(jScrollPane3)

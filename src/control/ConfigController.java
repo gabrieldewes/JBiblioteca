@@ -42,7 +42,7 @@ public class ConfigController {
         dao = new GenericDAO();
         String s = dao.get("app_config", "last_backup");
         LocalDateTime ldt = new LocalDateTime(s);
-        s = ""+ldt.toDate().toLocaleString();
+        s = ""+ldt.toDate().toLocaleString()+"";
         return s;
     }
     

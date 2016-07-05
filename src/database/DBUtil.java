@@ -144,7 +144,8 @@ public class DBUtil {
         "DROP TABLE IF EXISTS turma; ",
         "DROP TABLE IF EXISTS exemplar; ",
         "DROP TABLE IF EXISTS emprestimo_livro; ",
-        "DROP TABLE IF EXISTS emprestimo; "
+        "DROP TABLE IF EXISTS emprestimo; ",
+        "DROP TABLE IF EXISTS app_config; "
     };
     
     static String[] clear_data = {
@@ -153,7 +154,8 @@ public class DBUtil {
         "DELETE FROM turma; ",
         "DELETE FROM exemplar; ",
         "DELETE FROM emprestimo_livro; ",
-        "DELETE FROM emprestimo; "
+        "DELETE FROM emprestimo; ",
+        "DELETE FROM app_config; "
     };
     
     static String[] insert_data= {

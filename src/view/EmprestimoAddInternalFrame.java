@@ -127,7 +127,6 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
         loadLabel = new javax.swing.JLabel();
 
         setClosable(true);
-        setResizable(true);
         setTitle("Novo Empréstimo");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("  Pessoa  "));

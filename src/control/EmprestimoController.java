@@ -15,6 +15,7 @@ import model.Emprestimo;
 import model.Exemplar;
 import org.joda.time.Days;
 import org.joda.time.LocalDateTime;
+import org.joda.time.Period;
 
 /**
  *
@@ -106,36 +107,47 @@ public class EmprestimoController {
     }  
     
     public static TableModel Listar(String busca) {
-        LocalDateTime hoje = new LocalDateTime(System.currentTimeMillis());
         TableModel tb;
         dao = new EmprestimoDAO();
         if (!"".equals(busca)) {
-            tb = dao.list(busca);
-            for (int i=0; i<tb.getRowCount(); i++){
-                String in = tb.getValueAt(i, 3).toString();
-                String out = tb.getValueAt(i, 4).toString();
-                LocalDateTime inicio = new LocalDateTime(in);
-                LocalDateTime fim = new LocalDateTime(out);
-                int dias = Days.daysBetween(hoje, fim).getDays();   
-                tb.setValueAt(""+inicio.getDayOfMonth()+"/"+inicio.getMonthOfYear()+"/"+inicio.getYear()+"", i, 3);
-                tb.setValueAt(""+fim.getDayOfMonth()+"/"+fim.getMonthOfYear()+"/"+fim.getYear()+"", i, 4);
-                if (dias < 0)
-                    tb.setValueAt("Atraso "+dias*-1+" dias.", i, 5); 
-            }
+            tb = UpdateTablemodel(dao.list(busca));
         }
         else {
-            tb = dao.list("");
-            for (int i=0; i<tb.getRowCount(); i++){
-                String in = tb.getValueAt(i, 3).toString();
-                String out = tb.getValueAt(i, 4).toString();
-                LocalDateTime inicio = new LocalDateTime(in);
-                LocalDateTime fim = new LocalDateTime(out);
-                int dias = Days.daysBetween(hoje, fim).getDays();   
-                tb.setValueAt(""+inicio.getDayOfMonth()+"/"+inicio.getMonthOfYear()+"/"+inicio.getYear()+"", i, 3);
-                tb.setValueAt(""+fim.getDayOfMonth()+"/"+fim.getMonthOfYear()+"/"+fim.getYear()+"", i, 4);
-                if (dias < 0)
-                    tb.setValueAt("Atraso "+dias*-1+" dias.", i, 5);   
+            tb = UpdateTablemodel(dao.list(""));
+        }
+        return tb;
+    }
+    
+    private static TableModel UpdateTablemodel( TableModel tb ) {
+        LocalDateTime hoje = new LocalDateTime(System.currentTimeMillis());
+        for (int i=0; i<tb.getRowCount(); i++){
+            String in = tb.getValueAt(i, 3).toString();
+            String out = tb.getValueAt(i, 4).toString();
+            LocalDateTime inicio = new LocalDateTime(in);
+            LocalDateTime fim = new LocalDateTime(out);
+            tb.setValueAt(""+inicio.getDayOfMonth()+"/"+inicio.getMonthOfYear()+"/"+inicio.getYear()+"", i, 3);
+            tb.setValueAt(""+fim.getDayOfMonth()+"/"+fim.getMonthOfYear()+"/"+fim.getYear()+"", i, 4);
+
+            Period p = new Period(hoje, fim);
+            int dias = p.getDays();
+            int horas = p.getHours();
+            int month = p.getMonths();
+            //System.out.println(dias+":"+horas+" :: ENTRE AS DATAS "+fim.toString()+" :: "+hoje.toString());
+            if (dias < 1) {
+                if (dias == 0) {
+                    tb.setValueAt("Atraso "+horas*-1+"h", i, 5); 
+                    if (horas > 0)
+                        tb.setValueAt("Restam "+horas+"h", i, 5);     
+                }
+                else
+                    tb.setValueAt("Atraso "+dias*-1+"d:"+horas*-1+"h", i, 5); 
+
             }
+            /*else 
+                if (month >= 0)
+                    tb.setValueAt("Restam "+dias+"d:"+horas+"h", i, 5); 
+                else
+                    tb.setValueAt("Restam "+month+" meses", i, 5); */
         }
         return tb;
     }
