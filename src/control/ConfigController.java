@@ -7,7 +7,11 @@ package control;
 
 import dao.ConfigDAO;
 import dao.GenericDAO;
+import database.Database;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.joda.time.LocalDateTime;
+import org.joda.time.Period;
 
 /**
  *
@@ -51,9 +55,29 @@ public class ConfigController {
         return cdao.setAutoBkp(flag);
     }
     
-    public static boolean AutoBackupIsActived() {
+    public static boolean doDailyBackup() {
         cdao = new ConfigDAO();
-        return cdao.isSetAutoBackup();
+        if (cdao.isSetAutoBackup()) {
+            dao = new GenericDAO();
+            String s = dao.get("app_config", "last_backup");
+            LocalDateTime hoje = new LocalDateTime( System.currentTimeMillis() );
+            LocalDateTime last_bkp = new LocalDateTime( s );
+            Period p = new Period(hoje, last_bkp);
+            if (p.getDays() < 0) {
+                java.io.File file = new java.io.File(
+                        System.getProperty("user.home")+ System.getProperty("file.separator")
+                        + ".jbiblioteca"+ System.getProperty("file.separator")+ "jbiblioteca_bkp.db");
+                try {  
+                    Database.backupDatabase(file);
+                    ConfigController.saveLastBackupDate("'"+hoje.toString()+"'");
+                    System.out.println("Backup \""+ file.getCanonicalPath() +"\" salvo. ");
+                } catch (Exception ex) {
+                    Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                return true;
+            }    
+        }
+        return false;  
     }
     
     public static double getAppConfigTaxaJuros() {

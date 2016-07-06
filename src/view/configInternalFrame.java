@@ -35,7 +35,7 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         
         salvarBtn.setEnabled(false);
         
-        bkpDiario.setSelected( ConfigController.AutoBackupIsActived() );
+        bkpDiario.setSelected( ConfigController.doDailyBackup() );
         
         String last_backup = ConfigController.getLastBackupDate();
         backupLabel.setText(last_backup);
@@ -72,15 +72,12 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         prazoLabel = new javax.swing.JLabel();
         prazoField = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        populateBtn = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         BackupBtn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         backupLabel = new javax.swing.JLabel();
         bkpDiario = new javax.swing.JCheckBox();
-        jButton3 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         footer = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -164,7 +161,7 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 153, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addComponent(salvarBtn)
                 .addContainerGap())
         );
@@ -180,27 +177,12 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(6, 6, 6))
         );
 
         backupTab.addTab("Preferências", jPanel2);
-
-        jButton2.setText("Reiniciar");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        populateBtn.setText("Popular");
-        populateBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                populateBtnActionPerformed(evt);
-            }
-        });
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
@@ -264,42 +246,23 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(bkpDiario)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
-
-        jButton3.setText("Limpar dados");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addComponent(jButton3)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(populateBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
-                .addComponent(populateBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3)
                 .addContainerGap())
         );
 
@@ -340,11 +303,11 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
+                .addGap(20, 20, 20)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(footer)
-                .addContainerGap(194, Short.MAX_VALUE))
+                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         backupTab.addTab("Sobre", jPanel4);
@@ -353,94 +316,15 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backupTab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(backupTab)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(backupTab, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addComponent(backupTab)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void BackupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackupBtnActionPerformed
-        Runnable t1 = () -> {
-            try {
-                java.io.File file = new java.io.File(
-                        System.getProperty("user.home")
-                        + System.getProperty("file.separator")
-                        + ".jbiblioteca"
-                        + System.getProperty("file.separator")
-                        + "jbiblioteca_bkp.db");   
-                Database.checkDatabase();
-                Database.backupDatabase(file);
-                JOptionPane.showMessageDialog(null, "O arquivo de backup foi salvo com êxito.");
-                Runnable t2 = () -> {
-                    try {
-                        LocalDateTime ldt = new LocalDateTime(System.currentTimeMillis());
-                        ConfigController.saveLastBackupDate("'"+ldt.toString()+"'");
-                        backupLabel.setText(ldt.toDate().toLocaleString());
-                            
-                    } catch (Exception e1) {
-                    }
-                };
-                new Thread(t2).start();
-            } catch (Exception e1) {
-            }
-        };
-        new Thread(t1).start();
-    }//GEN-LAST:event_BackupBtnActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        int response = JOptionPane.showConfirmDialog(null, "Deseja realmente apagar todos os dados? ", "Atenção",
-                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-        if (response == JOptionPane.YES_OPTION) {
-            try {
-                Runnable t1 = () -> {
-                    try {
-                        DBUtil.dropDDL();
-                        DBUtil.createDDL();
-                    } catch (Exception e1) {
-                    }
-                };
-                new Thread(t1).start();
-                JOptionPane.showMessageDialog(null, "A aplicação foi reiniciada com êxito.");
-            } catch (Exception ex) {
-                Logger.getLogger(ConfigInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } 
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Runnable t1 = () -> {
-            try {
-                java.io.File file = new java.io.File(
-                        System.getProperty("user.home")
-                        + System.getProperty("file.separator")
-                        + ".jbiblioteca"
-                        + System.getProperty("file.separator")
-                        + "jbiblioteca_bkp.db");   
-                Database.checkDatabase();
-                Database.recoverBackupDatabase(file);
-                JOptionPane.showMessageDialog(null, "O arquivo de backup foi recuperado com êxito.");
-            } catch (Exception e1) {
-                JOptionPane.showMessageDialog(null, "Não foi encontrado arquivo de backup! ");
-            }
-        };
-        new Thread(t1).start();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void populateBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_populateBtnActionPerformed
-        Runnable t1 = () -> {
-            try {
-                DBUtil.createDDL();
-                DBUtil.populate();
-            } catch (Exception e1) {
-            }
-        };
-        new Thread(t1).start();
-        JOptionPane.showMessageDialog(null, "Os dados foram inseridos com êxito.");
-    }//GEN-LAST:event_populateBtnActionPerformed
 
     private void footerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_footerMouseClicked
         try {
@@ -507,17 +391,6 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_salvarBtnActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-       Runnable t1 = () -> {
-            try {
-                DBUtil.clear();
-            } catch (Exception e1) {
-            }
-        };
-        new Thread(t1).start();
-        JOptionPane.showMessageDialog(null, "Os dados foram excluídos com êxito.");
-    }//GEN-LAST:event_jButton3ActionPerformed
-
     private void bkpDiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bkpDiarioActionPerformed
         Runnable t1 = () -> {
             try {
@@ -528,6 +401,53 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         new Thread(t1).start();
     }//GEN-LAST:event_bkpDiarioActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        Runnable t1 = () -> {
+            try {
+                java.io.File file = new java.io.File(
+                    System.getProperty("user.home")
+                    + System.getProperty("file.separator")
+                    + ".jbiblioteca"
+                    + System.getProperty("file.separator")
+                    + "jbiblioteca_bkp.db");
+                Database.checkDatabase();
+                Database.recoverBackupDatabase(file);
+                JOptionPane.showMessageDialog(null, "O arquivo de backup foi recuperado com êxito.");
+            } catch (Exception e1) {
+                JOptionPane.showMessageDialog(null, "Não foi encontrado arquivo de backup! ");
+            }
+        };
+        new Thread(t1).start();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void BackupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackupBtnActionPerformed
+        Runnable t1 = () -> {
+            try {
+                java.io.File file = new java.io.File(
+                    System.getProperty("user.home")
+                    + System.getProperty("file.separator")
+                    + ".jbiblioteca"
+                    + System.getProperty("file.separator")
+                    + "jbiblioteca_bkp.db");
+                Database.checkDatabase();
+                Database.backupDatabase(file);
+                JOptionPane.showMessageDialog(null, "O arquivo de backup foi salvo com êxito.");
+                Runnable t2 = () -> {
+                    try {
+                        LocalDateTime ldt = new LocalDateTime(System.currentTimeMillis());
+                        ConfigController.saveLastBackupDate("'"+ldt.toString()+"'");
+                        backupLabel.setText(ldt.toDate().toLocaleString());
+
+                    } catch (Exception e1) {
+                    }
+                };
+                new Thread(t2).start();
+            } catch (Exception e1) {
+            }
+        };
+        new Thread(t1).start();
+    }//GEN-LAST:event_BackupBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackupBtn;
@@ -536,8 +456,6 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
     private javax.swing.JCheckBox bkpDiario;
     private javax.swing.JLabel footer;
     private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -547,7 +465,6 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
-    private javax.swing.JButton populateBtn;
     private javax.swing.JTextField prazoField;
     private javax.swing.JLabel prazoLabel;
     private javax.swing.JButton salvarBtn;

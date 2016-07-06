@@ -33,6 +33,7 @@ public class MainFrame extends javax.swing.JFrame {
     static LivrosAddInternalFrame laif;
     static EmprestimoAddInternalFrame eaif;
     static EmprestimoInternalFrame eif;
+    static ConfigInternalFrame cif;
 
     public MainFrame() {
         initComponents();
@@ -203,9 +204,17 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cadastrarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarMenuItemActionPerformed
-        paif = new PessoasAddInternalFrame();
-        paif.setVisible(true);
-        desktop.add(paif);
+        if (paif == null || paif.isClosed()) {
+            paif = new PessoasAddInternalFrame();
+            paif.setVisible(true);
+            desktop.add(paif);
+        }
+        try {
+            paif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
     }//GEN-LAST:event_cadastrarMenuItemActionPerformed
 
     private void verPessoasMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verPessoasMenuItemActionPerformed
@@ -213,27 +222,30 @@ public class MainFrame extends javax.swing.JFrame {
             pif = new PessoasInternalFrame(this);
             pif.setVisible(true);
             desktop.add(pif);
-            try {
-                pif.setSelected(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         else
             try {
                 if (pif.isIcon())
                     pif.setIcon(false);
-
+                
             } 
             catch (PropertyVetoException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
+        try {
+            pif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_verPessoasMenuItemActionPerformed
 
     private void novoEmprestimoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoEmprestimoMenuItemActionPerformed
-        eaif = new EmprestimoAddInternalFrame();
-        eaif.setVisible(true);
-        desktop.add(eaif);
+        if (eaif == null || eaif.isClosed()) {
+            eaif = new EmprestimoAddInternalFrame();
+            eaif.setVisible(true);
+            desktop.add(eaif);
+        }
+        
         try {
                 eaif.setSelected(true);
             } catch (PropertyVetoException ex) {
@@ -246,11 +258,6 @@ public class MainFrame extends javax.swing.JFrame {
             lif = new LivrosInternalFrame(this);
             lif.setVisible(true);
             desktop.add(lif);
-            try {
-                lif.setSelected(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         else
             try {
@@ -261,6 +268,11 @@ public class MainFrame extends javax.swing.JFrame {
             catch (PropertyVetoException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
+        try {
+            lif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_verLivrosMenuItemActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
@@ -308,11 +320,6 @@ public class MainFrame extends javax.swing.JFrame {
             eif = new EmprestimoInternalFrame(this);
             eif.setVisible(true);
             desktop.add(eif);
-            try {
-                eif.setSelected(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         else
             try {
@@ -323,28 +330,38 @@ public class MainFrame extends javax.swing.JFrame {
             catch (PropertyVetoException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
+        try {
+            eif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_verEmprestimosMenuItemActionPerformed
 
     private void addLivroMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLivroMenuItemActionPerformed
-        laif = new LivrosAddInternalFrame();
-        laif.setVisible(true);
-        desktop.add(laif);
+        if (laif == null || laif.isClosed()) {
+            laif = new LivrosAddInternalFrame();
+            laif.setVisible(true);
+            desktop.add(laif);
+        }
         try {
-                laif.setSelected(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            laif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_addLivroMenuItemActionPerformed
 
     private void configMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configMenuItemActionPerformed
-        ConfigInternalFrame cif = new ConfigInternalFrame();
-        cif.setVisible(true);
-        desktop.add(cif);
+
+        if (cif == null || cif.isClosed()) {
+            cif = new ConfigInternalFrame();
+            cif.setVisible(true);
+            desktop.add(cif);
+        }
         try {
-                cif.setSelected(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            cif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }  
     }//GEN-LAST:event_configMenuItemActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
@@ -352,11 +369,6 @@ public class MainFrame extends javax.swing.JFrame {
             tif = new TurmasInternalFrame();
             tif.setVisible(true);
             desktop.add(tif);
-            try {
-                tif.setSelected(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
         else 
             try {
@@ -366,6 +378,12 @@ public class MainFrame extends javax.swing.JFrame {
             catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        try {
+            tif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -373,19 +391,7 @@ public class MainFrame extends javax.swing.JFrame {
             "Deseja realmente encerrar?", "JBiblioteca", 
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-            if (ConfigController.AutoBackupIsActived()) {
-                java.io.File file = new java.io.File(
-                        System.getProperty("user.home")+ System.getProperty("file.separator")
-                        + ".jbiblioteca"+ System.getProperty("file.separator")+ "jbiblioteca_bkp.db");
-                try {  
-                    Database.backupDatabase(file);
-                    LocalDateTime ldt = new LocalDateTime(System.currentTimeMillis());
-                    ConfigController.saveLastBackupDate("'"+ldt.toString()+"'");
-                    System.out.println("Backup \""+ file.getCanonicalPath() +"\" salvo. ");
-                } catch (Exception ex) {
-                    Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+            ConfigController.doDailyBackup();  
             System.exit(0);
         }
     }//GEN-LAST:event_formWindowClosing
