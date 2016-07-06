@@ -10,6 +10,7 @@ import dao.GenericDAO;
 import database.Database;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
 
@@ -32,11 +33,6 @@ public class ConfigController {
         return cdao.savePrazoDefault(i);
     }
     
-    public static boolean saveDBVers(int i) {
-        cdao = new ConfigDAO();
-        return cdao.saveDBVersion(i);
-    }
-    
     public static boolean saveLastBackupDate(String date) {
         dao = new GenericDAO();
         return dao.update("app_config", "last_backup", date);
@@ -55,6 +51,11 @@ public class ConfigController {
         return cdao.setAutoBkp(flag);
     }
     
+    public static boolean isSetAutoBackup() {
+        cdao = new ConfigDAO();
+        return cdao.isSetAutoBackup();
+    }
+    
     public static boolean doDailyBackup() {
         cdao = new ConfigDAO();
         if (cdao.isSetAutoBackup()) {
@@ -63,7 +64,7 @@ public class ConfigController {
             LocalDateTime hoje = new LocalDateTime( System.currentTimeMillis() );
             LocalDateTime last_bkp = new LocalDateTime( s );
             Period p = new Period(hoje, last_bkp);
-            if (p.getDays() < 0) {
+            if ( (p.getDays() < 0) || (s==null) ) {
                 java.io.File file = new java.io.File(
                         System.getProperty("user.home")+ System.getProperty("file.separator")
                         + ".jbiblioteca"+ System.getProperty("file.separator")+ "jbiblioteca_bkp.db");
