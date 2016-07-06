@@ -5,13 +5,9 @@
  */
 package jbiblioteca;
 
-import control.ConfigController;
 import database.DBUtil;
 import database.Database;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import view.MainFrame;
 
@@ -22,7 +18,7 @@ import view.MainFrame;
 public class JBiblioteca {
     public static void main(String[] args) throws IOException {
         if (!InstanceManager.registerInstance()) {  
-            JOptionPane.showMessageDialog(null, "Já existe uma instancia aberta. ", "JBiblioteca", JOptionPane.INFORMATION_MESSAGE);             
+            JOptionPane.showMessageDialog(null, "Já existe uma instância do programa aberta. ", "JBiblioteca", JOptionPane.INFORMATION_MESSAGE);             
             System.exit(0);  
         } 
         
@@ -42,10 +38,9 @@ public class JBiblioteca {
                                 + ".jbiblioteca"
                                 + System.getProperty("file.separator")
                                 + "jbiblioteca_bkp.db");
-
+                */
                 //Database.backupDatabase(file);
                 //Database.recoverBackupDatabase(file);
-                */ 
             } catch (Exception e1) {}
         };
         new Thread(t1).start();

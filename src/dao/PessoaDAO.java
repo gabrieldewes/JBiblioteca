@@ -95,11 +95,14 @@ public class PessoaDAO {
     }
     
     public TableModel listLike(String str) {
-        String query = "SELECT p.id_pessoa, p.codigo AS 'Código', p.nome AS 'Nome', t.nome as 'Turma', p.cargo as 'Cargo' FROM pessoa p "
-                + " LEFT JOIN turma t ON p.id_turma = t.id_turma WHERE "
-                + " p.nome LIKE '%"+ str +"%' OR p.nome LIKE '"+ str +"%' OR p.nome LIKE '%"+ str +"' OR "
-                + " p.codigo LIKE '%"+ str +"%' OR p.codigo LIKE '"+ str +"%' OR p.codigo LIKE '%"+ str +"' OR "
-                + " t.nome LIKE '%"+ str +"%' OR t.nome LIKE '"+ str +"%' OR t.nome LIKE '%"+ str +"' ORDER BY p.nome ASC; ";
+        String query = "SELECT p.id_pessoa, p.codigo AS 'Código', p.nome AS 'Nome', t.nome as 'Turma', p.cargo as 'Cargo' "
+                + "FROM pessoa p "
+                + "LEFT JOIN turma t ON p.id_turma = t.id_turma WHERE "
+                + "p.nome LIKE '%"+ str +"%' OR p.nome LIKE '"+ str +"%' OR p.nome LIKE '%"+ str +"' OR "
+                + "p.codigo LIKE '%"+ str +"%' OR p.codigo LIKE '"+ str +"%' OR p.codigo LIKE '%"+ str +"' OR "
+                + "t.nome LIKE '%"+ str +"%' OR t.nome LIKE '"+ str +"%' OR t.nome LIKE '%"+ str +"' OR "
+                + "p.cargo LIKE '%"+ str +"%' OR p.cargo LIKE '"+ str +"%' OR p.cargo LIKE '%"+ str +"' "
+                + "ORDER BY p.nome ASC; ";
         
         return helper.getTableModel(query);
     }

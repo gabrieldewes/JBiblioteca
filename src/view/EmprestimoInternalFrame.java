@@ -293,11 +293,11 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
             eaif = new EmprestimoAddInternalFrame();
             eaif.setVisible(true);
             mfthis.desktop.add(eaif);
-            try {
-                eaif.setSelected(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(EmprestimoInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        }
+        try {
+            eaif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(EmprestimoInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_novoEmprestimoBtnActionPerformed
 

@@ -99,8 +99,8 @@ public class EmprestimoController {
                     };
                     new Thread(t1).start();
                     return true;
-                } else JOptionPane.showMessageDialog(null, "Erro ao apagar empréstimo. Tente novamente. ", "Atenção", JOptionPane.WARNING_MESSAGE);
-            } else JOptionPane.showMessageDialog(null, "Erro ao apagar empréstimo. Tente novamente", "Atenção", JOptionPane.WARNING_MESSAGE);
+                } else JOptionPane.showMessageDialog(null, "Erro ao executar devolução de empréstimo. Tente novamente. ", "Atenção", JOptionPane.WARNING_MESSAGE);
+            } else JOptionPane.showMessageDialog(null, "Erro ao executar devolução de empréstimo. Tente novamente", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else JOptionPane.showMessageDialog(null, "Ocorreu um erro interno. Não retornou empréstimo para o ID "+ id_emprestimo +".", "Atenção", JOptionPane.WARNING_MESSAGE);
            
         return false;

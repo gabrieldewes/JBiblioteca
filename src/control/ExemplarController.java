@@ -30,7 +30,7 @@ public class ExemplarController {
                     return dao.save(e);
                 } else JOptionPane.showMessageDialog(null, "Este código já está cadastrado.", "Atenção", JOptionPane.WARNING_MESSAGE);
             } else JOptionPane.showMessageDialog(null, "Código não pode ser em branco.", "Atenção", JOptionPane.WARNING_MESSAGE);
-        } else JOptionPane.showMessageDialog(null, "Erro interno. O livro selecionado retornou ID 0.", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else JOptionPane.showMessageDialog(null, "Não há livros cadastrados!", "Atenção", JOptionPane.WARNING_MESSAGE);
         return false;
     }
     

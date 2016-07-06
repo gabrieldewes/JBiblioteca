@@ -181,11 +181,11 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
             paif = new PessoasAddInternalFrame();
             paif.setVisible(true);
             mfthis.desktop.add(paif);
-            try {
-                paif.setSelected(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(PessoasInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        }
+        try {
+            paif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(PessoasInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
     }//GEN-LAST:event_AddPessoaBtnActionPerformed
@@ -226,9 +226,11 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
         
         int idx[] = PessoaTable.getSelectedRows();
         if (idx.length > 0) {
-            patif = new PessoasAttInternalFrame( Integer.parseInt( PessoaTable.getValueAt( PessoaTable.getSelectedRow() , 0).toString() ) );
-            patif.setVisible(true);
-            mfthis.desktop.add(patif);
+            if (patif == null || patif.isClosed()) {
+                patif = new PessoasAttInternalFrame( Integer.parseInt( PessoaTable.getValueAt( PessoaTable.getSelectedRow() , 0).toString() ) );
+                patif.setVisible(true);
+                mfthis.desktop.add(patif);
+            }
             try {
                 patif.setSelected(true);
             } catch (PropertyVetoException ex) {
