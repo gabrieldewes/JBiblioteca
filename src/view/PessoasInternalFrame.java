@@ -25,6 +25,7 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
     
     public PessoasInternalFrame( MainFrame mf ) {
         initComponents();
+        PessoaTable.setAutoCreateRowSorter(true);
         updateTableModel("");
         mfthis = mf;
     }

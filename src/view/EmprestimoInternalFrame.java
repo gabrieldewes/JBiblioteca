@@ -40,6 +40,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
     
     public EmprestimoInternalFrame( MainFrame mf ) {
         initComponents();
+        emprestimoTable.setAutoCreateRowSorter(true);
         mfthis=mf;
         updateEmprestimoTable("");
         livroList.setModel(new DefaultListModel());

@@ -33,6 +33,8 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
     
     public LivrosInternalFrame( MainFrame mf ) {
         initComponents();
+        LivroTable.setAutoCreateRowSorter(true);
+        ExemplarTable.setAutoCreateRowSorter(true);
         updateLivroTableModel("");
         updateExemplarTableModel("");
         mfthis = mf;
