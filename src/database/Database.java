@@ -18,19 +18,19 @@ import javax.swing.JOptionPane;
  */
 public class Database {
     
-    public static int DB_VERSION = 1;
     public static final java.io.File DATABASE = new java.io.File(System.getProperty("user.home")
             + System.getProperty("file.separator") + ".jbiblioteca"
             + System.getProperty("file.separator") + "jbiblioteca_db.db");
     
-   
     public static void checkDatabase() throws Exception {
         if (!DATABASE.exists()) {
             createNewDatabase();
+            JOptionPane.showMessageDialog(null, "Seja Bem-vindo(a) à JBiblioteca!", "JBiblioteca", JOptionPane.INFORMATION_MESSAGE);
         }
     }
     /* Cria um backup do banco de dados.
-     * O parâmetro arquivo_dkp é o novo arquivo que receberá os dados de backup. */
+     * O parâmetro arquivo_dkp é o novo arquivo que receberá os dados de backup. 
+    */
     public static void backupDatabase(File arquivo_dkp) throws Exception {
         if (!DATABASE.exists()) {
             checkDatabase();
@@ -89,10 +89,10 @@ public class Database {
             if (!DATABASE.exists()) {          /* Caso o arquivo ainda não exista, após os comandos acima, dispara exceção */
                 throw new Exception("Erro ao gravar o arquivo de banco de dados.");
             }
-            System.out.println("Banco de dados criado em '"+DATABASE.getAbsolutePath()+"' ");
             DBUtil.createDDL();
+            System.out.println("Banco de dados criado em '"+DATABASE.getAbsolutePath()+"' ");
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(null, "Erro na criação do banco de dados. ERRO: "+ ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Erro na criação do banco de dados. ERRO: "+ ex.getMessage(), "JBiblioteca", 0);
             throw new Exception("Erro na criação do banco de dados.\n"+ ex.getMessage());
         }
     }

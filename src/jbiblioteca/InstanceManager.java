@@ -71,10 +71,9 @@ public class InstanceManager {
      * Se conseguir, inicia uma Thread para receber conexões de novas instancias 
      */  
     private static void startServer() {  
-        try {  
-            System.out.println("Iniciando novo servidor em "+ PORT +"...");  
+        try {    
             socket = new ServerSocket(PORT, 20, ip_host);  
-            System.out.println("Conectado, escutando novas instâncias em "+ ip_host +":"+ PORT);  
+            System.out.println("Servidor iniciado, escutando novas instâncias em "+ ip_host +":"+ PORT);  
             new InstanceThread().start();  
             started = true;  
         } catch (IOException ex) {  
@@ -176,7 +175,7 @@ public class InstanceManager {
                     } 
                     else {  
                         System.err.println("Conexão desconhecida detectada: \"" + message + "\"");  
-                        out.write("Vá embora meu filho! ".getBytes());  
+                        out.write("Vá embora meu filho!".getBytes());  
                     }  
                 } catch (IOException ex) {  
                     ex.printStackTrace(System.err);  
