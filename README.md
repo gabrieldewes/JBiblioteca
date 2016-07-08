@@ -1,16 +1,16 @@
 # JBiblioteca
-Aplicação para auxílio de bibliotecas internas
+Aplicação desktop para gestão de bibliotecas internas
 
 # Informações Gerais
-Aplicação desktop portável com banco embarcado SQLite, então, é só copiar os arquivos e executar o .jar.
-No Linux, o arquivo de baco de dados ficará na pasta '/home/Usuario/.jbiblioteca/jbiblioteca_db.db'.
-No Windows, ficará em 'C://Users/Usuario/.jbiblioteca/jbiblioteca_db'.
-O arquivo de backup se parecerá com 'jbiblioteca_bkp.db'.
+Aplicação MDI, Java Swing, JDBC, SQLite, r2xml e joda-time.
+No Linux, o arquivo de baco de dados ficará na pasta "/home/Usuario/.jbiblioteca/", no Windows, ficará em "C://Users/Usuario/.jbiblioteca/".
+O arquivo de backup se parecerá com "jbiblioteca_bkp.db"
 
 # Features
-Conta com os módulos:
+Conta com as funcionalidades:
 * Controle de pessoas e turmas;
-* Controle de livros e exemplares de livros; 
-* Controle empréstimos e devoluções;
-* Taxa de juros por dias de atraso p/ cada exemplar;
+* Controle de títulos e exemplares de livros; 
+* Busca dinâmica através do ISBN;
+* Controle de empréstimos e devoluções;
+* Configuração de taxas e prazos;
 * Backup e recuperação de dados.
