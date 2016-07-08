@@ -4,7 +4,7 @@ Aplicação desktop para gestão de bibliotecas internas
 # Informações Gerais
 Aplicação MDI, utilizando Java Swing, JDBC, SQLite, r2xml e joda-time.
 
-No Linux, o arquivo de baco de dados ficará na pasta "/home/Usuario/.jbiblioteca/", no Windows, ficará em
+No Linux o arquivo de baco de dados ficará na pasta "/home/Usuario/.jbiblioteca/", no Windows, ficará em
 "C://Users/Usuario/.jbiblioteca/".
 
 O arquivo de backup se parecerá com "jbiblioteca_bkp.db"
@@ -17,3 +17,7 @@ Conta com as funcionalidades:
 * Controle de empréstimos e devoluções;
 * Configuração de taxas e prazos;
 * Backup e recuperação de dados.
+
+## Requisitos Mínimos
+* JRE 1.8 +
+* Java né.. já sabe.. vá ram
