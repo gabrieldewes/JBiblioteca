@@ -54,7 +54,7 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="LivrosMenu">
+        <Menu class="javax.swing.JMenu" name="titulosExemplaresMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="T&#xed;tulos e Exemplares"/>
           </Properties>
@@ -83,6 +83,16 @@
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem3ActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator2">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="ebooksMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Ebooks Online"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ebooksMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

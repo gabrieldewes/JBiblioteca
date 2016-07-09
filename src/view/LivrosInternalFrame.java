@@ -401,7 +401,8 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                 if (option == JOptionPane.OK_OPTION) {
                     String titulo = tituloField.getText();
                     String autor = autorField.getText();
-                    if (LivroController.Alterar(ex, titulo, autor)) {
+                    String isbn=null;
+                    if (LivroController.Alterar(ex, isbn, titulo, autor)) {
                         option = JOptionPane.OK_CANCEL_OPTION;
                         if (lif != null) {
                             lif.updateLivroTableModel("");

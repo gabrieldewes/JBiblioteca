@@ -83,6 +83,7 @@ public class ExemplarDAO {
                         rs.getString("coordenada_y"),
                             l = new Livro(
                                 rs.getInt("id_livro"), 
+                                rs.getString("isbn"),
                                 rs.getString("titulo"),
                                 rs.getString("autor"))
                     );
@@ -163,6 +164,7 @@ public class ExemplarDAO {
                         rs.getString("coordenada_y"),
                             l = new Livro(
                                 rs.getInt("id_livro"), 
+                                rs.getString("isbn"),
                                 rs.getString("titulo"), 
                                 rs.getString("autor"))
                         );

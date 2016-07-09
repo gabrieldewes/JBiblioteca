@@ -99,8 +99,13 @@ public class DBUtil {
             "codigo    TEXT NOT NULL UNIQUE, " +
             "FOREIGN KEY (id_turma) REFERENCES turma(id_turma) ON UPDATE CASCADE ON DELETE RESTRICT ); ", 
         
+        "CREATE TABLE IF NOT EXISTS genero (" +
+            "id_genero INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "+
+            "nome      TEXT NOT NULL); ",
+        
         "CREATE TABLE IF NOT EXISTS livro (" +
             "id_livro INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "isbn     TEXT NOT NULL, " +
             "titulo   TEXT NOT NULL DEFAULT 'Sem título', " +
             "autor    TEXT NOT NULL); ",
         
@@ -141,6 +146,7 @@ public class DBUtil {
     static String[] drop_ddl = {
         "DROP TABLE IF EXISTS pessoa; ",
         "DROP TABLE IF EXISTS livro; ",
+        "DROP TABLE IF EXISTS genero; ",
         "DROP TABLE IF EXISTS turma; ",
         "DROP TABLE IF EXISTS exemplar; ",
         "DROP TABLE IF EXISTS emprestimo_livro; ",
@@ -155,20 +161,21 @@ public class DBUtil {
         "DELETE FROM exemplar; ",
         "DELETE FROM emprestimo_livro; ",
         "DELETE FROM emprestimo; ",
+        "DELETE FROM genero; ",
         "DELETE FROM app_config; "
     };
     
     static String[] insert_data= {
-        "INSERT INTO livro (titulo, autor) VALUES ('Alice no pais das maravilhas', ''); ",
-        "INSERT INTO livro (titulo, autor) VALUES ('Água para elefantes', 'Sara Cruen'); ",
-        "INSERT INTO livro (titulo, autor) VALUES ('Sol e Lua', 'Signos'); ",
-        "INSERT INTO livro (titulo, autor) VALUES ('O avantajado livro de pensamentos do cassera & planeta', 'Casseta e Planeta'); ",
-        "INSERT INTO livro (titulo, autor) VALUES ('As melhores piadas do planeta e do casseta também', 'Casseta e Planeta'); ",
-        "INSERT INTO livro (titulo, autor) VALUES ('A Cabana', 'Artista desconhecido'); ",
-        "INSERT INTO livro (titulo, autor) VALUES ('Cidades de Papel', 'Albert richerd'); ",
-        "INSERT INTO livro (titulo, autor) VALUES ('Estrelas de Biscoito', 'Artista aluado'); ",
-        "INSERT INTO livro (titulo, autor) VALUES ('Como criar uma mente', 'Algum engenheiro da google'); ",
-        "INSERT INTO livro (titulo, autor) VALUES ('Forest gump é mato', 'Racionais'); ",
+        "INSERT INTO livro (isbn, titulo, autor) VALUES ('', 'Alice no pais das maravilhas', ''); ",
+        "INSERT INTO livro (isbn, titulo, autor) VALUES ('', 'Água para elefantes', 'Sara Cruen'); ",
+        "INSERT INTO livro (isbn, titulo, autor) VALUES ('', 'Sol e Lua', 'Signos'); ",
+        "INSERT INTO livro (isbn, titulo, autor) VALUES ('', 'O avantajado livro de pensamentos do cassera & planeta', 'Casseta e Planeta'); ",
+        "INSERT INTO livro (isbn, titulo, autor) VALUES ('', 'As melhores piadas do planeta e do casseta também', 'Casseta e Planeta'); ",
+        "INSERT INTO livro (isbn, titulo, autor) VALUES ('', 'A Cabana', 'Artista desconhecido'); ",
+        "INSERT INTO livro (isbn, titulo, autor) VALUES ('', 'Cidades de Papel', 'Albert richerd'); ",
+        "INSERT INTO livro (isbn, titulo, autor) VALUES ('', 'Estrelas de Biscoito', 'Artista aluado'); ",
+        "INSERT INTO livro (isbn, titulo, autor) VALUES ('', 'Como criar uma mente', 'Algum engenheiro da google'); ",
+        "INSERT INTO livro (isbn, titulo, autor) VALUES ('', 'Forest gump é mato', 'Racionais'); ",
         "INSERT INTO exemplar (id_livro, codigo, disponivel, coordenada_x, coordenada_y) VALUES (1, '0000', '', 'x', 'y'); ",
         "INSERT INTO exemplar (id_livro, codigo, disponivel, coordenada_x, coordenada_y) VALUES (2, '0001', '', 'x1', 'y1'); ",
         "INSERT INTO exemplar (id_livro, codigo, disponivel, coordenada_x, coordenada_y) VALUES (3, '0002', '', 'x2', 'y2'); ",

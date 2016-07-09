@@ -5,10 +5,13 @@
  */
 package control;
 
+import api.BooksService;
 import dao.ExemplarDAO;
 import dao.GenericDAO;
 import dao.LivroDAO;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 import model.Exemplar;
@@ -23,13 +26,21 @@ public class LivroController {
     static LivroDAO dao;
     static ExemplarDAO edao;
     static GenericDAO gendao;
+    static BooksService bs;
     
-    public static boolean Salvar(String codigo, String titulo, String autor, String x, String y) {
+    public static Livro getByGoogleBooks(String isbn) {
+        if (isbn != null && isbn.length() > 9) {
+            return BooksService.getGoogleBook(isbn);
+        }
+        return null;
+    }
+    
+    public static boolean Salvar(String codigo, String isbn, String titulo, String autor, String x, String y) {
         if (!"".equals(titulo)) {
             if (!"".equals(codigo)) {
                 if (!Existe(titulo)) {
                     if (!ExemplarController.Existe(codigo)) {
-                        Livro l = new Livro(0, titulo.trim(), autor.trim());
+                        Livro l = new Livro(0, isbn, titulo.trim(), autor.trim());
                         Exemplar e = new Exemplar(0, 0, codigo.replace(" ", ""), "", x.trim(), y.trim());
                         dao = new LivroDAO();
                         int id = dao.save(l);
@@ -45,9 +56,9 @@ public class LivroController {
         return false;
     }
     
-    public static boolean Alterar(Livro ex, String titulo, String autor) {
+    public static boolean Alterar(Livro ex, String isbn, String titulo, String autor) {
         if (!"".equals(titulo)) {
-            if (!ex.equals( new Livro(ex.getId_livro(), titulo, autor) )) {
+            if (!ex.equals( new Livro(ex.getId_livro(), isbn, titulo, autor) )) {
                 if (!ex.getTitulo().equals(titulo)) {
                     if (!Existe(titulo)) {
                         ex.setAutor(autor);
@@ -104,5 +115,13 @@ public class LivroController {
         return dao.getArray();
     }
     
-    
+    public static ArrayList<String> ArrayEbook(String query) {
+        ArrayList<String> volumes=null;
+        try {
+            volumes = BooksService.getQueryGoogleBooks(query);
+        } catch (Exception ex) {
+            Logger.getLogger(LivroController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return volumes;
+    }
 }

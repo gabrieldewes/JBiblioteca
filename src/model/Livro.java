@@ -14,22 +14,21 @@ import java.util.Objects;
 public class Livro {
     
     private int id_livro;
-    private String titulo, autor; 
+    private String isbn, titulo, autor; 
 
-    @Override
-    public String toString() {
-        return "Livro{" + "id_livro=" + id_livro + ", titulo=" + titulo + ", autor=" + autor + '}';
+    public Livro() {
     }
 
-    public Livro(int id_livro, String titulo, String autor) {
+    public Livro(int id_livro, String isbn, String titulo, String autor) {
         this.id_livro = id_livro;
+        this.isbn = isbn;
         this.titulo = titulo;
         this.autor = autor;
     }
 
     @Override
     public int hashCode() {
-        int hash = 7;
+        int hash = 5;
         return hash;
     }
 
@@ -46,6 +45,9 @@ public class Livro {
         }
         final Livro other = (Livro) obj;
         if (this.id_livro != other.id_livro) {
+            return false;
+        }
+        if (!Objects.equals(this.isbn, other.isbn)) {
             return false;
         }
         if (!Objects.equals(this.titulo, other.titulo)) {
@@ -65,6 +67,14 @@ public class Livro {
         this.id_livro = id_livro;
     }
 
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public void setIsbn(String isbn) {
+        this.isbn = isbn;
+    }
+
     public String getTitulo() {
         return titulo;
     }
@@ -80,7 +90,4 @@ public class Livro {
     public void setAutor(String autor) {
         this.autor = autor;
     }
-
-    
-
 }

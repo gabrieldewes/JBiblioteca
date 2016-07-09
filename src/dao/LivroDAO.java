@@ -9,7 +9,6 @@ import database.DBHelper;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,7 +33,8 @@ public class LivroDAO {
     }
     
     public int save(Livro l) {
-        String query = "INSERT INTO livro (titulo, autor) VALUES ("
+        String query = "INSERT INTO livro (isbn, titulo, autor) VALUES ("
+                + "'"+ l.getIsbn()+"', "
                 + "'"+ l.getTitulo() +"', "
                 + "'"+ l.getAutor() +"'); ";
         return helper.rawSQLreturnGenKey(query);
@@ -42,6 +42,7 @@ public class LivroDAO {
     
     public boolean update(Livro l) {
         String query = "UPDATE livro SET "
+                + "isbn='"+ l.getIsbn()+"', "
                 + "titulo='"+ l.getTitulo() +"', "
                 + "autor='"+ l.getAutor()+"' WHERE id_livro="+ l.getId_livro() +"; ";
         return helper.rawSQL(query);
@@ -62,7 +63,8 @@ public class LivroDAO {
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
                     l = new Livro( 
-                        rs.getInt("id_livro"), 
+                        rs.getInt("id_livro"),
+                        rs.getString("isbn"),
                         rs.getString("titulo"),
                         rs.getString("autor"));
                 }
@@ -114,6 +116,7 @@ public class LivroDAO {
                     l = new Livro( 
                         rs.getInt("id_livro"),
                         rs.getString("titulo"),  
+                        rs.getString("isbn"),  
                         rs.getString("autor"));
                     livros.add(l);
                 }

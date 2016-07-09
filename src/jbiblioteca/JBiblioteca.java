@@ -21,7 +21,6 @@ public class JBiblioteca {
             JOptionPane.showMessageDialog(null, "Já existe uma instância do programa aberta. ", "JBiblioteca", JOptionPane.INFORMATION_MESSAGE);             
             System.exit(0);  
         } 
-        
         MainFrame.OpenMainFrame();   
         Runnable t1 = () -> {
             try {

@@ -63,16 +63,20 @@ public class PessoasAddInternalFrame extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel1.setText("Nome");
 
+        nomeField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+
         jLabel2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel2.setText("Código único");
+
+        codigoField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel3.setText("Turma");
 
-        turmaField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        turmaField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         turmaField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        cargoField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
+        cargoField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         cargoField.setModel(new DefaultComboBoxModel(PessoaEnum.values()));
         cargoField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,7 +173,7 @@ public class PessoasAddInternalFrame extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(AddPessoaBtn))
-                .addContainerGap(14, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         pack();
