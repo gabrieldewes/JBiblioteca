@@ -34,7 +34,7 @@ public class PessoasAddInternalFrame extends javax.swing.JInternalFrame {
         
         if (turmas.isEmpty()) {
             cargoField.setSelectedIndex(1);
-            turmaField.disable();
+            turmaField.setEnabled(false);
         }
         
     }
@@ -187,14 +187,14 @@ public class PessoasAddInternalFrame extends javax.swing.JInternalFrame {
                 cargoField.setSelectedIndex(1);
             }
             else {
-                turmaField.enable();
+                turmaField.setEnabled(true);
                 turmaField.setSelectedIndex(0);
             }
             
         }
         else {
             turmaField.setSelectedIndex(-1);
-            turmaField.disable();
+            turmaField.setEnabled(false);
         }
     }//GEN-LAST:event_cargoFieldActionPerformed
 

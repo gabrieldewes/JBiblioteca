@@ -34,9 +34,25 @@ public class ExemplarController {
         return false;
     }
     
-    public static boolean Alterar(Exemplar e) {
-        dao = new ExemplarDAO();
-        return dao.update(e);
+    public static boolean Alterar(int id, String codigo, String corredor, String prateleira) {
+        if (!"".equals(codigo)) {
+            if (id != 0) {
+                Exemplar ex = Pegar(id);
+                Exemplar e = new Exemplar(id, ex.getId_livro(), codigo, ex.getDisponivel(), corredor, prateleira);
+                if (ex.equals(e))
+                    return true;
+                if (codigo.equals(ex.getCodigo())) {
+                    dao = new ExemplarDAO();
+                    return dao.update(e);
+                }
+                else
+                    if (!Existe(codigo)) {
+                        dao = new ExemplarDAO();
+                        return dao.update(e);   
+                    } else JOptionPane.showMessageDialog(null, "Este código já está cadastrado.", "Atenção", JOptionPane.WARNING_MESSAGE);
+            } else JOptionPane.showMessageDialog(null, "Nenhum exemplar selecionado! ", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else JOptionPane.showMessageDialog(null, "Código não pode ser em branco.", "Atenção", JOptionPane.WARNING_MESSAGE);
+        return false;
     }
     
     public static boolean Apagar(int id) {

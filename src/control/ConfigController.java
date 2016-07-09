@@ -10,7 +10,6 @@ import dao.GenericDAO;
 import database.Database;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
 

@@ -103,8 +103,18 @@ public class LivroDAO {
         return helper.getTableModel(query);
     }
     
-    public ArrayList<Livro> getArray(){
-        String query = "SELECT * FROM livro; ";
+    public ArrayList<Livro> getArray(String like){
+        String query;
+        if (!"".equals(like) || like != null)
+            query = 
+                "SELECT *"+
+                "FROM livro l " +
+                "LEFT JOIN exemplar ex ON ex.id_livro = l.id_livro " +
+                "WHERE titulo LIKE '%"+ like +"%' OR titulo LIKE '"+ like +"%' OR titulo LIKE '%"+ like +"' OR " +
+                       "autor LIKE '%"+ like +"%' OR autor LIKE '"+ like +"%' OR autor LIKE '%"+ like +"' " + 
+                "GROUP BY l.id_livro ORDER BY l.titulo ASC; ";
+        else
+            query = "SELECT * FROM livro; ";
                 
         ArrayList<Livro> livros = new ArrayList<>();
         Livro l;
@@ -115,8 +125,8 @@ public class LivroDAO {
                 while (rs.next()) {
                     l = new Livro( 
                         rs.getInt("id_livro"),
-                        rs.getString("titulo"),  
                         rs.getString("isbn"),  
+                        rs.getString("titulo"),  
                         rs.getString("autor"));
                     livros.add(l);
                 }

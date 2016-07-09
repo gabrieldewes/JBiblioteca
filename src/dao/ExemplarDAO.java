@@ -44,7 +44,11 @@ public class ExemplarDAO {
     }
     
     public boolean update(Exemplar e) {
-        return false;
+        String query = "UPDATE exemplar SET "
+                + "codigo='"+ e.getCodigo() +"', "
+                + "coordenada_x='"+ e.getCoordenada_x() +"', "
+                + "coordenada_y='"+ e.getCoordenada_y() +"' WHERE id_exemplar="+ e.getId_exemplar() +"; ";
+        return helper.rawSQL(query);
     }
     
     public boolean delete(String column, int id) {

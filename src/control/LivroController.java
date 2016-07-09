@@ -6,12 +6,15 @@
 package control;
 
 import api.BooksService;
+import com.google.api.services.books.model.Volume;
 import dao.ExemplarDAO;
 import dao.GenericDAO;
 import dao.LivroDAO;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 import model.Exemplar;
@@ -23,17 +26,13 @@ import model.Livro;
  */
 public class LivroController {
     
+    private static final NumberFormat CURRENCY_FORMATTER = NumberFormat.getCurrencyInstance();
+    private static final NumberFormat PERCENT_FORMATTER = NumberFormat.getPercentInstance();
+    
     static LivroDAO dao;
     static ExemplarDAO edao;
     static GenericDAO gendao;
     static BooksService bs;
-    
-    public static Livro getByGoogleBooks(String isbn) {
-        if (isbn != null && isbn.length() > 9) {
-            return BooksService.getGoogleBook(isbn);
-        }
-        return null;
-    }
     
     public static boolean Salvar(String codigo, String isbn, String titulo, String autor, String x, String y) {
         if (!"".equals(titulo)) {
@@ -110,18 +109,122 @@ public class LivroController {
         return dao.exists(codigo);
     }
     
-    public static ArrayList<Livro> ArrayLivro() {
+    public static ArrayList<Livro> ArrayLivro(String like) {
         dao = new LivroDAO();
-        return dao.getArray();
+        return dao.getArray(like);
     }
     
-    public static ArrayList<String> ArrayEbook(String query) {
-        ArrayList<String> volumes=null;
-        try {
-            volumes = BooksService.getQueryGoogleBooks(query);
-        } catch (Exception ex) {
-            Logger.getLogger(LivroController.class.getName()).log(Level.SEVERE, null, ex);
+    public static ArrayList<Volume> ArrayEbook(String query) {
+        ArrayList<Volume> volumes=null;
+        if (query.trim().length() > 2) {
+            try {
+                volumes = BooksService.getQueryGoogleBooks(query);
+            } catch (Exception ex) {
+                Logger.getLogger(LivroController.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return volumes;
+    }
+    
+    public static String volumeToString(Volume v) {
+        Volume.VolumeInfo volumeInfo = v.getVolumeInfo();
+        Volume.SaleInfo saleInfo = v.getSaleInfo();
+        String genr="";
+        String identifier="";
+        String pageCount="";
+        String price="";
+        String rating="";
+        String total_ratings="";
+        String description="";
+        
+        if (volumeInfo.getDescription() != null)
+            description = "\n\nDescrição: \n"+ volumeInfo.getDescription() +"\n";
+        
+        java.util.List<String> genrs = volumeInfo.getCategories();
+        if (genrs != null && !genrs.isEmpty()) {
+            genr = genr.concat("\nGenêro: ");
+            if (volumeInfo.getMainCategory() != null)
+                genr = genr.concat(volumeInfo.getMainCategory() +", ");
+            for (int i = 0; i < genrs.size(); ++i) {
+                genr = genr.concat(genrs.get(i));
+                if (i < genrs.size() - 1) {
+                    genr = genr.concat(", ");
+                }
+            }
+            genr = genr.concat("\n");
+        }
+        
+        if (volumeInfo.getPageCount() != null)
+            pageCount = "\n"+volumeInfo.getPageCount()+" páginas\n";
+
+        java.util.List<Volume.VolumeInfo.IndustryIdentifiers> isbn = volumeInfo.getIndustryIdentifiers();
+        if (isbn != null && !isbn.isEmpty()) {
+            for (Volume.VolumeInfo.IndustryIdentifiers ii:isbn) {
+                identifier = identifier.concat(ii.getType()+": "+ ii.getIdentifier()+"\n");
+            }
+        }
+        if (volumeInfo.getRatingsCount() != null && volumeInfo.getRatingsCount() > 0) {
+            int fullRating = (int) Math.round(volumeInfo.getAverageRating());
+            rating = "\nAvaliação: ";
+            for (int i = 0; i < fullRating; ++i) {
+                rating = rating.concat(" * ");
+            }
+            total_ratings = "\n(" + volumeInfo.getRatingsCount() + " avaliações)\n";
+        }
+        if (saleInfo != null && "FOR_SALE".equals(saleInfo.getSaleability())) {
+            double save = saleInfo.getListPrice().getAmount() - saleInfo.getRetailPrice().getAmount();
+            if (save > 0.0) {
+                price = price.concat("\nPreço médio: " + CURRENCY_FORMATTER.format(saleInfo.getListPrice().getAmount())+" ");
+            }
+            price = price.concat("\nGoogle Books: "
+                + CURRENCY_FORMATTER.format(saleInfo.getRetailPrice().getAmount()));
+            if (save > 0.0) {
+                price = price.concat("\nVocê ganha: " + CURRENCY_FORMATTER.format(save) + " ("
+                    + PERCENT_FORMATTER.format(save / saleInfo.getListPrice().getAmount()) + ")\n");
+            }
+        }
+        String content="";
+        if (!"".equals(identifier))
+            content = content.concat(identifier);
+        if (!"".equals(genr))
+            content = content.concat(genr);
+        if (!"".equals(pageCount))
+            content = content.concat(pageCount);
+        if (!"".equals(price))
+            content = content.concat(price);
+        if (!"".equals(rating))
+            content = content.concat(rating);
+        if (!"".equals(total_ratings))
+            content = content.concat(total_ratings);
+        if (!"".equals(description))
+            content = content.concat(description);
+        
+        return content;
+    }
+    
+    public static DefaultListModel UpdateList(ArrayList<Volume> list) {
+        if (list != null) {
+            DefaultListModel model = new DefaultListModel();
+            list.stream().forEach((Volume e) -> {
+                String content = "";
+                String volumeTitle = e.getVolumeInfo().getTitle();
+                if (e.getVolumeInfo().getSubtitle() != null)
+                    volumeTitle = volumeTitle.concat(" - "+ e.getVolumeInfo().getSubtitle());
+                java.util.List<String> authors = e.getVolumeInfo().getAuthors();
+                String author="";
+                if (authors != null && !authors.isEmpty()) {
+                    for (int i = 0; i < authors.size(); ++i) {
+                        author = author.concat(authors.get(i));
+                        if (i < authors.size() - 1) {
+                            author = author.concat(", ");
+                        }
+                    }
+                }
+                content = content.concat(volumeTitle).concat("\nAutor(a): ").concat(author);
+                model.add(list.indexOf(e), content);
+            });
+            return model;
+        }
+        return null;
     }
 }

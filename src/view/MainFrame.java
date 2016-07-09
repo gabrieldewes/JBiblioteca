@@ -36,6 +36,7 @@ public class MainFrame extends javax.swing.JFrame {
     static EmprestimoInternalFrame eif;
     static ConfigInternalFrame cif;
     static EbooksInternalFrame ebif;
+    static ExemplarAddInternalFrame exaif;
 
     public MainFrame() {
         initComponents();
@@ -55,6 +56,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenuItem2 = new javax.swing.JMenuItem();
         associadosMenu = new javax.swing.JMenu();
         verPessoasMenuItem = new javax.swing.JMenuItem();
+        jSeparator5 = new javax.swing.JPopupMenu.Separator();
         cadastrarMenuItem = new javax.swing.JMenuItem();
         titulosExemplaresMenu = new javax.swing.JMenu();
         verLivrosMenuItem = new javax.swing.JMenuItem();
@@ -65,8 +67,10 @@ public class MainFrame extends javax.swing.JFrame {
         ebooksMenuItem = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         verEmprestimosMenuItem = new javax.swing.JMenuItem();
+        jSeparator4 = new javax.swing.JPopupMenu.Separator();
         novoEmprestimoMenuItem = new javax.swing.JMenuItem();
-        configMenu = new javax.swing.JMenu();
+        aboutMenu = new javax.swing.JMenu();
+        statisticMenuItem = new javax.swing.JMenuItem();
         configMenuItem = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
@@ -99,7 +103,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenu1.setText("Turmas");
 
-        jMenuItem2.setText("Ver e Editar Turmas");
+        jMenuItem2.setText("Ver Turmas");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -118,6 +122,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         associadosMenu.add(verPessoasMenuItem);
+        associadosMenu.add(jSeparator5);
 
         cadastrarMenuItem.setText("Nova Pessoa");
         cadastrarMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -129,9 +134,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(associadosMenu);
 
-        titulosExemplaresMenu.setText("Títulos e Exemplares");
+        titulosExemplaresMenu.setText("Catalogação de Livros");
 
-        verLivrosMenuItem.setText("Ver Todos");
+        verLivrosMenuItem.setText("Ver Títulos e Exemplares");
         verLivrosMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 verLivrosMenuItemActionPerformed(evt);
@@ -157,7 +162,7 @@ public class MainFrame extends javax.swing.JFrame {
         titulosExemplaresMenu.add(jMenuItem3);
         titulosExemplaresMenu.add(jSeparator2);
 
-        ebooksMenuItem.setText("Ebooks Online");
+        ebooksMenuItem.setText("Referências Online");
         ebooksMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ebooksMenuItemActionPerformed(evt);
@@ -176,6 +181,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jMenu4.add(verEmprestimosMenuItem);
+        jMenu4.add(jSeparator4);
 
         novoEmprestimoMenuItem.setText("Novo Empréstimo");
         novoEmprestimoMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -187,7 +193,10 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu4);
 
-        configMenu.setText("Opções");
+        aboutMenu.setText("Sobre");
+
+        statisticMenuItem.setText("Estatísticas");
+        aboutMenu.add(statisticMenuItem);
 
         configMenuItem.setText("Configurações");
         configMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -195,9 +204,9 @@ public class MainFrame extends javax.swing.JFrame {
                 configMenuItemActionPerformed(evt);
             }
         });
-        configMenu.add(configMenuItem);
+        aboutMenu.add(configMenuItem);
 
-        jMenuBar1.add(configMenu);
+        jMenuBar1.add(aboutMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -290,7 +299,7 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_verLivrosMenuItemActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        JComboBox titulo = new JComboBox();
+        /*JComboBox titulo = new JComboBox();
             JTextField codigoField = new JTextField();
             JTextField xField = new JTextField();
             JTextField yField = new JTextField();
@@ -326,7 +335,26 @@ public class MainFrame extends javax.swing.JFrame {
                         }
                     }
                 }
+            }*/
+        if (exaif == null || exaif.isClosed()) {
+            exaif = new ExemplarAddInternalFrame();
+            exaif.setVisible(true);
+            desktop.add(exaif);
+        }
+        else
+            try {
+                if (exaif.isIcon())
+                    exaif.setIcon(false);
+
+            } 
+            catch (PropertyVetoException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
+        try {
+            exaif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void verEmprestimosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verEmprestimosMenuItemActionPerformed
@@ -378,28 +406,6 @@ public class MainFrame extends javax.swing.JFrame {
         }  
     }//GEN-LAST:event_configMenuItemActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        if (tif == null || tif.isClosed()) {
-            tif = new TurmasInternalFrame();
-            tif.setVisible(true);
-            desktop.add(tif);
-        }
-        else 
-            try {
-                if (tif.isIcon())
-                    tif.setIcon(false);
-            } 
-            catch (PropertyVetoException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        try {
-            tif.setSelected(true);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
-
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         if (JOptionPane.showConfirmDialog(this, 
             "Deseja realmente encerrar?", "JBiblioteca", 
@@ -431,6 +437,28 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_ebooksMenuItemActionPerformed
 
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        if (tif == null || tif.isClosed()) {
+            tif = new TurmasInternalFrame();
+            tif.setVisible(true);
+            desktop.add(tif);
+        }
+        else 
+            try {
+                if (tif.isIcon())
+                    tif.setIcon(false);
+            } 
+            catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            tif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
     public static void OpenMainFrame() {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -448,10 +476,10 @@ public class MainFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu aboutMenu;
     private javax.swing.JMenuItem addLivroMenuItem;
     private javax.swing.JMenu associadosMenu;
     private javax.swing.JMenuItem cadastrarMenuItem;
-    private javax.swing.JMenu configMenu;
     private javax.swing.JMenuItem configMenuItem;
     public javax.swing.JDesktopPane desktop;
     private javax.swing.JMenuItem ebooksMenuItem;
@@ -464,7 +492,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
+    private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JMenuItem novoEmprestimoMenuItem;
+    private javax.swing.JMenuItem statisticMenuItem;
     private javax.swing.JMenu titulosExemplaresMenu;
     private javax.swing.JMenuItem verEmprestimosMenuItem;
     private javax.swing.JMenuItem verLivrosMenuItem;

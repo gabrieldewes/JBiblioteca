@@ -23,7 +23,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Ver e Editar Turmas"/>
+                <Property name="text" type="java.lang.String" value="Ver Turmas"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
@@ -44,6 +44,8 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verPessoasMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator5">
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="cadastrarMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Nova Pessoa"/>
@@ -56,12 +58,12 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="titulosExemplaresMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="T&#xed;tulos e Exemplares"/>
+            <Property name="text" type="java.lang.String" value="Cataloga&#xe7;&#xe3;o de Livros"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="verLivrosMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Ver Todos"/>
+                <Property name="text" type="java.lang.String" value="Ver T&#xed;tulos e Exemplares"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verLivrosMenuItemActionPerformed"/>
@@ -89,7 +91,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="ebooksMenuItem">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Ebooks Online"/>
+                <Property name="text" type="java.lang.String" value="Refer&#xea;ncias Online"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ebooksMenuItemActionPerformed"/>
@@ -110,6 +112,8 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verEmprestimosMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator4">
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="novoEmprestimoMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Novo Empr&#xe9;stimo"/>
@@ -120,11 +124,16 @@
             </MenuItem>
           </SubComponents>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="configMenu">
+        <Menu class="javax.swing.JMenu" name="aboutMenu">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Op&#xe7;&#xf5;es"/>
+            <Property name="text" type="java.lang.String" value="Sobre"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="statisticMenuItem">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Estat&#xed;sticas"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="configMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Configura&#xe7;&#xf5;es"/>

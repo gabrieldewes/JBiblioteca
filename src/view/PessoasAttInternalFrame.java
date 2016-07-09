@@ -201,13 +201,13 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
                 cargoField.setSelectedIndex(1);
             }
             else {
-                turmaField.enable();
+                turmaField.setEnabled(true);
                 turmaField.setSelectedIndex(0);
             }
         }
         else {
             turmaField.setSelectedIndex(-1);
-            turmaField.disable();
+            turmaField.setEnabled(false);
         }
     }//GEN-LAST:event_cargoFieldActionPerformed
 

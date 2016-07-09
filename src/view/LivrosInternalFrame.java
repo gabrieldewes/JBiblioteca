@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import model.Livro;
 import model.Pessoa;
+import static view.MainFrame.exaif;
 import static view.MainFrame.lif;
 
 /**
@@ -115,6 +116,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(LivroTable);
 
+        BuscaLivroField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         BuscaLivroField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BuscaLivroFieldActionPerformed(evt);
@@ -237,6 +239,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
         });
         jScrollPane3.setViewportView(ExemplarTable);
 
+        BuscaExemplarField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         BuscaExemplarField.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 BuscaExemplarFieldKeyReleased(evt);
@@ -492,7 +495,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_BuscaExemplarBtnActionPerformed
 
     private void AddExemplarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddExemplarBtnActionPerformed
-            JComboBox titulo = new JComboBox();
+            /*JComboBox titulo = new JComboBox();
             JTextField codigoField = new JTextField();
             JTextField xField = new JTextField();
             JTextField yField = new JTextField();
@@ -528,11 +531,66 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                         }
                     }
                 }
+            }*/
+        if (exaif == null || exaif.isClosed()) {
+            exaif = new ExemplarAddInternalFrame();
+            exaif.setVisible(true);
+            mfthis.desktop.add(exaif);
+        }
+        else
+            try {
+                if (exaif.isIcon())
+                    exaif.setIcon(false);
+
+            } 
+            catch (PropertyVetoException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
+        try {
+            exaif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_AddExemplarBtnActionPerformed
 
     private void AttExemplarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AttExemplarBtnActionPerformed
-        // TODO add your handling code here:
+        int idx[] = ExemplarTable.getSelectedRows();
+         if (idx.length > 0) {
+            JLabel titulo = new JLabel();
+            titulo.setFont(new Font("Dialog", Font.PLAIN, 14));
+            JTextField codigo = new JTextField();
+            codigo.setFont(new Font("Dialog", Font.PLAIN, 14));
+            JTextField corredor = new JTextField();
+            corredor.setFont(new Font("Dialog", Font.PLAIN, 14));
+            JTextField prateleira = new JTextField();
+            prateleira.setFont(new Font("Dialog", Font.PLAIN, 14));
+            Object[] message = {
+                "Código: ", codigo,
+                "Corredor:", corredor,
+                "Prateleira:", prateleira
+            };
+            titulo.setText( ExemplarTable.getValueAt(ExemplarTable.getSelectedRow(), 2).toString() );
+            codigo.setText( ExemplarTable.getValueAt(ExemplarTable.getSelectedRow(), 1).toString() );
+            corredor.setText( ExemplarTable.getValueAt(ExemplarTable.getSelectedRow(), 3).toString() );
+            prateleira.setText( ExemplarTable.getValueAt(ExemplarTable.getSelectedRow(), 4).toString() );
+            int option=1;
+            while (option != JOptionPane.OK_CANCEL_OPTION) {
+                int response = JOptionPane.showConfirmDialog(null, message, "Alterar Exemplar",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                if (response == JOptionPane.OK_OPTION) {
+                     int id = Integer.valueOf( ExemplarTable.getValueAt( ExemplarTable.getSelectedRow() , 0 ).toString() );
+                    if (ExemplarController.Alterar(
+                            id, codigo.getText().trim(), 
+                            corredor.getText().trim(), prateleira.getText().trim())) {
+                        updateLivroTableModel("");
+                        updateExemplarTableModel("");
+                        option = JOptionPane.OK_CANCEL_OPTION;
+                    }
+                }
+                else option = JOptionPane.OK_CANCEL_OPTION;
+            }
+        }
+        else { AttExemplarBtn.setEnabled(false); }
     }//GEN-LAST:event_AttExemplarBtnActionPerformed
 
     private void DelExemplarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelExemplarBtnActionPerformed

@@ -13,7 +13,7 @@ O arquivo de backup se parecerá com "jbiblioteca_bkp.db"
 Conta com as funcionalidades:
 * Controle de pessoas e turmas;
 * Controle de títulos e exemplares de livros; 
-* Busca dinâmica através do ISBN;
+* Busca de livros online pela api do Google books;
 * Controle de empréstimos e devoluções;
 * Configuração de taxas e prazos;
 * Backup e recuperação de dados.
