@@ -31,14 +31,21 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Desktop;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -46,7 +53,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
-import model.Livro;
 import static view.MainFrame.lif;
 
 /**
@@ -56,29 +62,19 @@ import static view.MainFrame.lif;
 public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
 
     private static ArrayList<Volume> ebooks;
-    private static String infoLink;
+    private static DefaultListModel model;
     
     public EbooksInternalFrame() {
-        initComponents();
-        ebooksList.setCellRenderer(new MyCellRenderer());
+        initComponents();   
+        model = new DefaultListModel();
         ebooks = LivroController.ArrayEbook("água para elefantes");
-        ebooksList.setModel(LivroController.UpdateList(ebooks));
-    }    
-
-    void updateTextArea(Volume v) {
-        if (v != null) {
-            infoLink = v.getVolumeInfo().getInfoLink();
-            String content = LivroController.volumeToString(v);
-            contentTextArea.setText(content.trim());  
-            contentTextArea.setEditable(false);
-            contentTextArea.setFont( new Font("Dialog", Font.PLAIN, 14) );
-            contentTextArea.setLineWrap(true);
-            contentTextArea.setCaretPosition(0);
-        }
+        model = LivroController.UpdateList(ebooks, model);
+        //ebooksList.setCellRenderer(new MyCellRenderer());
+        ebooksList.setCellRenderer(new PanelRenderer());
+        ebooksList.setModel(model);
         
-    }
+    }    
     
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -91,10 +87,6 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
         searchGoogleBooksBtn = new javax.swing.JButton();
         saveEbookBtn = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        footerPanel = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        contentTextArea = new javax.swing.JTextArea();
-        infoLinkField = new javax.swing.JLabel();
 
         jLabel1.setText("jLabel1");
 
@@ -104,6 +96,7 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Livros em Google Books");
 
+        ebooksList.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         ebooksList.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         ebooksList.setModel(new DefaultListModel());
         ebooksList.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -116,17 +109,6 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         searchGoogleBooksField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        searchGoogleBooksField.setText("Busque por títulos, autores ou gêneros...");
-        searchGoogleBooksField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                searchGoogleBooksFieldMouseClicked(evt);
-            }
-        });
-        searchGoogleBooksField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                searchGoogleBooksFieldKeyTyped(evt);
-            }
-        });
 
         searchGoogleBooksBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         searchGoogleBooksBtn.setText("Buscar");
@@ -155,10 +137,10 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(searchGoogleBooksField, javax.swing.GroupLayout.DEFAULT_SIZE, 297, Short.MAX_VALUE)
+                .addComponent(searchGoogleBooksField, javax.swing.GroupLayout.PREFERRED_SIZE, 338, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(searchGoogleBooksBtn)
-                .addGap(114, 114, 114)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
                 .addComponent(saveEbookBtn)
                 .addContainerGap())
         );
@@ -174,40 +156,6 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        contentTextArea.setColumns(20);
-        contentTextArea.setRows(5);
-        jScrollPane2.setViewportView(contentTextArea);
-
-        infoLinkField.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        infoLinkField.setText("Mais informações no site");
-        infoLinkField.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                infoLinkFieldMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                infoLinkFieldMouseEntered(evt);
-            }
-        });
-
-        javax.swing.GroupLayout footerPanelLayout = new javax.swing.GroupLayout(footerPanel);
-        footerPanel.setLayout(footerPanelLayout);
-        footerPanelLayout.setHorizontalGroup(
-            footerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addGroup(footerPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(infoLinkField)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        footerPanelLayout.setVerticalGroup(
-            footerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(footerPanelLayout.createSequentialGroup()
-                .addComponent(jScrollPane2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(infoLinkField)
-                .addContainerGap())
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -215,9 +163,8 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(footerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
                         .addComponent(jScrollPane1))
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -227,9 +174,7 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(footerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -240,37 +185,20 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
         if (ebooksList.getSelectedIndex() > -1) {
             saveEbookBtn.setEnabled(true);
             int index = ebooksList.getSelectedIndex();
-            //System.out.println("Volume at "+index+": "+ ebooks.get(index).getVolumeInfo().getTitle());
-            updateTextArea(ebooks.get(index));
+            System.out.println("Volume at "+index+": "+ ebooks.get(index).getVolumeInfo().getTitle());
         }
         else {
             saveEbookBtn.setEnabled(false);
         }
     }//GEN-LAST:event_ebooksListMouseClicked
 
-    private void infoLinkFieldMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoLinkFieldMouseEntered
-        infoLinkField.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_infoLinkFieldMouseEntered
-
-    private void infoLinkFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoLinkFieldMouseClicked
-        if (infoLink != null) {
-            try {
-                Desktop.getDesktop().browse(new URI(infoLink));
-            } catch (IOException | URISyntaxException ex) {
-                Logger.getLogger(ConfigInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_infoLinkFieldMouseClicked
-
     private void saveEbookBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveEbookBtnActionPerformed
         if (ebooksList.getSelectedIndex() > -1) {
             saveEbookBtn.setEnabled(true);
-            int index = ebooksList.getSelectedIndex();
-            System.out.println("Volume at "+index+": "+ ebooks.get(index).getVolumeInfo().getTitle()); 
-            
-            JLabel title = new JLabel();
-            title.setFont(new Font("Dialog", Font.BOLD, 14));
-            JLabel author = new JLabel();
+            int index = ebooksList.getSelectedIndex(); 
+            JTextField title2 = new JTextField();
+            title2.setFont(new Font("Dialog", Font.BOLD, 14));
+            JTextField author = new JTextField();
             author.setFont(new Font("Dialog", Font.BOLD, 14));
             JTextField codigoField = new JTextField();
             codigoField.setFont(new Font("Dialog", Font.PLAIN, 14));
@@ -280,7 +208,7 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
             xField.setFont(new Font("Dialog", Font.PLAIN, 14));
             Object[] message = {
                 "",
-                "Título: ", title,
+                "Título: ", title2,
                 "Autor(a): ", author,
                 "\n",
                 "Catalogação de Exemplar:",
@@ -289,14 +217,24 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
                 "Corredor:", xField,
                 "Prateleira:", yField
             };
+            String final_author="";
+            java.util.List<String> authors = ebooks.get(index).getVolumeInfo().getAuthors();
+            if (authors != null && !authors.isEmpty()) {
+                for (int i = 0; i < authors.size(); ++i) {
+                    final_author = authors.get(i);
+                    if (i < authors.size() - 1) {
+                        final_author = final_author.concat(", ");
+                    }
+                }
+            }
             
-            title.setText(ebooks.get(index).getVolumeInfo().getTitle());
-            author.setText(ebooks.get(index).getVolumeInfo().getAuthors().get(0));
+            title2.setText(ebooks.get(index).getVolumeInfo().getTitle());
+            author.setText(final_author);
             int option = 1;
             while (option != JOptionPane.OK_CANCEL_OPTION) {
                 option = JOptionPane.showConfirmDialog(null, message, "Novo Título", JOptionPane.OK_CANCEL_OPTION);
                 if (option == JOptionPane.OK_OPTION) {
-                    String titulo = title.getText();
+                    String titulo = title2.getText();
                     String autor = author.getText();
                     String codigo = codigoField.getText();
                     codigo = codigo.replace(" ", "");
@@ -323,44 +261,43 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
         String isbn = searchGoogleBooksField.getText();
         if (isbn.trim() != null && isbn.trim().length() > 2) {
             ebooks = LivroController.ArrayEbook(isbn);
-            if (ebooks != null) {
-                contentTextArea.setText("");
-                ebooksList.setModel(LivroController.UpdateList(ebooks));
+            if (!ebooks.isEmpty()) {
+                ebooksList.setModel(LivroController.UpdateList(ebooks, model));
             }
             else {
-                contentTextArea.setText("Sem conexão.");
+                
             }
         }
     }//GEN-LAST:event_searchGoogleBooksBtnActionPerformed
 
-    private void searchGoogleBooksFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchGoogleBooksFieldMouseClicked
-        if (searchGoogleBooksField.getText().equals("Busque por títulos, autores ou gêneros..."))
-            searchGoogleBooksField.setText("");
-    }//GEN-LAST:event_searchGoogleBooksFieldMouseClicked
-
-    private void searchGoogleBooksFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchGoogleBooksFieldKeyTyped
-        if (searchGoogleBooksField.getText().equals("Busque por títulos, autores ou gêneros..."))
-            searchGoogleBooksField.setText("");
-    }//GEN-LAST:event_searchGoogleBooksFieldKeyTyped
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextArea contentTextArea;
     private javax.swing.JList<JPanel> ebooksList;
-    private javax.swing.JPanel footerPanel;
-    private javax.swing.JLabel infoLinkField;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton saveEbookBtn;
     private javax.swing.JButton searchGoogleBooksBtn;
     private javax.swing.JTextField searchGoogleBooksField;
     // End of variables declaration//GEN-END:variables
 }
-class MyCellRenderer implements ListCellRenderer {
+class PanelRenderer implements ListCellRenderer {
 
+    @Override
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        JPanel renderer=null;
+        try {
+           renderer = (JPanel) value;
+        }
+         catch (Exception ex) {
+             System.out.println("Exception "+ ex.getMessage());
+         }
+        renderer.setBackground(isSelected ? Color.DARK_GRAY : list.getBackground());
+        return renderer;
+    }
+}
+class MyCellRenderer extends DefaultListCellRenderer {
     private final JPanel p;
     private final JTextArea ta;
 
@@ -372,9 +309,26 @@ class MyCellRenderer implements ListCellRenderer {
         ta.setFont(new Font("Dialog", Font.PLAIN, 14));
         p.add(ta, BorderLayout.CENTER);
     }
-
     @Override
-    public Component getListCellRendererComponent(final JList list, final Object value, final int index, final boolean isSelected, final boolean hasFocus) {
+    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        /*Image image=null;
+        try {
+                URL url = new URL(vs.get(index).getVolumeInfo().getImageLinks().getSmallThumbnail());
+                image = ImageIO.read(url);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(EbooksInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(EbooksInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        final ImageIcon imageIcon = new ImageIcon(image);
+        image = imageIcon.getImage();
+        final Dimension dimension = this.getPreferredSize();
+        final double height = dimension.getHeight();
+        final double width = (height / imageIcon.getIconHeight()) * imageIcon.getIconWidth();
+        image = image.getScaledInstance((int)width, (int)height, Image.SCALE_SMOOTH);
+        final ImageIcon finalIcon = new ImageIcon(image);
+        setIcon(finalIcon);*/
         if (isSelected) {
             p.setForeground(list.getSelectionForeground());
             p.setBackground(Color.DARK_GRAY);
@@ -385,9 +339,9 @@ class MyCellRenderer implements ListCellRenderer {
         }
         list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         ta.setText((String) value);
-        return p;
 
-    }
+        return p;
+     }
 }
 
 

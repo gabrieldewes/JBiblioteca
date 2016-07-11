@@ -15,61 +15,14 @@ import java.util.logging.Logger;
  */
 public class DBUtil {
     
-    public static void updateDDL(int current_ver, int new_ver) {
-        try {
-            DBHelper db = new DBHelper();
-            db.onUpgrade(db, current_ver, new_ver);
-        } catch (SQLException ex) {
-            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
     
-    public static void createDDL() {
-        try {
-            DBHelper db = new DBHelper();
-            db.rawLineSQL(create_ddl);
-        } catch (SQLException ex) {
-            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-    }
     
-    public static void dropDDL() {
-        try {
-            DBHelper db = new DBHelper();
-            db.rawLineSQL(drop_ddl);
-        } catch (SQLException ex) {
-            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public static void populate() {
-        try {
-            DBHelper db = new DBHelper();
-            db.rawLineSQL(insert_data);
-        } catch (SQLException ex) {
-            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public static void clear() {
-        try {
-            DBHelper db = new DBHelper();
-            db.rawLineSQL(clear_data);
-        } catch (SQLException ex) {
-            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-   
-    public static String VER_1[] =  {"emprestimo", "situation", "TEXT", ""};
-    public static String VER_2[] =  {"app_config", "prazo_default", "INTEGER", "0"};
+    public static String VER_1[] =  {"livro", "isbn", "TEXT", ""};
     
     public static String[] selectScript(int ver){
         switch (ver) {
         case 1: 
             return VER_1;
-        case 2:
-            return VER_2;
         default:
             return null;         
         }
@@ -142,6 +95,52 @@ public class DBUtil {
         
         "INSERT INTO app_config (taxa_juros, db_version, prazo_default, auto_bkp) VALUES (0.0, 1, 7, 'true'); "
     };
+    
+    public static void updateDDL(int current_ver, int new_ver) {
+        try {
+            DBHelper db = new DBHelper();
+            db.onUpgrade(db, current_ver, new_ver);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static void createDDL() {
+        try {
+            DBHelper db = new DBHelper();
+            db.rawLineSQL(create_ddl);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public static void dropDDL() {
+        try {
+            DBHelper db = new DBHelper();
+            db.rawLineSQL(drop_ddl);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static void populate() {
+        try {
+            DBHelper db = new DBHelper();
+            db.rawLineSQL(insert_data);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public static void clear() {
+        try {
+            DBHelper db = new DBHelper();
+            db.rawLineSQL(clear_data);
+        } catch (SQLException ex) {
+            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     
     static String[] drop_ddl = {
         "DROP TABLE IF EXISTS pessoa; ",

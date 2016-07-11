@@ -69,6 +69,7 @@ public class BooksService {
             for (Volume v:volumes.getItems()) {
                 ebooks.add(v);
             }
+            System.out.println("Return "+ ebooks.size() +" items from query "+ query);
             return ebooks;
         } catch (IOException | GeneralSecurityException ex) {
             JOptionPane.showMessageDialog(null, "Verifique a conexão com a Internet.", "Livros Online", JOptionPane.WARNING_MESSAGE);

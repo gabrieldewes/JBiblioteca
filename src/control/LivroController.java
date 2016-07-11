@@ -19,6 +19,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 import model.Exemplar;
 import model.Livro;
+import org.joda.time.LocalDateTime;
+import view.EbookFragmentPanel;
 
 /**
  *
@@ -129,13 +131,42 @@ public class LivroController {
     public static String volumeToString(Volume v) {
         Volume.VolumeInfo volumeInfo = v.getVolumeInfo();
         Volume.SaleInfo saleInfo = v.getSaleInfo();
+        LocalDateTime ldt;
+        Volume.VolumeInfo.ImageLinks links=null;
+        String title="";
+        String author="";
         String genr="";
         String identifier="";
         String pageCount="";
         String price="";
         String rating="";
         String total_ratings="";
+        String publisher="";
         String description="";
+        
+        title = ""+v.getVolumeInfo().getTitle()+"";
+        if (v.getVolumeInfo().getSubtitle() != null)
+            title = title.concat(" - "+ v.getVolumeInfo().getSubtitle());
+        title = title.concat("\n");
+        java.util.List<String> authors = v.getVolumeInfo().getAuthors();
+        if (authors != null && !authors.isEmpty()) {
+            for (int i = 0; i < authors.size(); ++i) {
+                author = author.concat("\n"+ authors.get(i));
+                if (i < authors.size() - 1) {
+                    author = author.concat(", ");
+                }
+            }
+        }
+        author = author.concat("\n");
+        
+        links = volumeInfo.getImageLinks();
+        
+        if (volumeInfo.getPublisher() != null)
+            publisher = "\nEditora: "+ volumeInfo.getPublisher();
+        if (volumeInfo.getPublishedDate() != null) {
+            ldt = new LocalDateTime( volumeInfo.getPublishedDate());
+            publisher = publisher.concat("\nPublicado em "+ +ldt.getDayOfMonth()+"/"+ldt.getMonthOfYear()+"/"+ldt.getYear());
+        }
         
         if (volumeInfo.getDescription() != null)
             description = "\n\nDescrição: \n"+ volumeInfo.getDescription() +"\n";
@@ -184,7 +215,11 @@ public class LivroController {
             }
         }
         String content="";
-        if (!"".equals(identifier))
+        if (!"".equals(title))
+            content = content.concat(title);
+        if (!"".equals(author))
+            content = content.concat(author);
+        /*if (!"".equals(identifier))
             content = content.concat(identifier);
         if (!"".equals(genr))
             content = content.concat(genr);
@@ -196,35 +231,27 @@ public class LivroController {
             content = content.concat(rating);
         if (!"".equals(total_ratings))
             content = content.concat(total_ratings);
+        if (!"".equals(publisher))
+            content = content.concat(publisher);
         if (!"".equals(description))
-            content = content.concat(description);
+            content = content.concat(description);*/
         
         return content;
     }
     
-    public static DefaultListModel UpdateList(ArrayList<Volume> list) {
-        if (list != null) {
-            DefaultListModel model = new DefaultListModel();
-            list.stream().forEach((Volume e) -> {
-                String content = "";
-                String volumeTitle = e.getVolumeInfo().getTitle();
-                if (e.getVolumeInfo().getSubtitle() != null)
-                    volumeTitle = volumeTitle.concat(" - "+ e.getVolumeInfo().getSubtitle());
-                java.util.List<String> authors = e.getVolumeInfo().getAuthors();
-                String author="";
-                if (authors != null && !authors.isEmpty()) {
-                    for (int i = 0; i < authors.size(); ++i) {
-                        author = author.concat(authors.get(i));
-                        if (i < authors.size() - 1) {
-                            author = author.concat(", ");
-                        }
-                    }
-                }
-                content = content.concat(volumeTitle).concat("\nAutor(a): ").concat(author);
-                model.add(list.indexOf(e), content);
-            });
+    public static DefaultListModel UpdateList(ArrayList<Volume> list, DefaultListModel model) {
+        if (list != null && !list.isEmpty()) {
+            model.clear();
+            for (Volume e:list) {
+                EbookFragmentPanel efp = new EbookFragmentPanel(e);
+                model.add(list.indexOf(e), efp);
+
+                //String content = volumeToString(e);
+                //model.add(list.indexOf(e), content);
+            }
             return model;
         }
-        return null;
+        else System.out.println("List empty? "+list.isEmpty()+" at LivroController");
+        return model;
     }
 }

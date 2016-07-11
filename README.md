@@ -21,3 +21,6 @@ Conta com as funcionalidades:
 ## Requisitos Mínimos
 * JRE 1.8 +
 * Java né.. já sabe.. vá ram
+
+## Conclusões
+Nunca mais vou usar java swing
