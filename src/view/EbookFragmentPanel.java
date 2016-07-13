@@ -23,23 +23,22 @@
  */
 package view;
 
-import com.google.api.services.books.model.Volume;
 import java.awt.Cursor;
-import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
-import java.text.NumberFormat;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import org.joda.time.LocalDateTime;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
 
 /**
  *
@@ -47,125 +46,64 @@ import org.joda.time.LocalDateTime;
  */
 public class EbookFragmentPanel extends javax.swing.JPanel {
     
-    private static final NumberFormat CURRENCY_FORMATTER = NumberFormat.getCurrencyInstance();
-    private static final NumberFormat PERCENT_FORMATTER = NumberFormat.getPercentInstance();
     private static String infoLink;
 
     /**
-     * Creates new form EbookFragmentPanel
-     * @param v
+     * 
+     * @param details
      */
-    public EbookFragmentPanel(Volume v) {
-        initComponents();
-        if (v != null) {
-            
-            infoLink = v.getVolumeInfo().getInfoLink();
-            System.out.println("Renderizando JPanel para "+ v.getVolumeInfo().getTitle());
-            try {
-                Volume.VolumeInfo.ImageLinks links = v.getVolumeInfo().getImageLinks();
-                if (links != null && !links.isEmpty()) {
-                    URL url = new URL(links.getSmallThumbnail());
-                    Image image = ImageIO.read(url);
-                    if (image != null)
-                        imageLabel.setIcon(new ImageIcon(image));
-                }
-            } catch (MalformedURLException ex) {
-                System.out.println("MalformedURLException "+ex.getMessage());
-                Logger.getLogger(EbookFragmentPanel.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                System.out.println("IOException "+ex.getMessage());
-                Logger.getLogger(EbookFragmentPanel.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
-            Volume.VolumeInfo volumeInfo = v.getVolumeInfo();
-            Volume.SaleInfo saleInfo = v.getSaleInfo();
-            LocalDateTime ldt;
-            String title="";
-            String author="";
-            String genr="";
-            String identifier="";
-            String pageCount="";
-            String price="";
-            String rating="";
-            String publisher="";
-            String description="";
-
-            title = ""+v.getVolumeInfo().getTitle()+"";
-            if (v.getVolumeInfo().getSubtitle() != null)
-                title = title.concat(" - "+ v.getVolumeInfo().getSubtitle());
-            java.util.List<String> authors = v.getVolumeInfo().getAuthors();
-            if (authors != null && !authors.isEmpty()) {
-                for (int i = 0; i < authors.size(); ++i) {
-                    author = authors.get(i);
-                    if (i < authors.size() - 1) {
-                        author = author.concat(", ");
-                    }
-                }
-            }
-
-            if (volumeInfo.getPublisher() != null)
-                publisher = volumeInfo.getPublisher();
-            if (volumeInfo.getPublishedDate() != null) {
-                ldt = new LocalDateTime( volumeInfo.getPublishedDate());
-                publisher = publisher.concat(", "+ +ldt.getDayOfMonth()+"/"+ldt.getMonthOfYear()+"/"+ldt.getYear());
-            }
-
-            if (volumeInfo.getDescription() != null)
-                description = "Descrição: "+ volumeInfo.getDescription() +"";
-
-            java.util.List<String> genrs = volumeInfo.getCategories();
-            if (genrs != null && !genrs.isEmpty()) {
-                genr = genr.concat("Genêro: ");
-                if (volumeInfo.getMainCategory() != null)
-                    genr = genr.concat(volumeInfo.getMainCategory() +", ");
-                for (int i = 0; i < genrs.size(); ++i) {
-                    genr = genr.concat(genrs.get(i));
-                    if (i < genrs.size() - 1) {
-                        genr = genr.concat(", ");
-                    }
-                }
-            }
-
-            if (volumeInfo.getPageCount() != null)
-                pageCount = ""+volumeInfo.getPageCount()+" páginas";
-
-            java.util.List<Volume.VolumeInfo.IndustryIdentifiers> isbn = volumeInfo.getIndustryIdentifiers();
-            if (isbn != null && !isbn.isEmpty()) {
-                for (Volume.VolumeInfo.IndustryIdentifiers ii:isbn) {
-                    identifier = identifier.concat(ii.getType()+": "+ ii.getIdentifier()+"");
-                }
-            }
-            if (volumeInfo.getRatingsCount() != null && volumeInfo.getRatingsCount() > 0) {
-                int fullRating = (int) Math.round(volumeInfo.getAverageRating());
-                rating = "Avaliação: ";
-                for (int i = 0; i < fullRating; ++i) {
-                    rating = rating.concat(" * ");
-                }
-                rating = rating.concat(" (" + volumeInfo.getRatingsCount() + " avaliações) ");
-            }
-            if (saleInfo != null && "FOR_SALE".equals(saleInfo.getSaleability())) {
-                double save = saleInfo.getListPrice().getAmount() - saleInfo.getRetailPrice().getAmount();
-                if (save > 0.0) {
-                    price = price.concat("Preço médio: " + CURRENCY_FORMATTER.format(saleInfo.getListPrice().getAmount()));
-                }
-                price = price.concat(" Na Google Books: "
-                    + CURRENCY_FORMATTER.format(saleInfo.getRetailPrice().getAmount()));
-                if (save > 0.0) {
-                    price = price.concat(" Você ganha: " + CURRENCY_FORMATTER.format(save) + " ("
-                        + PERCENT_FORMATTER.format(save / saleInfo.getListPrice().getAmount()) + ")");
-                }
-            }
-            titleLabel.setText(title);
-            authorLabel.setText(author);
-            //if (!"".equals(identifier))
-            genrLabel.setText(genr);
-            pageLabel.setText(pageCount);
-            pageLabel.setText(pageCount);
-            ratingLabel.setText(rating);
-            publisherLabel.setText(publisher);
-            //if (!"".equals(description))
-                
+    
+    
+    /*
+    imageLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    if (infoLink != null && !"".equals(infoLink)) {
+        try {
+            Desktop.getDesktop().browse(new URI(infoLink));
+        } catch (IOException | URISyntaxException ex) {
+            Logger.getLogger(ConfigInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    */
+    public EbookFragmentPanel(List<String> details) {
+        initComponents();
+        if (details != null && !details.isEmpty()) {
+            infoLink = details.get(9);
+            titleLabel.setText(details.get(1));
+            authorLabel.setText(details.get(2));
+            genrLabel.setText(details.get(3));
+            pageLabel.setText(details.get(6));
+            ratingLabel.setText(details.get(4));
+            publisherLabel.setText(details.get(7));
+            
+            
+            if (details.get(9) != null && !"".equals( details.get(9) )) {
+                Runnable t1 = () -> {
+                    Image image;
+                    try {
+                        URL url = new URL(details.get(9));
+                        image = ImageIO.read(url);
+                        final ImageIcon imageIcon = new ImageIcon(image); 
+                        imageLabel.setIcon(imageIcon);
+                        System.out.println("Thumb baixada para "+ details.get(1));
+                        try {
+                            EbooksInternalFrame.updateModelUI();                               
+                        } catch (Exception ex) {
+                            System.out.println("Exception: "+ ex.getMessage());
+                        }
+                        
+                    } catch (MalformedURLException ex) {
+                        Logger.getLogger(EbooksInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(EbooksInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
+                    }                    
+                };
+                new Thread(t1).start();
+                
+            
+            }
+            else imageLabel.setText("Sem Miniatura");
+        }
+        
     }
 
     /**
@@ -187,15 +125,6 @@ public class EbookFragmentPanel extends javax.swing.JPanel {
         ratingLabel = new javax.swing.JLabel();
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-
-        imageLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                imageLabelMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                imageLabelMouseEntered(evt);
-            }
-        });
 
         titleLabel.setFont(new java.awt.Font("Dialog", 1, 17)); // NOI18N
         titleLabel.setText("Sem Título");
@@ -221,88 +150,64 @@ public class EbookFragmentPanel extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(genrLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(pageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(ratingLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(publisherLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 506, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE)))
-                        .addContainerGap())
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(authorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(titleLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 468, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(titleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 102, Short.MAX_VALUE)
+                    .addComponent(genrLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ratingLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(publisherLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(authorLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
                         .addComponent(titleLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(authorLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(12, 12, 12)
                         .addComponent(genrLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(ratingLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(pageLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(publisherLabel))
-                    .addComponent(imageLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(publisherLabel)))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(8, 8, 8))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void imageLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageLabelMouseEntered
-        imageLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    }//GEN-LAST:event_imageLabelMouseEntered
-
-    private void imageLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_imageLabelMouseClicked
-        if (infoLink != null && !"".equals(infoLink)) {
-            try {
-                Desktop.getDesktop().browse(new URI(infoLink));
-            } catch (IOException | URISyntaxException ex) {
-                Logger.getLogger(ConfigInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }//GEN-LAST:event_imageLabelMouseClicked
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel authorLabel;
-    private javax.swing.JLabel genrLabel;
+    public static javax.swing.JLabel authorLabel;
+    public static javax.swing.JLabel genrLabel;
     private javax.swing.JLabel imageLabel;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel pageLabel;
-    private javax.swing.JLabel publisherLabel;
-    private javax.swing.JLabel ratingLabel;
-    private javax.swing.JLabel titleLabel;
+    public static javax.swing.JLabel pageLabel;
+    public static javax.swing.JLabel publisherLabel;
+    public static javax.swing.JLabel ratingLabel;
+    public static javax.swing.JLabel titleLabel;
     // End of variables declaration//GEN-END:variables
 }

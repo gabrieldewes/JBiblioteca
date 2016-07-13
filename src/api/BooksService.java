@@ -51,10 +51,17 @@ public class BooksService {
 
     private static final NumberFormat CURRENCY_FORMATTER = NumberFormat.getCurrencyInstance();
     private static final NumberFormat PERCENT_FORMATTER = NumberFormat.getPercentInstance();
-       
-    public static ArrayList<Volume> getQueryGoogleBooks(String query) {
+    
+    public static java.util.List<Volume> getVolumesList(String query) {
+        Volumes volumes = getVolumes(query);
+        if (volumes != null)
+            return volumes.getItems();
+        return null;
+        
+    }
+    
+    private static Volumes getVolumes(String query) {
         try {
-            ArrayList<Volume> ebooks = new ArrayList<>();
             JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
             final Books books = new Books.Builder(GoogleNetHttpTransport.newTrustedTransport(), jsonFactory, null)
                 .setApplicationName(APPLICATION_NAME)
@@ -62,35 +69,24 @@ public class BooksService {
             System.out.println("Query Google Books: [" + query + "]");
             List volumesList = books.volumes().list(query);
             Volumes volumes = volumesList.execute();
-            if (volumes.getTotalItems() == 0 || volumes.getItems() == null) {
-                System.out.println("No matches found.");
-                return null;
+            if (volumes != null) {
+                if (volumes.getTotalItems() == 0 || volumes.getItems() == null) {
+                    System.out.println("No matches found.");
+                    return null;
+                }
+                return volumes;
             }
-            for (Volume v:volumes.getItems()) {
-                ebooks.add(v);
-            }
-            System.out.println("Return "+ ebooks.size() +" items from query "+ query);
-            return ebooks;
-        } catch (IOException | GeneralSecurityException ex) {
+        } catch (GeneralSecurityException ex) {
+            Logger.getLogger(BooksService.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Verifique a conexão com a Internet.", "Livros Online", JOptionPane.WARNING_MESSAGE);
             Logger.getLogger(BooksService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
     
-    private static void queryGoogleBooks(JsonFactory jsonFactory, String query) throws Exception {
-        final Books books = new Books.Builder(GoogleNetHttpTransport.newTrustedTransport(), jsonFactory, null)
-            .setApplicationName(APPLICATION_NAME)
-             //.setGoogleClientRequestInitializer(new BooksRequestInitializer(ClientCredentials.API_KEY))
-            .build();
-        System.out.println("Query Google Books: [" + query + "]");
-        List volumesList = books.volumes().list(query);
-        //volumesList.setFilter("ebooks");
-        Volumes volumes = volumesList.execute();
-        if (volumes.getTotalItems() == 0 || volumes.getItems() == null) {
-            System.out.println("No matches found.");
-            return;
-        }
+    private static void queryGoogleBooks(String query) throws Exception {
+        Volumes volumes = getVolumes(query);
         for (Volume volume : volumes.getItems()) {
             Volume.VolumeInfo volumeInfo = volume.getVolumeInfo();
             Volume.SaleInfo saleInfo = volume.getSaleInfo();
@@ -165,11 +161,10 @@ public class BooksService {
     }
     
     public static void main(String[] args) {
-        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
         String args2 = "Estratégia";
         try {
             try {
-                queryGoogleBooks(jsonFactory, args2); 
+                queryGoogleBooks(args2); 
             } catch (IOException e) {
                 System.err.println(e.getMessage());
             }

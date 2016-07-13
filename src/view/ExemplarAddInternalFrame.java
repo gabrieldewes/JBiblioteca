@@ -25,7 +25,7 @@ package view;
 
 import control.ExemplarController;
 import control.LivroController;
-import java.util.ArrayList;
+import java.util.List;
 import model.Livro;
 import static view.MainFrame.lif;
 
@@ -35,8 +35,8 @@ import static view.MainFrame.lif;
  */
 public class ExemplarAddInternalFrame extends javax.swing.JInternalFrame {
 
-    static ArrayList<Livro> livros;
-    static ArrayList<Livro> filtrados;
+    static List<Livro> livros;
+    static List<Livro> filtrados;
     
     public ExemplarAddInternalFrame() {
         initComponents();
@@ -44,7 +44,7 @@ public class ExemplarAddInternalFrame extends javax.swing.JInternalFrame {
         updateLivroBox(livros);
     }
     
-    void updateLivroBox(ArrayList<Livro> livros) {
+    void updateLivroBox(List<Livro> livros) {
         livroBox.removeAllItems();
         livros.stream().forEach((e) -> {
             livroBox.addItem( e.getTitulo() );
