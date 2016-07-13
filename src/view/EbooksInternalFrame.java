@@ -23,30 +23,15 @@
  */
 package view;
 
-import com.google.api.services.books.model.Volume;
-import control.ExemplarController;
 import control.LivroController;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
-import java.awt.Desktop;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.ImageIO;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -61,19 +46,29 @@ import static view.MainFrame.lif;
  */
 public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
 
-    private static ArrayList<Volume> ebooks;
-    private static DefaultListModel model;
+    public static DefaultListModel model;
     
     public EbooksInternalFrame() {
         initComponents();   
-        model = new DefaultListModel();
-        ebooks = LivroController.ArrayEbook("água para elefantes");
-        model = LivroController.UpdateList(ebooks, model);
         //ebooksList.setCellRenderer(new MyCellRenderer());
         ebooksList.setCellRenderer(new PanelRenderer());
-        ebooksList.setModel(model);
         
-    }    
+        model = new DefaultListModel();
+        LivroController.UpdateEbooksList("água para elefantes");
+        ebooksList.setModel(model);
+               
+        
+    }   
+    
+    public static void updateModelUI() {
+        Runnable t1 = () -> {
+            EbookFragmentPanel panel = (EbookFragmentPanel) model.get(0);
+            panel.updateUI();
+            model.set(0, panel);
+        };
+        new Thread(t1).start();
+        
+    }
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -96,7 +91,6 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
         setResizable(true);
         setTitle("Livros em Google Books");
 
-        ebooksList.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         ebooksList.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         ebooksList.setModel(new DefaultListModel());
         ebooksList.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -163,18 +157,17 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jScrollPane1))
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 383, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 377, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -185,7 +178,7 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
         if (ebooksList.getSelectedIndex() > -1) {
             saveEbookBtn.setEnabled(true);
             int index = ebooksList.getSelectedIndex();
-            System.out.println("Volume at "+index+": "+ ebooks.get(index).getVolumeInfo().getTitle());
+            System.out.println("Volume at "+index+": "+ LivroController.volumesList.get(index).getVolumeInfo().getTitle() );
         }
         else {
             saveEbookBtn.setEnabled(false);
@@ -218,7 +211,7 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
                 "Prateleira:", yField
             };
             String final_author="";
-            java.util.List<String> authors = ebooks.get(index).getVolumeInfo().getAuthors();
+            java.util.List<String> authors = LivroController.volumesList.get(index).getVolumeInfo().getAuthors();
             if (authors != null && !authors.isEmpty()) {
                 for (int i = 0; i < authors.size(); ++i) {
                     final_author = authors.get(i);
@@ -228,7 +221,7 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
                 }
             }
             
-            title2.setText(ebooks.get(index).getVolumeInfo().getTitle());
+            title2.setText(LivroController.volumesList.get(index).getVolumeInfo().getTitle());
             author.setText(final_author);
             int option = 1;
             while (option != JOptionPane.OK_CANCEL_OPTION) {
@@ -260,19 +253,14 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
     private void searchGoogleBooksBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGoogleBooksBtnActionPerformed
         String isbn = searchGoogleBooksField.getText();
         if (isbn.trim() != null && isbn.trim().length() > 2) {
-            ebooks = LivroController.ArrayEbook(isbn);
-            if (!ebooks.isEmpty()) {
-                ebooksList.setModel(LivroController.UpdateList(ebooks, model));
-            }
-            else {
-                
-            }
+            LivroController.UpdateEbooksList( isbn );
+            ebooksList.ensureIndexIsVisible(0);
         }
     }//GEN-LAST:event_searchGoogleBooksBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JList<JPanel> ebooksList;
+    public static javax.swing.JList<JPanel> ebooksList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
@@ -296,52 +284,6 @@ class PanelRenderer implements ListCellRenderer {
         renderer.setBackground(isSelected ? Color.DARK_GRAY : list.getBackground());
         return renderer;
     }
-}
-class MyCellRenderer extends DefaultListCellRenderer {
-    private final JPanel p;
-    private final JTextArea ta;
-
-    public MyCellRenderer() {
-        p = new JPanel();
-        p.setLayout(new BorderLayout());
-        ta = new JTextArea();
-        ta.setLineWrap(true);
-        ta.setFont(new Font("Dialog", Font.PLAIN, 14));
-        p.add(ta, BorderLayout.CENTER);
-    }
-    @Override
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-        /*Image image=null;
-        try {
-                URL url = new URL(vs.get(index).getVolumeInfo().getImageLinks().getSmallThumbnail());
-                image = ImageIO.read(url);
-            } catch (MalformedURLException ex) {
-                Logger.getLogger(EbooksInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(EbooksInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        final ImageIcon imageIcon = new ImageIcon(image);
-        image = imageIcon.getImage();
-        final Dimension dimension = this.getPreferredSize();
-        final double height = dimension.getHeight();
-        final double width = (height / imageIcon.getIconHeight()) * imageIcon.getIconWidth();
-        image = image.getScaledInstance((int)width, (int)height, Image.SCALE_SMOOTH);
-        final ImageIcon finalIcon = new ImageIcon(image);
-        setIcon(finalIcon);*/
-        if (isSelected) {
-            p.setForeground(list.getSelectionForeground());
-            p.setBackground(Color.DARK_GRAY);
-        } 
-        else {
-            p.setForeground(list.getForeground());
-            p.setBackground(list.getBackground());
-        }
-        list.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        ta.setText((String) value);
-
-        return p;
-     }
 }
 
 
