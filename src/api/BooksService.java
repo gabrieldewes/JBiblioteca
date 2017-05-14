@@ -36,7 +36,6 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.security.GeneralSecurityException;
 import java.text.NumberFormat;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -79,7 +78,7 @@ public class BooksService {
         } catch (GeneralSecurityException ex) {
             Logger.getLogger(BooksService.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Verifique a conexão com a Internet.", "Livros Online", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Verifique a conexão com a Internet.", "JBiblioteca", JOptionPane.WARNING_MESSAGE);
             Logger.getLogger(BooksService.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
@@ -161,7 +160,7 @@ public class BooksService {
     }
     
     public static void main(String[] args) {
-        String args2 = "Estratégia";
+        String args2 = "Casseta e planeta";
         try {
             try {
                 queryGoogleBooks(args2); 

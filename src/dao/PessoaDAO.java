@@ -76,7 +76,7 @@ public class PessoaDAO {
             if (p!=null) 
                 System.out.println("Return "+ p.toString() +" from query "+ query);
             stmt.close();
-            helper.close();
+            //helper.close();
         } catch (SQLException ex) {
             Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -137,7 +137,7 @@ public class PessoaDAO {
             } 
             System.out.println("Return "+ pessoas.size() +" items from query "+ query);
             stmt.close();
-            helper.close();
+            //helper.close();
         } catch (SQLException ex) {
             Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

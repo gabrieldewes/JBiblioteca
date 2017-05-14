@@ -16,27 +16,24 @@ import model.Turma;
  */
 public class TurmaController {
     
-    static TurmaDAO dao;
+    public static TurmaController INSTANCE = new TurmaController();
     
-    public TurmaController() {
-        //dao = new TurmaDAO();
-    }
+    private TurmaDAO dao = TurmaDAO.INSTANCE;
+        
+    public TurmaController() {}
     
-    public static TableModel Listar() {
-        dao = new TurmaDAO();
+    public TableModel Listar() {
         TableModel tb = dao.list();
         return tb;
     }
     
-    public static TableModel ListarBusca(String busca) {
-        dao = new TurmaDAO();
+    public TableModel ListarBusca(String busca) {
         TableModel tb = dao.listLike(busca);
         return tb;
     }
     
-    public static boolean Salvar(String nome, String ano) {
+    public boolean Salvar(String nome, String ano) {
         if ( ! ("".equals(nome) && "".equals(ano)) ) {
-            dao = new TurmaDAO();
             Turma t = new Turma(0, nome, ano);
             if (dao.save(t)) {
                 return true;
@@ -47,13 +44,11 @@ public class TurmaController {
         return false;
     }
     
-    public static boolean Alterar(Turma t) {
-        dao = new TurmaDAO();
+    public boolean Alterar(Turma t) {
         return dao.update(t);
     }
     
-    public static boolean Apagar(int id) {
-        dao = new TurmaDAO();
+    public boolean Apagar(int id) {
         if (!dao.restrict(id)) {
             dao = new TurmaDAO();
             return dao.delete(id);
@@ -61,14 +56,16 @@ public class TurmaController {
         return false;
     }
     
-    public static Turma Pegar(int id) {
-        dao = new TurmaDAO();
+    public Turma Pegar(int id) {
         return dao.get(id);
     }
     
-    public static ArrayList<Turma> ArrayTurma() {
-        dao = new TurmaDAO();
+    public ArrayList<Turma> ArrayTurma() {
         return dao.getArray();
+    }
+    
+    public int AlterarTurmaLote(int turmaDeId, int turmaParaId) {
+        return dao.updateLote(turmaDeId, turmaParaId);
     }
     
 }

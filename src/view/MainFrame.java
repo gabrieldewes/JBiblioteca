@@ -37,6 +37,7 @@ public class MainFrame extends javax.swing.JFrame {
     static ConfigInternalFrame cif;
     static EbooksInternalFrame ebif;
     static ExemplarAddInternalFrame exaif;
+    static TurmasAttLoteInternalFrame talif;
 
     public MainFrame() {
         initComponents();
@@ -53,25 +54,21 @@ public class MainFrame extends javax.swing.JFrame {
         desktop = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem2 = new javax.swing.JMenuItem();
         associadosMenu = new javax.swing.JMenu();
-        verPessoasMenuItem = new javax.swing.JMenuItem();
-        jSeparator5 = new javax.swing.JPopupMenu.Separator();
         cadastrarMenuItem = new javax.swing.JMenuItem();
-        titulosExemplaresMenu = new javax.swing.JMenu();
-        verLivrosMenuItem = new javax.swing.JMenuItem();
-        jSeparator3 = new javax.swing.JPopupMenu.Separator();
         addLivroMenuItem = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        ebooksMenuItem = new javax.swing.JMenuItem();
+        verLivrosMenuItem = new javax.swing.JMenuItem();
+        verPessoasMenuItem = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         verEmprestimosMenuItem = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
         novoEmprestimoMenuItem = new javax.swing.JMenuItem();
         aboutMenu = new javax.swing.JMenu();
-        statisticMenuItem = new javax.swing.JMenuItem();
         configMenuItem = new javax.swing.JMenuItem();
+        ebooksMenuItem = new javax.swing.JMenuItem();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -101,9 +98,54 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
 
-        jMenu1.setText("Turmas");
+        jMenu1.setText("Arquivo");
 
-        jMenuItem2.setText("Ver Turmas");
+        associadosMenu.setText("Novo");
+
+        cadastrarMenuItem.setText("Pessoa");
+        cadastrarMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cadastrarMenuItemActionPerformed(evt);
+            }
+        });
+        associadosMenu.add(cadastrarMenuItem);
+
+        addLivroMenuItem.setText("Título");
+        addLivroMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addLivroMenuItemActionPerformed(evt);
+            }
+        });
+        associadosMenu.add(addLivroMenuItem);
+
+        jMenuItem3.setText("Exemplar");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        associadosMenu.add(jMenuItem3);
+
+        jMenu1.add(associadosMenu);
+        jMenu1.add(jSeparator2);
+
+        verLivrosMenuItem.setText("Livros");
+        verLivrosMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verLivrosMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(verLivrosMenuItem);
+
+        verPessoasMenuItem.setText("Pessoas");
+        verPessoasMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verPessoasMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu1.add(verPessoasMenuItem);
+
+        jMenuItem2.setText("Turmas");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -113,68 +155,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        associadosMenu.setText("Pessoas");
-
-        verPessoasMenuItem.setText("Ver Pessoas");
-        verPessoasMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verPessoasMenuItemActionPerformed(evt);
-            }
-        });
-        associadosMenu.add(verPessoasMenuItem);
-        associadosMenu.add(jSeparator5);
-
-        cadastrarMenuItem.setText("Nova Pessoa");
-        cadastrarMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cadastrarMenuItemActionPerformed(evt);
-            }
-        });
-        associadosMenu.add(cadastrarMenuItem);
-
-        jMenuBar1.add(associadosMenu);
-
-        titulosExemplaresMenu.setText("Catalogação de Livros");
-
-        verLivrosMenuItem.setText("Ver Títulos e Exemplares");
-        verLivrosMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verLivrosMenuItemActionPerformed(evt);
-            }
-        });
-        titulosExemplaresMenu.add(verLivrosMenuItem);
-        titulosExemplaresMenu.add(jSeparator3);
-
-        addLivroMenuItem.setText("Novo Título");
-        addLivroMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addLivroMenuItemActionPerformed(evt);
-            }
-        });
-        titulosExemplaresMenu.add(addLivroMenuItem);
-
-        jMenuItem3.setText("Novo Exemplar");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
-            }
-        });
-        titulosExemplaresMenu.add(jMenuItem3);
-        titulosExemplaresMenu.add(jSeparator2);
-
-        ebooksMenuItem.setText("Referências Online");
-        ebooksMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ebooksMenuItemActionPerformed(evt);
-            }
-        });
-        titulosExemplaresMenu.add(ebooksMenuItem);
-
-        jMenuBar1.add(titulosExemplaresMenu);
-
         jMenu4.setText("Empréstimos");
 
-        verEmprestimosMenuItem.setText("Ver Empréstimos");
+        verEmprestimosMenuItem.setText("Ver Todos");
         verEmprestimosMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 verEmprestimosMenuItemActionPerformed(evt);
@@ -183,7 +166,7 @@ public class MainFrame extends javax.swing.JFrame {
         jMenu4.add(verEmprestimosMenuItem);
         jMenu4.add(jSeparator4);
 
-        novoEmprestimoMenuItem.setText("Novo Empréstimo");
+        novoEmprestimoMenuItem.setText("Novo");
         novoEmprestimoMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 novoEmprestimoMenuItemActionPerformed(evt);
@@ -195,9 +178,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         aboutMenu.setText("Sobre");
 
-        statisticMenuItem.setText("Estatísticas");
-        aboutMenu.add(statisticMenuItem);
-
         configMenuItem.setText("Configurações");
         configMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -205,6 +185,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         aboutMenu.add(configMenuItem);
+
+        ebooksMenuItem.setText("Referências Online");
+        ebooksMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ebooksMenuItemActionPerformed(evt);
+            }
+        });
+        aboutMenu.add(ebooksMenuItem);
 
         jMenuBar1.add(aboutMenu);
 
@@ -491,12 +479,8 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
-    private javax.swing.JPopupMenu.Separator jSeparator5;
     private javax.swing.JMenuItem novoEmprestimoMenuItem;
-    private javax.swing.JMenuItem statisticMenuItem;
-    private javax.swing.JMenu titulosExemplaresMenu;
     private javax.swing.JMenuItem verEmprestimosMenuItem;
     private javax.swing.JMenuItem verLivrosMenuItem;
     private javax.swing.JMenuItem verPessoasMenuItem;

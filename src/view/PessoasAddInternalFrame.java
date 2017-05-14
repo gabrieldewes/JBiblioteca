@@ -22,11 +22,12 @@ public class PessoasAddInternalFrame extends javax.swing.JInternalFrame {
 
     static ArrayList<Turma> turmas;
     static int id_turma=0;
+    private TurmaController turmaController = TurmaController.INSTANCE;
     
     public PessoasAddInternalFrame() {
         initComponents();
         
-        turmas = TurmaController.ArrayTurma();
+        turmas = turmaController.ArrayTurma();
         turmaField.removeAllItems();
         turmas.stream().forEach((t) -> {
             turmaField.addItem( t.getNome() );

@@ -23,19 +23,15 @@
  */
 package view;
 
+import control.EbookController;
 import control.LivroController;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import static view.MainFrame.lif;
@@ -54,7 +50,7 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
         ebooksList.setCellRenderer(new PanelRenderer());
         
         model = new DefaultListModel();
-        LivroController.UpdateEbooksList("água para elefantes");
+        //EbookController.UpdateEbooksList("");
         ebooksList.setModel(model);
                
         
@@ -178,7 +174,7 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
         if (ebooksList.getSelectedIndex() > -1) {
             saveEbookBtn.setEnabled(true);
             int index = ebooksList.getSelectedIndex();
-            System.out.println("Volume at "+index+": "+ LivroController.volumesList.get(index).getVolumeInfo().getTitle() );
+            System.out.println("Volume at "+index+": "+ EbookController.volumesList.get(index).getVolumeInfo().getTitle() );
         }
         else {
             saveEbookBtn.setEnabled(false);
@@ -211,7 +207,7 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
                 "Prateleira:", yField
             };
             String final_author="";
-            java.util.List<String> authors = LivroController.volumesList.get(index).getVolumeInfo().getAuthors();
+            java.util.List<String> authors = EbookController.volumesList.get(index).getVolumeInfo().getAuthors();
             if (authors != null && !authors.isEmpty()) {
                 for (int i = 0; i < authors.size(); ++i) {
                     final_author = authors.get(i);
@@ -221,7 +217,7 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
                 }
             }
             
-            title2.setText(LivroController.volumesList.get(index).getVolumeInfo().getTitle());
+            title2.setText(EbookController.volumesList.get(index).getVolumeInfo().getTitle());
             author.setText(final_author);
             int option = 1;
             while (option != JOptionPane.OK_CANCEL_OPTION) {
@@ -253,7 +249,7 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
     private void searchGoogleBooksBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGoogleBooksBtnActionPerformed
         String isbn = searchGoogleBooksField.getText();
         if (isbn.trim() != null && isbn.trim().length() > 2) {
-            LivroController.UpdateEbooksList( isbn );
+            EbookController.UpdateEbooksList( isbn );
             ebooksList.ensureIndexIsVisible(0);
         }
     }//GEN-LAST:event_searchGoogleBooksBtnActionPerformed

@@ -19,6 +19,8 @@ import model.TurmaEnum;
  * @author Dewes
  */
 public class TurmasInternalFrame extends javax.swing.JInternalFrame {
+    
+    private TurmaController turmaController = TurmaController.INSTANCE;
 
     /**
      * Creates new form TurmasGeralFrame
@@ -31,10 +33,10 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
     
     private void updateTableModel(String buscar) {
         if (!"".equals(buscar)) {
-            TurmaTable.setModel(TurmaController.ListarBusca(buscar));
+            TurmaTable.setModel(turmaController.ListarBusca(buscar));
         }
         else {
-            TurmaTable.setModel(TurmaController.Listar());
+            TurmaTable.setModel(turmaController.Listar());
         }
         TurmaTable.getColumnModel().getColumn(0).setMinWidth(0);
         TurmaTable.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -238,7 +240,7 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
         String ano = anoField.getSelectedItem().toString();
 
         if (! "".equals(nome) ) {
-            if (TurmaController.Salvar(nome, ano)) {
+            if (turmaController.Salvar(nome, ano)) {
                 nomeField.setText("");
                 updateTableModel("");
             }
@@ -256,7 +258,7 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
 
                     int id = Integer.valueOf( TurmaTable.getValueAt( TurmaTable.getSelectedRow() , 0 ).toString() );
                     System.out.println("Botão mandou ID "+ id);
-                    if (TurmaController.Apagar(id)) {
+                    if (turmaController.Apagar(id)) {
                         updateTableModel("");
                     }
                     else { JOptionPane.showMessageDialog(null, "Não foi possível excluir. Esta Turma possui Pessoas cadastradas! ", "Atenção", JOptionPane.WARNING_MESSAGE); }
@@ -300,7 +302,7 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
                 "Ano:", ano
             };
             int id = Integer.valueOf( TurmaTable.getValueAt( TurmaTable.getSelectedRow() , 0 ).toString() );
-            Turma ex = TurmaController.Pegar(id);
+            Turma ex = turmaController.Pegar(id);
             nome.setText( ex.getNome() );
             ano.setSelectedItem( TurmaEnum.get( ex.getAno() ) );
 
@@ -311,7 +313,7 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
                     
                     Turma t = new Turma(ex.getId_turma(), nome.getText(), ano.getSelectedItem().toString() );
                     if (! ex.equals(t)) {
-                        if (TurmaController.Alterar(t)) {
+                        if (turmaController.Alterar(t)) {
                             updateTableModel("");
                             option = OK_CANCEL_OPTION;
                         }                     

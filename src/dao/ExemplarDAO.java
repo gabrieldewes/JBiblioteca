@@ -96,7 +96,7 @@ public class ExemplarDAO {
             if (e!=null)
                 System.out.println("Return "+ e.toString() +" from query "+ query);
             stmt.close();
-            helper.close();
+            //helper.close();
         } catch (SQLException ex) {
             Logger.getLogger(LivroDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -177,7 +177,7 @@ public class ExemplarDAO {
             } 
             System.out.println("Return "+ exemplares.size() +" items from query "+ query);
             stmt.close();
-            helper.close();
+            //helper.close();
         } catch (SQLException ex) {
             Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

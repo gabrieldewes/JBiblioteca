@@ -7,6 +7,7 @@ package view;
 
 import control.PessoaController;
 import control.TurmaController;
+import java.awt.Insets;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -24,11 +25,17 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
     static Pessoa ex;
     static int id_turma;
     static ArrayList<Turma> turmas;
+    private TurmaController turmaController = TurmaController.INSTANCE;
+
+    @Override
+    public Insets insets() {
+        return super.insets(); //To change body of generated methods, choose Tools | Templates.
+    }
     
     public PessoasAttInternalFrame( int id ) {
         initComponents();
         
-        turmas = TurmaController.ArrayTurma();
+        turmas = turmaController.ArrayTurma();
         turmaField.removeAllItems();
         turmas.stream().forEach((t) -> {
             turmaField.addItem( t.getNome() );
@@ -39,7 +46,7 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
         codigoField.setText( ex.getCodigo() );
         cargoField.setSelectedItem( PessoaEnum.get( ex.getCargo() ));
         if ( PessoaEnum.aluno.toString().equals( ex.getCargo() ) ) {
-            turmaField.setSelectedItem( TurmaController.Pegar( ex.getId_turma() ).getNome() );
+            turmaField.setSelectedItem( turmaController.Pegar( ex.getId_turma() ).getNome() );
         }
         
     }
@@ -66,7 +73,7 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
 
         setClosable(true);
-        setTitle("Alterar cadastro de associado");
+        setTitle("Alterar cadastro de pessoa");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
@@ -106,20 +113,23 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(70, 70, 70)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(nomeField, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(64, 64, 64)
-                        .addComponent(turmaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel5))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cargoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(codigoField, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(64, 64, 64)
+                                .addComponent(turmaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel2)
+                                    .addComponent(jLabel5))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cargoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(codigoField, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -216,7 +226,7 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
         String codigo = codigoField.getText();
         String cargo = cargoField.getSelectedItem().toString();
         
-        turmas = TurmaController.ArrayTurma();
+        turmas = turmaController.ArrayTurma();
         if (PessoaEnum.aluno.toString().equals(cargo)) {
             String turma = turmaField.getSelectedItem().toString();
             turmas.stream().filter((t) -> (t.getNome().equals( turma ))).forEach((t) -> {

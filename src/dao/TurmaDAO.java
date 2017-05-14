@@ -16,6 +16,8 @@ import model.Turma;
  */
 public class TurmaDAO implements DAO {
     
+    public static TurmaDAO INSTANCE = new TurmaDAO();
+    
     private static DBHelper helper;
     private static PreparedStatement stmt;
     
@@ -35,6 +37,11 @@ public class TurmaDAO implements DAO {
     public boolean update(Turma t) {
         String query = "UPDATE turma SET nome = '"+ t.getNome() +"', ano = '"+ t.getAno() +"' WHERE id_turma = '"+ t.getId_turma() +"'; ";
         return helper.rawSQL(query);
+    }
+    
+    public int updateLote(int turmaDeId, int turmaParaId) {
+        String query = "UPDATE pessoa SET id_turma = "+ turmaParaId +" WHERE id_turma = "+ turmaDeId +";";
+        return helper.rawUpdate(query);
     }
     
     public boolean restrict(int id) {
@@ -69,7 +76,7 @@ public class TurmaDAO implements DAO {
                 System.out.println("Não encontrou nada com o ID "+ id);
             } 
             stmt.close();
-            helper.close();
+            //helper.close();
         } catch (SQLException ex) {
             Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -106,7 +113,7 @@ public class TurmaDAO implements DAO {
             } 
             System.out.println("Return "+ turmas.size() +" items from query "+ query);
             stmt.close();
-            helper.close();
+            //helper.close();
         } catch (SQLException ex) {
             Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

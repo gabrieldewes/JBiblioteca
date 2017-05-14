@@ -49,7 +49,7 @@ public class DBHelper extends SQLiteConnection {
                 stmt.executeUpdate();
                 System.out.println("Raw query "+ query);
             }
-            this.close();
+            //this.close();
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
@@ -65,7 +65,7 @@ public class DBHelper extends SQLiteConnection {
                 tb = DbUtils.resultSetToTableModel(rs);
                 System.out.println("Return "+ tb.getRowCount() +" lines from query "+ query);
             }
-            this.close();
+            //this.close();
         } 
         catch (SQLException ex) { 
             Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
@@ -80,7 +80,7 @@ public class DBHelper extends SQLiteConnection {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) exists = true;
             System.out.println("Return "+ exists +" from query "+ query);
-            this.close();
+            //this.close();
         } 
         catch (SQLException ex) {
             Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,7 +97,7 @@ public class DBHelper extends SQLiteConnection {
             rs.next();
             id = rs.getInt(1);
             System.out.println("Return id "+ id +" from query "+ query);
-            this.close();
+            //this.close();
         } catch (SQLException ex) {
             Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -112,7 +112,7 @@ public class DBHelper extends SQLiteConnection {
             ResultSet rs = stmt.executeQuery();
             rs.next();
             id = rs.getInt("seq");
-            this.close();
+            //this.close();
         } catch (SQLException ex) {
             Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -129,7 +129,7 @@ public class DBHelper extends SQLiteConnection {
                     System.out.println("Raw external line "+ line);
                 }
             }
-            this.close();
+            //this.close();
         }
         catch (SQLException | IOException err) {
         }
@@ -143,7 +143,7 @@ public class DBHelper extends SQLiteConnection {
                 stmt.executeUpdate(line);
                 System.out.println("Raw line "+ line);
             }
-            this.close();
+            //this.close();
             return true;
         }
         catch (SQLException err) {
@@ -159,7 +159,7 @@ public class DBHelper extends SQLiteConnection {
             while (rs.next())
                 s=rs.getString(1);
             System.out.println("Return "+ s +" from query "+ query);
-            this.close();
+            //this.close();
         } 
         catch (SQLException ex) {
             Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
@@ -175,7 +175,7 @@ public class DBHelper extends SQLiteConnection {
             while (rs.next())
                 s=rs.getInt(1);
             System.out.println("Return "+ s +" from query "+ query);
-            this.close();
+            //this.close();
         } 
         catch (SQLException ex) {
             Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
@@ -191,7 +191,7 @@ public class DBHelper extends SQLiteConnection {
             while (rs.next())
                 s=rs.getDouble(1);
             System.out.println("Return "+ s +" from query "+ query);
-            this.close();
+            //this.close();
         } 
         catch (SQLException ex) {
             Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
@@ -199,5 +199,17 @@ public class DBHelper extends SQLiteConnection {
         return s;
     }
     
+    public int rawUpdate(String query) {
+        int s=0;
+        try {
+            PreparedStatement stmt = this.prepareStatement(query);
+            s = stmt.executeUpdate();   
+            System.out.println("Return "+ s +" from query "+ query);
+        } 
+        catch (SQLException ex) {
+            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return s;
+    }
     
 }

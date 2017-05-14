@@ -23,12 +23,7 @@
  */
 package view;
 
-import java.awt.Cursor;
 import java.awt.Image;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -37,8 +32,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
 
 /**
  *
@@ -97,13 +90,10 @@ public class EbookFragmentPanel extends javax.swing.JPanel {
                         Logger.getLogger(EbooksInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
                     }                    
                 };
-                new Thread(t1).start();
-                
-            
+                new Thread(t1).start();                           
             }
             else imageLabel.setText("Sem Miniatura");
-        }
-        
+        }        
     }
 
     /**

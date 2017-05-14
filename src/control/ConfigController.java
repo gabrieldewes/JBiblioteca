@@ -63,14 +63,14 @@ public class ConfigController {
             LocalDateTime hoje = new LocalDateTime( System.currentTimeMillis() );
             LocalDateTime last_bkp = new LocalDateTime( s );
             Period p = new Period(hoje, last_bkp);
-            if ( (p.getDays() < 0) || (s==null) ) {
+            //System.out.println(p.getHours() +" # "+ p.getMinutes());
+            if (p.getDays() < 0) {
                 java.io.File file = new java.io.File(
                         System.getProperty("user.home")+ System.getProperty("file.separator")
                         + ".jbiblioteca"+ System.getProperty("file.separator")+ "jbiblioteca_bkp.db");
                 try {  
                     Database.backupDatabase(file);
                     ConfigController.saveLastBackupDate("'"+hoje.toString()+"'");
-                    System.out.println("Backup \""+ file.getCanonicalPath() +"\" salvo. ");
                 } catch (Exception ex) {
                     Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -85,9 +85,14 @@ public class ConfigController {
         return cdao.getTaxaJuros();
     }
     
-    public static int getVers() {
+    public static int getDbVersion() {
         cdao = new ConfigDAO();
         return cdao.getDBVersion();
+    }
+    
+    public static boolean setDbVersion(int ver) {
+        cdao = new ConfigDAO();
+        return cdao.saveDBVersion(ver);
     }
     
     public static int getPrazoDefault() {

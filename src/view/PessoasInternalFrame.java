@@ -12,7 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import static view.MainFrame.talif;
 import static view.MainFrame.tif;
+
 
 /**
  *
@@ -22,6 +24,7 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
 
     static PessoasAddInternalFrame paif;
     static PessoasAttInternalFrame patif;
+    static TurmasAttLoteInternalFrame atif;
     static MainFrame mfthis;
     
     public PessoasInternalFrame( MainFrame mf ) {
@@ -57,6 +60,7 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
         AttPessoaBtn = new javax.swing.JButton();
         DelPessoaBtn = new javax.swing.JButton();
         turmasBtn = new javax.swing.JButton();
+        btnAlterarTurmas = new javax.swing.JButton();
 
         setClosable(true);
         setIconifiable(true);
@@ -132,6 +136,14 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
+        btnAlterarTurmas.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        btnAlterarTurmas.setText("Alterar Turmas");
+        btnAlterarTurmas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarTurmasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -142,10 +154,11 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(AttPessoaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(DelPessoaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
-                            .addComponent(turmasBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 476, Short.MAX_VALUE))
+                            .addComponent(DelPessoaBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(turmasBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAlterarTurmas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(17, 17, 17)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(AddPessoaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
@@ -175,6 +188,8 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
                         .addComponent(DelPessoaBtn)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(turmasBtn)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAlterarTurmas)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
@@ -257,11 +272,11 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_AttPessoaBtnActionPerformed
 
     private void BuscaPessoaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BuscaPessoaFieldKeyReleased
-        String search = BuscaPessoaField.getText();
+        /*String search = BuscaPessoaField.getText();
         if (search.length() > 3) {
             updateTableModel(search);
         }
-        else updateTableModel("");
+        else updateTableModel("");*/
     }//GEN-LAST:event_BuscaPessoaFieldKeyReleased
 
     private void BuscaPessoaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscaPessoaBtnActionPerformed
@@ -294,6 +309,19 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_turmasBtnActionPerformed
 
+    private void btnAlterarTurmasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarTurmasActionPerformed
+        if (talif == null || talif.isClosed()) {
+            talif = new TurmasAttLoteInternalFrame();
+            talif.setVisible(true);
+            mfthis.desktop.add(talif);
+        }
+        try {
+            talif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(TurmasAttLoteInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAlterarTurmasActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AddPessoaBtn;
@@ -302,6 +330,7 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
     private javax.swing.JTextField BuscaPessoaField;
     private javax.swing.JButton DelPessoaBtn;
     private javax.swing.JTable PessoaTable;
+    private javax.swing.JButton btnAlterarTurmas;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton turmasBtn;

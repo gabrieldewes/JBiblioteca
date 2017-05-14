@@ -226,7 +226,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
         int idx[] = emprestimoTable.getSelectedRows();
         if (idx.length > 0) {
             DevolveEmprestimoBtn.setEnabled(true); 
-            //DetalheBtn.setEnabled(true); 
+            RenovaEmprestimoBtn.setEnabled(true); 
             int id_emprestimo = Integer.valueOf(emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 0).toString());
             ArrayList<Exemplar> exemplares = ExemplarController.ArrayExemplar("el.id_emprestimo", id_emprestimo, null);
             DefaultListModel model = new DefaultListModel();
@@ -237,7 +237,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
         }
         else { 
             DevolveEmprestimoBtn.setEnabled(false); 
-            //DetalheBtn.setEnabled(false); 
+            RenovaEmprestimoBtn.setEnabled(false); 
         }
     }//GEN-LAST:event_emprestimoTableMouseClicked
 
