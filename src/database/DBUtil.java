@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package database;
 
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import control.ConfigController;
+import dao.ConfigDAO;
 
 /**
  *
@@ -15,9 +9,7 @@ import java.util.logging.Logger;
  */
 public class DBUtil {
     
-    
-    
-    public static String VER_1[] =  {"livro", "isbn", "TEXT", ""};
+    public static String VER_1[] =  {"livro", "genero", "TEXT", "Sem Gênero"};
     
     public static String[] selectScript(int ver){
         switch (ver) {
@@ -27,17 +19,7 @@ public class DBUtil {
             return null;         
         }
     }
-    
-    public static void updateTabelasBanco(DBHelper db, String table, String column, String typ, String valor) {
-        try {
-            db.rawSQL("ALTER TABLE " + table + " ADD " + column + " " + typ);
-            if (!"".equals(valor)){
-                db.rawSQL("UPDATE "+ table +" SET "+ column +" = '"+ valor +"'");
-            }
-        } catch (Exception e) {
-        }
-    }
-    
+
     static String[] create_ddl = {
         "CREATE TABLE IF NOT EXISTS turma ( " +
             "id_turma INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
@@ -51,10 +33,6 @@ public class DBUtil {
             "cargo     TEXT NOT NULL, " +
             "codigo    TEXT NOT NULL UNIQUE, " +
             "FOREIGN KEY (id_turma) REFERENCES turma(id_turma) ON UPDATE CASCADE ON DELETE RESTRICT ); ", 
-        
-        "CREATE TABLE IF NOT EXISTS genero (" +
-            "id_genero INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "+
-            "nome      TEXT NOT NULL); ",
         
         "CREATE TABLE IF NOT EXISTS livro (" +
             "id_livro INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
@@ -93,53 +71,36 @@ public class DBUtil {
             "prazo_default INTEGER, "+
             "auto_bkp      BLOB ); ",
         
-        "INSERT INTO app_config (taxa_juros, db_version, prazo_default, auto_bkp) VALUES (0.0, 1, 7, 'true'); "
+        "INSERT INTO app_config (taxa_juros, db_version, prazo_default, auto_bkp) VALUES (0.0, 0, 7, 'true'); "
     };
     
-    public static void updateDDL(int current_ver, int new_ver) {
-        try {
-            DBHelper db = new DBHelper();
-            db.onUpgrade(db, current_ver, new_ver);
-        } catch (SQLException ex) {
-            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
+    public static void updateDDL(int new_ver) {     
+        int oldVersion = ConfigDAO.getInstance().getDBVersion();
+        if (oldVersion < new_ver) {
+            DBHelper db = DBHelper.getInstance();
+            db.onUpgrade(db, oldVersion, new_ver);
         }
     }
     
     public static void createDDL() {
-        try {
-            DBHelper db = new DBHelper();
-            db.rawLineSQL(create_ddl);
-        } catch (SQLException ex) {
-            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        DBHelper db = DBHelper.getInstance();
+        db.rawLineSQL(create_ddl);
         
     }
     
     public static void dropDDL() {
-        try {
-            DBHelper db = new DBHelper();
-            db.rawLineSQL(drop_ddl);
-        } catch (SQLException ex) {
-            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        DBHelper db = DBHelper.getInstance();
+        db.rawLineSQL(drop_ddl);
     }
     
     public static void populate() {
-        try {
-            DBHelper db = new DBHelper();
-            db.rawLineSQL(insert_data);
-        } catch (SQLException ex) {
-            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        DBHelper db = DBHelper.getInstance();
+        db.rawLineSQL(insert_data);
     }
     
     public static void clear() {
-        try {
-            DBHelper db = new DBHelper();
-            db.rawLineSQL(clear_data);
-        } catch (SQLException ex) {
-            Logger.getLogger(DBUtil.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        DBHelper db = DBHelper.getInstance();
+        db.rawLineSQL(clear_data);
     }
     
     static String[] drop_ddl = {

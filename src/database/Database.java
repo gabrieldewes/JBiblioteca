@@ -94,7 +94,7 @@ public class Database {
                 throw new Exception("Erro ao gravar o arquivo de banco de dados.");
             }
             DBUtil.createDDL();
-            log.log(Level.INFO, "Banco de dados criado em '{0}' ", DATABASE.getAbsolutePath());
+            log.log(Level.INFO, "Banco de dados criado em {0}", DATABASE.getAbsolutePath());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Erro na criação do banco de dados. ERRO: "+ ex.getMessage(), "JBiblioteca", 0);
             throw new Exception("Erro na criação do banco de dados.\n"+ ex.getMessage());

@@ -5,6 +5,7 @@
  */
 package jbiblioteca;
 
+import database.DBHelper;
 import database.DBUtil;
 import database.Database;
 import java.io.IOException;
@@ -21,10 +22,11 @@ public class JBiblioteca {
             JOptionPane.showMessageDialog(null, "Já existe uma instância do programa aberta. ", "JBiblioteca", JOptionPane.INFORMATION_MESSAGE);             
             System.exit(0);  
         } 
+        
         MainFrame.OpenMainFrame();   
         try {
             Database.checkDatabase();
-            //DBUtil.updateDDL(1, 2);
+            //DBUtil.updateDDL(0);
             //DBUtil.dropDDL();
             //DBUtil.createDDL();
             //DBUtil.populate();

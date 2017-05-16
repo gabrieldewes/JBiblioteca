@@ -8,6 +8,7 @@ package control;
 import dao.EmprestimoDAO;
 import dao.ExemplarDAO;
 import dao.GenericDAO;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -123,8 +124,11 @@ public class EmprestimoController {
             String out = tb.getValueAt(i, 4).toString();
             LocalDateTime inicio = new LocalDateTime(in);
             LocalDateTime fim = new LocalDateTime(out);
-            tb.setValueAt(""+inicio.getDayOfMonth()+"/"+inicio.getMonthOfYear()+"/"+inicio.getYear()+"", i, 3);
-            tb.setValueAt(""+fim.getDayOfMonth()+"/"+fim.getMonthOfYear()+"/"+fim.getYear()+"", i, 4);
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            //tb.setValueAt(""+inicio.getDayOfMonth()+"/"+inicio.getMonthOfYear()+"/"+inicio.getYear()+"", i, 3);
+            tb.setValueAt(sdf.format(inicio.toDate()), i, 3);
+            //tb.setValueAt(""+fim.getDayOfMonth()+"/"+fim.getMonthOfYear()+"/"+fim.getYear()+"", i, 4);
+            tb.setValueAt(sdf.format(fim.toDate()), i, 4);
 
             Period p = new Period(hoje, fim);
             int dias = p.getDays();

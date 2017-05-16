@@ -1,5 +1,6 @@
 package database;
 
+import dao.ConfigDAO;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -45,11 +46,21 @@ public class DBHelper extends SQLiteConnection {
     public void onUpgrade(DBHelper db, int oldVersion, int newVersion) {
         String vers[];
         try {
-            for (int i=oldVersion; i<newVersion; i++) {
+            for (int i=oldVersion; i<=newVersion; i++) {
                 vers = DBUtil.selectScript(i);
-                DBUtil.updateTabelasBanco(db, vers[0], vers[1], vers[2], vers[3]);
+                if (vers != null)
+                    this.updateTabelasBanco(db, vers[0], vers[1], vers[2], vers[3]);
             }
-
+            db.rawSQL("UPDATE app_config SET db_version="+ newVersion +";");
+        } catch (Exception e) {}
+    }
+    
+    private void updateTabelasBanco(DBHelper db, String table, String column, String typ, String valor) {
+        try {
+            db.rawSQL("ALTER TABLE " + table + " ADD " + column + " " + typ);
+            if (!"".equals(valor)){
+                db.rawSQL("UPDATE "+ table +" SET "+ column +" = '"+ valor +"'");
+            }
         } catch (Exception e) {}
     }
  
