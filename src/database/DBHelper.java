@@ -24,15 +24,10 @@ public class DBHelper extends SQLiteConnection {
     private static DBHelper instance;
     
     private static final String DB_DRIVER = "jdbc:sqlite:";
-    public static final java.io.File DATABASE = new java.io.File(
-            System.getProperty("user.home")
-            + System.getProperty("file.separator")
-            + ".jbiblioteca"
-            + System.getProperty("file.separator")
-            + "jbiblioteca_db.db");
+    private static final String DB_PATH = Database.DATABASE.getAbsolutePath();
     
     public DBHelper() throws SQLException {
-        super(DB_DRIVER, DATABASE.getAbsolutePath());
+        super(DB_DRIVER, DB_PATH);
     }
     
     public static DBHelper getInstance() {

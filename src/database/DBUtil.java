@@ -29,49 +29,50 @@ public class DBUtil {
         "CREATE TABLE IF NOT EXISTS pessoa (" +
             "id_pessoa INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
             "id_turma  INTEGER NOT NULL, " +
-            "nome      TEXT DEFAULT 'Sem Nome', " +
-            "cargo     TEXT NOT NULL, " +
-            "codigo    TEXT NOT NULL UNIQUE, " +
+            "nome TEXT DEFAULT 'Sem Nome', " +
+            "cargo TEXT NOT NULL, " +
+            "codigo TEXT NOT NULL UNIQUE, " +
             "FOREIGN KEY (id_turma) REFERENCES turma(id_turma) ON UPDATE CASCADE ON DELETE RESTRICT ); ", 
         
         "CREATE TABLE IF NOT EXISTS livro (" +
             "id_livro INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-            "isbn     TEXT NOT NULL, " +
-            "titulo   TEXT NOT NULL DEFAULT 'Sem título', " +
-            "autor    TEXT NOT NULL); ",
+            "isbn TEXT NOT NULL, " +
+            "titulo TEXT NOT NULL DEFAULT 'Sem título', " +
+            "autor TEXT NOT NULL); ",
         
         "CREATE TABLE IF NOT EXISTS exemplar (" +
-            "id_exemplar  INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-            "codigo	  TEXT NOT NULL UNIQUE, " +
-            "disponivel   TEXT NOT NULL, " +
+            "id_exemplar INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
+            "codigo TEXT NOT NULL UNIQUE, " +
+            "disponivel TEXT NOT NULL, " +
             "coordenada_x TEXT NOT NULL, " +
             "coordenada_y TEXT NOT NULL, " +
-            "id_livro     INTEGER NOT NULL, " +
+            "id_livro INTEGER NOT NULL, " +
             "FOREIGN KEY (id_livro) REFERENCES livro(id_livro) ON UPDATE CASCADE ON DELETE CASCADE); ",
         
         "CREATE TABLE IF NOT EXISTS emprestimo ( "+
-            "id_emprestimo	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "+
-            "id_pessoa          INTEGER NOT NULL, "+
-            "data_inicio	TEXT NOT NULL, "+
-            "data_fim	        TEXT, "+
-            "situation          TEXT, "+
+            "id_emprestimo INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "+
+            "id_pessoa INTEGER NOT NULL, "+
+            "data_inicio TEXT NOT NULL, "+
+            "data_fim TEXT, "+
+            "situation TEXT, "+
             "FOREIGN KEY(id_pessoa) REFERENCES pessoa(id_pessoa)); ",
         
         "CREATE TABLE IF NOT EXISTS emprestimo_livro ( "+
-            "id_emprestimo	INTEGER NOT NULL, "+
-            "id_exemplar	INTEGER NOT NULL, "+
+            "id_emprestimo INTEGER NOT NULL, "+
+            "id_exemplar INTEGER NOT NULL, "+
             "PRIMARY KEY(id_emprestimo,id_exemplar), "+
             "FOREIGN KEY(id_emprestimo) REFERENCES emprestimo(id_emprestimo), "+
             "FOREIGN KEY(id_exemplar) REFERENCES exemplar(id_exemplar) ); ",
         
         "CREATE TABLE IF NOT EXISTS app_config ( " +
-            "taxa_juros    REAL,"+
-            "last_backup   TEXT, "+
-	    "db_version	   INTEGER, "+
+            "app_version TEXT, "+
+            "taxa_juros REAL,"+
+            "last_backup TEXT, "+
+	    "db_version	INTEGER, "+
             "prazo_default INTEGER, "+
-            "auto_bkp      BLOB ); ",
+            "auto_bkp BLOB ); ",
         
-        "INSERT INTO app_config (taxa_juros, db_version, prazo_default, auto_bkp) VALUES (0.0, 0, 7, 'true'); "
+        "INSERT INTO app_config (app_version, taxa_juros, db_version, prazo_default, auto_bkp) VALUES ('v1.0.0-RELEASE', 0.0, 0, 7, 'true'); "
     };
     
     public static void updateDDL(int new_ver) {     

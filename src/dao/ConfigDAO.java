@@ -66,5 +66,10 @@ public class ConfigDAO {
         return helper.getInt(query);
     }
     
+    public String getAppVersion() {
+        String query = "SELECT app_version FROM app_config; ";
+        return helper.getString(query);
+    }
+    
     
 }

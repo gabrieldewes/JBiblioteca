@@ -101,6 +101,10 @@ public class ConfigController {
         return cdao.getDBVersion();
     }
     
+    public String getAppVersion() {
+        return cdao.getAppVersion();
+    }
+    
     public boolean setDbVersion(int ver) {
         return cdao.saveDBVersion(ver);
     }

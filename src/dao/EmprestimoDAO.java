@@ -98,8 +98,8 @@ public class EmprestimoDAO {
                 while (rs.next()) {
                     id_emprestimo = rs.getInt("id_emprestimo");
                     id_pessoa = rs.getInt("id_pessoa");
-                    data_inicio = new LocalDateTime ( rs.getString("data_inicio") );
-                    data_fim = new LocalDateTime ( rs.getString("data_fim") );
+                    data_inicio = new LocalDateTime( rs.getString("data_inicio") );
+                    data_fim = new LocalDateTime( rs.getString("data_fim") );
                     ids.add( rs.getInt("id_exemplar") );
                 }
                 e = new Emprestimo(id_emprestimo, id_pessoa, ids, data_inicio, data_fim);

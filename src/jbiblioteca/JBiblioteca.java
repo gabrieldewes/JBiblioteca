@@ -5,10 +5,7 @@
  */
 package jbiblioteca;
 
-import database.DBHelper;
-import database.DBUtil;
 import database.Database;
-import java.io.IOException;
 import javax.swing.JOptionPane;
 import view.MainFrame;
 
@@ -17,7 +14,8 @@ import view.MainFrame;
  * @author Dewes
  */
 public class JBiblioteca {
-    public static void main(String[] args) throws IOException {
+    
+    public static void main(String[] args) {
         if (!InstanceManager.registerInstance()) {  
             JOptionPane.showMessageDialog(null, "Já existe uma instância do programa aberta. ", "JBiblioteca", JOptionPane.INFORMATION_MESSAGE);             
             System.exit(0);  
@@ -41,7 +39,7 @@ public class JBiblioteca {
             */
             //Database.backupDatabase(file);
             //Database.recoverBackupDatabase(file);
-        } catch (Exception e1) {}
+        } catch (Exception ex) {}
     }
 }
    

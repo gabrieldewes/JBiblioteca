@@ -6,7 +6,6 @@
 package view;
 
 import control.ConfigController;
-import database.DBUtil;
 import database.Database;
 import java.awt.Cursor;
 import java.awt.Desktop;
@@ -55,7 +54,8 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         taxaField.setText(""+s);
        
         LocalDate date = new LocalDate(System.currentTimeMillis());
-        footer.setText("2015 - "+ date.getYear() + " · Gabriel Dewes");
+        footer.setText("© 2015 - "+ date.getYear() + " · Gabriel Dewes");
+        appVersion.setText(configController.getAppVersion());
     }
 
     /**
@@ -87,6 +87,7 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         footer = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        appVersion = new javax.swing.JLabel();
 
         setClosable(true);
         setTitle("Configurações");
@@ -295,17 +296,26 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
 
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/view/jbiblioteca.png"))); // NOI18N
 
+        appVersion.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        appVersion.setForeground(new java.awt.Color(51, 51, 51));
+        appVersion.setText("jLabel5");
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
-                    .addComponent(footer))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel1)
+                            .addComponent(appVersion)))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(125, 125, 125)
+                        .addComponent(footer)))
                 .addContainerGap(15, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -317,9 +327,11 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(footer))
+                        .addComponent(appVersion))
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(46, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
+                .addComponent(footer)
+                .addContainerGap())
         );
 
         backupTab.addTab("Sobre", jPanel4);
@@ -441,6 +453,7 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackupBtn;
+    private javax.swing.JLabel appVersion;
     private javax.swing.JLabel backupLabel;
     private javax.swing.JTabbedPane backupTab;
     private javax.swing.JCheckBox bkpDiario;
