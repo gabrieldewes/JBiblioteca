@@ -25,7 +25,9 @@ package view;
 
 import control.TurmaController;
 import java.util.List;
+import javax.swing.JOptionPane;
 import model.Turma;
+import static view.MainFrame.pif;
 
 /**
  *
@@ -174,7 +176,15 @@ public class TurmasAttLoteInternalFrame extends javax.swing.JInternalFrame {
         }
         int result = turmaController.AlterarTurmaLote(turmaDeId, turmaParaId);
         if (result != -1) {
-            System.out.println("update turmas returned "+ result);
+            if (result > 1)
+                JOptionPane.showMessageDialog(null, result +" pessoas tiveram sua turma atualizada.", "Alterar Turmas", JOptionPane.INFORMATION_MESSAGE);
+            else if (result == 1)
+                JOptionPane.showMessageDialog(null, result +" pessoa teve sua turma atualizada.", "Alterar Turmas", JOptionPane.INFORMATION_MESSAGE);
+            else
+                JOptionPane.showMessageDialog(null, "Nenhuma pessoa teve sua turma atualizada.", "Alterar Turmas", JOptionPane.INFORMATION_MESSAGE);
+            if (pif != null)
+                pif.updateTableModel("");
+            this.dispose();
         }
     }//GEN-LAST:event_btnSalvarActionPerformed
 

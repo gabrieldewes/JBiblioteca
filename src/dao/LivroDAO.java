@@ -20,6 +20,7 @@ import model.Livro;
  * @author gabriel
  */
 public class LivroDAO {
+    private final Logger log = Logger.getLogger(LivroDAO.class.getName());
     
     private static LivroDAO instance;
     
@@ -63,6 +64,7 @@ public class LivroDAO {
         try {
             stmt = helper.prepareStatement(query);
             stmt.setInt(1, id);
+            log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
@@ -73,12 +75,9 @@ public class LivroDAO {
                         rs.getString("autor"));
                 }
             } 
-            if (l!=null) 
-                System.out.println("Return "+ l.toString() +" from query "+ query);
             stmt.close();
-            //helper.close();
         } catch (SQLException ex) {
-            Logger.getLogger(LivroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return l;
     }
@@ -124,6 +123,7 @@ public class LivroDAO {
         Livro l;
         try {
             stmt = helper.prepareStatement(query);
+            log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
@@ -135,11 +135,9 @@ public class LivroDAO {
                     livros.add(l);
                 }
             } 
-            System.out.println("Return "+ livros.size() +" items from query "+ query);
             stmt.close();
-            //helper.close();
         } catch (SQLException ex) {
-            Logger.getLogger(LivroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return livros;
     }

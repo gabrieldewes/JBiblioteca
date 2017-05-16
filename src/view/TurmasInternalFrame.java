@@ -331,11 +331,11 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_AttTurmaBtnActionPerformed
 
     private void BuscaTurmaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BuscaTurmaFieldKeyReleased
-        String str = BuscaTurmaField.getText();
+        /*String str = BuscaTurmaField.getText();
         if (!"".equals(str)) {
             updateTableModel(str);
         }
-        else updateTableModel("");
+        else updateTableModel("");*/
     }//GEN-LAST:event_BuscaTurmaFieldKeyReleased
 
 

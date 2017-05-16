@@ -18,6 +18,7 @@ import org.sqlite.SQLiteConnection;
  * @author Dewes
  */
 public class DBHelper extends SQLiteConnection {
+    private final Logger log = Logger.getLogger(DBHelper.class.getName());
     
     private static DBHelper instance;
     
@@ -49,20 +50,18 @@ public class DBHelper extends SQLiteConnection {
                 DBUtil.updateTabelasBanco(db, vers[0], vers[1], vers[2], vers[3]);
             }
 
-        } catch (Exception e) {
-        }
+        } catch (Exception e) {}
     }
  
     public boolean rawSQL(String query) {
         try {
             try (PreparedStatement stmt = this.prepareStatement(query)) {
+                log.log(Level.INFO, query);
                 stmt.executeUpdate();
-                System.out.println("Raw query "+ query);
             }
-            //this.close();
             return true;
         } catch (SQLException ex) {
-            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -71,14 +70,13 @@ public class DBHelper extends SQLiteConnection {
         TableModel tb=null;
         try {
             try (PreparedStatement stmt = this.prepareStatement(query)) {
+                log.log(Level.INFO, query);
                 ResultSet rs = stmt.executeQuery();
                 tb = DbUtils.resultSetToTableModel(rs);
-                System.out.println("Return "+ tb.getRowCount() +" lines from query "+ query);
             }
-            //this.close();
         } 
         catch (SQLException ex) { 
-            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return tb;
     }
@@ -87,13 +85,12 @@ public class DBHelper extends SQLiteConnection {
         boolean exists = false;
         try {
             PreparedStatement stmt = this.prepareStatement(query);
+            log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) exists = true;
-            System.out.println("Return "+ exists +" from query "+ query);
-            //this.close();
         } 
         catch (SQLException ex) {
-            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return exists;
     }
@@ -102,14 +99,13 @@ public class DBHelper extends SQLiteConnection {
         int id=0;
         try {
             PreparedStatement stmt = this.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            log.log(Level.INFO, query);
             stmt.executeUpdate();
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
             id = rs.getInt(1);
-            System.out.println("Return id "+ id +" from query "+ query);
-            //this.close();
         } catch (SQLException ex) {
-            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return id;
     }
@@ -119,12 +115,12 @@ public class DBHelper extends SQLiteConnection {
         String query = "SELECT * FROM sqlite_sequence WHERE name='"+ table +"'; ";
         try {
             PreparedStatement stmt = this.prepareStatement(query);
+            log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             rs.next();
             id = rs.getInt("seq");
-            //this.close();
         } catch (SQLException ex) {
-            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return id;
     }
@@ -136,10 +132,9 @@ public class DBHelper extends SQLiteConnection {
             try (BufferedReader input = new BufferedReader( new FileReader( file ) )) {
                 while ((line = input.readLine()) != null) {
                     stmt.executeUpdate(line);
-                    System.out.println("Raw external line "+ line);
+                    log.log(Level.INFO, line);
                 }
             }
-            //this.close();
         }
         catch (SQLException | IOException err) {
         }
@@ -150,10 +145,9 @@ public class DBHelper extends SQLiteConnection {
         try {
             Statement stmt = this.createStatement();
             for (String line : query) {
+                log.log(Level.INFO, line);
                 stmt.executeUpdate(line);
-                System.out.println("Raw line "+ line);
             }
-            //this.close();
             return true;
         }
         catch (SQLException err) {
@@ -165,14 +159,13 @@ public class DBHelper extends SQLiteConnection {
         String s=null;
         try {
             PreparedStatement stmt = this.prepareStatement(query);
+            log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next())
                 s=rs.getString(1);
-            System.out.println("Return "+ s +" from query "+ query);
-            //this.close();
         } 
         catch (SQLException ex) {
-            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return s;
     }
@@ -181,14 +174,13 @@ public class DBHelper extends SQLiteConnection {
         int s=0;
         try {
             PreparedStatement stmt = this.prepareStatement(query);
+            log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next())
                 s=rs.getInt(1);
-            System.out.println("Return "+ s +" from query "+ query);
-            //this.close();
         } 
         catch (SQLException ex) {
-            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return s;
     }
@@ -197,14 +189,13 @@ public class DBHelper extends SQLiteConnection {
         double s=0;
         try {
             PreparedStatement stmt = this.prepareStatement(query);
+            log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next())
                 s=rs.getDouble(1);
-            System.out.println("Return "+ s +" from query "+ query);
-            //this.close();
         } 
         catch (SQLException ex) {
-            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return s;
     }
@@ -213,11 +204,11 @@ public class DBHelper extends SQLiteConnection {
         int s=0;
         try {
             PreparedStatement stmt = this.prepareStatement(query);
+            log.log(Level.INFO, query);
             s = stmt.executeUpdate();   
-            System.out.println("Return "+ s +" from query "+ query);
         } 
         catch (SQLException ex) {
-            Logger.getLogger(DBHelper.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return s;
     }

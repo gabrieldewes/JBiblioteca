@@ -10,6 +10,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -17,6 +19,8 @@ import javax.swing.JOptionPane;
  * @author gabriel
  */
 public class Database {
+    
+    private static final Logger log = Logger.getLogger(Database.class.getName());
     
     public static final java.io.File DATABASE = new java.io.File(System.getProperty("user.home")
             + System.getProperty("file.separator") + ".jbiblioteca"
@@ -90,7 +94,7 @@ public class Database {
                 throw new Exception("Erro ao gravar o arquivo de banco de dados.");
             }
             DBUtil.createDDL();
-            System.out.println("Banco de dados criado em '"+DATABASE.getAbsolutePath()+"' ");
+            log.log(Level.INFO, "Banco de dados criado em '{0}' ", DATABASE.getAbsolutePath());
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(null, "Erro na criação do banco de dados. ERRO: "+ ex.getMessage(), "JBiblioteca", 0);
             throw new Exception("Erro na criação do banco de dados.\n"+ ex.getMessage());

@@ -21,6 +21,7 @@ import model.Livro;
  * @author gabriel
  */
 public class ExemplarDAO {
+    private final Logger log = Logger.getLogger(ExemplarDAO.class.getName());
     
     private static ExemplarDAO instance;
     
@@ -79,6 +80,7 @@ public class ExemplarDAO {
         try {
             stmt = helper.prepareStatement(query);
             stmt.setInt(1, id);
+            log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
@@ -97,12 +99,9 @@ public class ExemplarDAO {
                     );
                 }
             }
-            if (e!=null)
-                System.out.println("Return "+ e.toString() +" from query "+ query);
             stmt.close();
-            //helper.close();
         } catch (SQLException ex) {
-            Logger.getLogger(LivroDAO.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return e;
     }
@@ -160,6 +159,7 @@ public class ExemplarDAO {
         Livro l;
         try {
             stmt = helper.prepareStatement(query);
+            log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
@@ -179,11 +179,9 @@ public class ExemplarDAO {
                     exemplares.add(e);
                 }
             } 
-            System.out.println("Return "+ exemplares.size() +" items from query "+ query);
             stmt.close();
-            //helper.close();
         } catch (SQLException ex) {
-            Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return exemplares;
     }

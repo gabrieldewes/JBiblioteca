@@ -321,11 +321,11 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_buscaEmprestinoBtnActionPerformed
 
     private void buscaEmprestimoFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscaEmprestimoFieldKeyReleased
-        String search = buscaEmprestimoField.getText();
+        /*String search = buscaEmprestimoField.getText();
         if (search.length() > 3) {
             updateEmprestimoTable(search);
         }
-        else updateEmprestimoTable("");
+        else updateEmprestimoTable("");*/
     }//GEN-LAST:event_buscaEmprestimoFieldKeyReleased
 
     private void RenovaEmprestimoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RenovaEmprestimoBtnActionPerformed

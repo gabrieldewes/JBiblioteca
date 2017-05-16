@@ -8,6 +8,7 @@ package control;
 import dao.ConfigDAO;
 import dao.GenericDAO;
 import database.Database;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.joda.time.LocalDateTime;
@@ -39,7 +40,7 @@ public class ConfigController {
         return cdao.saveTaxaJuros(d);
     }
     
-    public static boolean savePrazoDefault(int i) {
+    public boolean savePrazoDefault(int i) {
         return cdao.savePrazoDefault(i);
     }
     
@@ -52,6 +53,13 @@ public class ConfigController {
         LocalDateTime ldt = new LocalDateTime(s);
         s = ""+ldt.toDate().toLocaleString()+"";
         return s;
+    }
+    
+    public String getLastBackupToString() {
+        String s = gdao.get("app_config", "last_backup");
+        LocalDateTime ldt = new LocalDateTime(s);
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy 'ás' HH:mm:ss");
+        return sdf.format(ldt.toDate());
     }
     
     public boolean setAutoBackup(boolean flag) {

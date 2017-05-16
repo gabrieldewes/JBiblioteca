@@ -426,11 +426,11 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_AttLivroBtnActionPerformed
 
     private void BuscaLivroFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BuscaLivroFieldKeyReleased
-        String search = BuscaLivroField.getText();
+        /*String search = BuscaLivroField.getText();
         if (search.length() > 2) {
             updateLivroTableModel(search);
         }
-        else updateLivroTableModel("");
+        else updateLivroTableModel("");*/
     }//GEN-LAST:event_BuscaLivroFieldKeyReleased
 
     private void BuscaLivroBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscaLivroBtnActionPerformed

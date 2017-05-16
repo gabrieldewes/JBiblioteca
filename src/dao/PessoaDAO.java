@@ -20,6 +20,7 @@ import model.Pessoa;
  * @author Dewes
  */
 public class PessoaDAO {
+    private final Logger log = Logger.getLogger(PessoaDAO.class.getName());
     
     private static PessoaDAO instance;
     
@@ -66,6 +67,7 @@ public class PessoaDAO {
         try {
             stmt = helper.prepareStatement(query);
             stmt.setInt(1, id);
+            log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
@@ -77,12 +79,9 @@ public class PessoaDAO {
                         rs.getString("cargo"));
                 }
             }
-            if (p!=null) 
-                System.out.println("Return "+ p.toString() +" from query "+ query);
             stmt.close();
-            //helper.close();
         } catch (SQLException ex) {
-            Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return p;
     }
@@ -127,6 +126,7 @@ public class PessoaDAO {
         Pessoa p;
         try {
             stmt = helper.prepareStatement(query);
+            log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
@@ -139,11 +139,9 @@ public class PessoaDAO {
                     pessoas.add(p);
                 }
             } 
-            System.out.println("Return "+ pessoas.size() +" items from query "+ query);
             stmt.close();
-            //helper.close();
         } catch (SQLException ex) {
-            Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return pessoas;
     }

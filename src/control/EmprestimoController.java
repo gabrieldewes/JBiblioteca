@@ -28,10 +28,12 @@ public class EmprestimoController {
     
     private static EmprestimoDAO emprestimoDao;
     private static ExemplarDAO exemplarDao;
-    private static GenericDAO gendao;
+    private static GenericDAO genericDao;
     
     public EmprestimoController() {
         emprestimoDao = EmprestimoDAO.getInstance();
+        exemplarDao = ExemplarDAO.getInstance();
+        genericDao = GenericDAO.getInstance();
     }
     
     public static EmprestimoController getInstance() {
@@ -43,8 +45,7 @@ public class EmprestimoController {
     public boolean Salvar(int id_pessoa, List<Exemplar> exemplares, LocalDateTime inicio, LocalDateTime fim) {
         if (!exemplares.isEmpty()) {
             if (id_pessoa != 0) {
-                gendao=new GenericDAO();
-                if (!gendao.restrict("emprestimo", "id_pessoa", id_pessoa)) {
+                if (!genericDao.restrict("emprestimo", "id_pessoa", id_pessoa)) {
                     ArrayList<Integer> id_exemplar = new ArrayList<>();
                     exemplares.stream().forEach((e) -> {
                         id_exemplar.add(e.getId_exemplar());
@@ -54,14 +55,10 @@ public class EmprestimoController {
                     if (id != 0) {
                         e.setId_emprestimo(id);
                         if (emprestimoDao.saveForeignBatch(e)) {
-                            Runnable t1 = () -> {
-                                try {
-                                    exemplarDao = ExemplarDAO.getInstance();
-                                    exemplarDao.setSituation(id_exemplar, "Alugado");
-                                } catch (Exception e1) {
-                                }
-                            };
-                            new Thread(t1).start();
+                            try {
+                                exemplarDao = ExemplarDAO.getInstance();
+                                exemplarDao.setSituation(id_exemplar, "Alugado");
+                            } catch (Exception e1) {}
                             return true;
                         }
                     }
@@ -96,14 +93,10 @@ public class EmprestimoController {
         if (e != null) {
             if (emprestimoDao.deleteForeign(id_emprestimo)) {
                 if (emprestimoDao.delete(id_emprestimo)) {
-                    Runnable t1 = () -> {
-                        try {
-                            exemplarDao = ExemplarDAO.getInstance();
-                            exemplarDao.setSituation(e.getId_exemplar(), "");
-                        } catch (Exception e1) {
-                        }
-                    };
-                    new Thread(t1).start();
+                    try {
+                        exemplarDao = ExemplarDAO.getInstance();
+                        exemplarDao.setSituation(e.getId_exemplar(), "");
+                    } catch (Exception e1) {}
                     return true;
                 } else JOptionPane.showMessageDialog(null, "Erro ao executar devolução de empréstimo. Tente novamente. ", "Atenção", JOptionPane.WARNING_MESSAGE);
             } else JOptionPane.showMessageDialog(null, "Erro ao executar devolução de empréstimo. Tente novamente", "Atenção", JOptionPane.WARNING_MESSAGE);

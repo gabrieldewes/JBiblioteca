@@ -41,7 +41,8 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         
         bkpDiario.setSelected( configController.isSetAutoBackup() );
         
-        String last_backup = configController.getLastBackupDate();
+        //String last_backup = configController.getLastBackupDate();
+        String last_backup = configController.getLastBackupToString();
         backupLabel.setText(last_backup);
         backupLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         
@@ -54,7 +55,7 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         taxaField.setText(""+s);
        
         LocalDate date = new LocalDate(System.currentTimeMillis());
-        footer.setText("2015 - "+ date.getYear() + " - JBiblioteca - Gabriel Dewes");
+        footer.setText("2015 - "+ date.getYear() + " · Gabriel Dewes");
     }
 
     /**
@@ -376,23 +377,19 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         try {
             Double d = Double.valueOf(taxa);
             int i = Integer.valueOf(prazo);
-            Runnable t1 = () -> {
-                try {
-                    if (configController.saveTaxaJuros(d)) {
-                        String s = String.format("%1$,.2f", d);
-                        taxaField.setText(""+s);
-                        salvarBtn.setEnabled(false);
-                        if (eif != null)
-                            EmprestimoInternalFrame.juros_dia = d;
-                    }
-                    if (configController.savePrazoDefault(i)) {
-                        prazoField.setText(""+i);
-                        salvarBtn.setEnabled(false);
-                    }
-                } catch (Exception e1) {
+            try {
+                if (configController.saveTaxaJuros(d)) {
+                    String s = String.format("%1$,.2f", d);
+                    taxaField.setText(""+s);
+                    salvarBtn.setEnabled(false);
+                    if (eif != null)
+                        EmprestimoInternalFrame.juros_dia = d;
                 }
-            };
-            new Thread(t1).start();
+                if (configController.savePrazoDefault(i)) {
+                    prazoField.setText(""+i);
+                    salvarBtn.setEnabled(false);
+                }
+            } catch (Exception e1) {}
             
         }
         catch (NumberFormatException n) {
@@ -403,60 +400,42 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_salvarBtnActionPerformed
 
     private void bkpDiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bkpDiarioActionPerformed
-        Runnable t1 = () -> {
-            try {
-                configController.setAutoBackup(bkpDiario.isSelected());
-            } catch (Exception e1) {
-            }
-        };
-        new Thread(t1).start();
+        try {
+            configController.setAutoBackup(bkpDiario.isSelected());
+        } catch (Exception e1) {}
     }//GEN-LAST:event_bkpDiarioActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Runnable t1 = () -> {
-            try {
-                java.io.File file = new java.io.File(
-                    System.getProperty("user.home")
-                    + System.getProperty("file.separator")
-                    + ".jbiblioteca"
-                    + System.getProperty("file.separator")
-                    + "jbiblioteca_bkp.db");
-                Database.checkDatabase();
-                Database.recoverBackupDatabase(file);
-                JOptionPane.showMessageDialog(null, "O arquivo de backup foi recuperado com êxito.");
-            } catch (Exception e1) {
-                JOptionPane.showMessageDialog(null, "Não foi encontrado arquivo de backup! ");
-            }
-        };
-        new Thread(t1).start();
+        try {
+            java.io.File file = new java.io.File(
+                System.getProperty("user.home")
+                + System.getProperty("file.separator")
+                + ".jbiblioteca"
+                + System.getProperty("file.separator")
+                + "jbiblioteca_bkp.db");
+            Database.checkDatabase();
+            Database.recoverBackupDatabase(file);
+            JOptionPane.showMessageDialog(null, "O arquivo de backup foi recuperado com êxito.");
+        } catch (Exception e1) {
+            JOptionPane.showMessageDialog(null, "Não foi encontrado arquivo de backup! ");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void BackupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackupBtnActionPerformed
-        Runnable t1 = () -> {
-            try {
-                java.io.File file = new java.io.File(
-                    System.getProperty("user.home")
-                    + System.getProperty("file.separator")
-                    + ".jbiblioteca"
-                    + System.getProperty("file.separator")
-                    + "jbiblioteca_bkp.db");
-                Database.checkDatabase();
-                Database.backupDatabase(file);
-                Runnable t2 = () -> {
-                    try {
-                        LocalDateTime ldt = new LocalDateTime(System.currentTimeMillis());
-                        configController.saveLastBackupDate("'"+ldt.toString()+"'");
-                        backupLabel.setText(ldt.toDate().toLocaleString());
-
-                    } catch (Exception e1) {
-                    }
-                };
-                new Thread(t2).start();
-                JOptionPane.showMessageDialog(null, "O arquivo de backup foi salvo com êxito.");
-            } catch (Exception e1) {
-            }
-        };
-        new Thread(t1).start();
+        try {
+            java.io.File file = new java.io.File(
+                System.getProperty("user.home")
+                + System.getProperty("file.separator")
+                + ".jbiblioteca"
+                + System.getProperty("file.separator")
+                + "jbiblioteca_bkp.db");
+            Database.checkDatabase();
+            Database.backupDatabase(file);
+            LocalDateTime ldt = new LocalDateTime(System.currentTimeMillis());
+            configController.saveLastBackupDate("'"+ldt.toString()+"'");
+            backupLabel.setText(configController.getLastBackupToString());
+            JOptionPane.showMessageDialog(null, "O arquivo de backup foi salvo com êxito.");
+        } catch (Exception ex) {}
     }//GEN-LAST:event_BackupBtnActionPerformed
 
 

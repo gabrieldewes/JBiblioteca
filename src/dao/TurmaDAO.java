@@ -15,6 +15,7 @@ import model.Turma;
  * @author Dewes
  */
 public class TurmaDAO /*implements DAO<Turma>*/ {
+    private final Logger log = Logger.getLogger(TurmaDAO.class.getName());
     
     public static TurmaDAO instance;
     
@@ -57,7 +58,6 @@ public class TurmaDAO /*implements DAO<Turma>*/ {
         return helper.rawSQL(query);
     } 
     
-    //@Override
     public Turma get(int id) {
         final String select = "SELECT * FROM turma WHERE id_turma=?; ";
         Turma t=null;
@@ -65,6 +65,7 @@ public class TurmaDAO /*implements DAO<Turma>*/ {
         try {
             stmt = helper.prepareStatement(select);
             stmt.setInt(1, id);
+            log.log(Level.INFO, select);
             rs = stmt.executeQuery();
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
@@ -74,13 +75,9 @@ public class TurmaDAO /*implements DAO<Turma>*/ {
                         rs.getString("ano") );
                 }
             }
-            else {
-                System.out.println("Não encontrou nada com o ID "+ id);
-            } 
             stmt.close();
-            //helper.close();
         } catch (SQLException ex) {
-            Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return t;
     }
@@ -103,6 +100,7 @@ public class TurmaDAO /*implements DAO<Turma>*/ {
         Turma t;
         try {
             stmt = helper.prepareStatement(query);
+            log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
@@ -113,11 +111,9 @@ public class TurmaDAO /*implements DAO<Turma>*/ {
                     turmas.add(t);
                 }
             } 
-            System.out.println("Return "+ turmas.size() +" items from query "+ query);
             stmt.close();
-            //helper.close();
         } catch (SQLException ex) {
-            Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return turmas;
     }

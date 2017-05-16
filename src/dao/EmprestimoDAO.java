@@ -21,6 +21,7 @@ import org.joda.time.LocalDateTime;
  * @author gabriel
  */
 public class EmprestimoDAO {
+    private final Logger log = Logger.getLogger(EmprestimoDAO.class.getName());
     
     private static EmprestimoDAO instance;
     
@@ -91,6 +92,7 @@ public class EmprestimoDAO {
         LocalDateTime data_fim=null;
         try {
             stmt = helper.prepareStatement(query);
+            log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             if (rs.isBeforeFirst()) {
                 while (rs.next()) {
@@ -101,13 +103,10 @@ public class EmprestimoDAO {
                     ids.add( rs.getInt("id_exemplar") );
                 }
                 e = new Emprestimo(id_emprestimo, id_pessoa, ids, data_inicio, data_fim);
-            }
-            if (e!=null) 
-                System.out.println("Return "+ e.toString() +" from query "+ query);
+            }                
             stmt.close();
-            //helper.close();
         } catch (SQLException ex) {
-            Logger.getLogger(EmprestimoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            log.log(Level.SEVERE, null, ex);
         }
         return e;
     }
