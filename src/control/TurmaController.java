@@ -16,26 +16,34 @@ import model.Turma;
  */
 public class TurmaController {
     
-    public static TurmaController INSTANCE = new TurmaController();
+    public static TurmaController instance;
     
-    private TurmaDAO dao = TurmaDAO.INSTANCE;
+    private static TurmaDAO turmaDao;
         
-    public TurmaController() {}
+    public TurmaController() {
+        turmaDao = TurmaDAO.getInstance();
+    }
+    
+    public static TurmaController getInstance() {
+        if (instance == null)
+            instance = new TurmaController();
+        return instance;
+    }
     
     public TableModel Listar() {
-        TableModel tb = dao.list();
+        TableModel tb = turmaDao.list();
         return tb;
     }
     
     public TableModel ListarBusca(String busca) {
-        TableModel tb = dao.listLike(busca);
+        TableModel tb = turmaDao.listLike(busca);
         return tb;
     }
     
     public boolean Salvar(String nome, String ano) {
         if ( ! ("".equals(nome) && "".equals(ano)) ) {
             Turma t = new Turma(0, nome, ano);
-            if (dao.save(t)) {
+            if (turmaDao.save(t)) {
                 return true;
             }
             else {System.out.println("Não salvou. ");}
@@ -45,27 +53,26 @@ public class TurmaController {
     }
     
     public boolean Alterar(Turma t) {
-        return dao.update(t);
+        return turmaDao.update(t);
     }
     
     public boolean Apagar(int id) {
-        if (!dao.restrict(id)) {
-            dao = new TurmaDAO();
-            return dao.delete(id);
+        if (!turmaDao.restrict(id)) {
+            return turmaDao.delete(id);
         }
         return false;
     }
     
     public Turma Pegar(int id) {
-        return dao.get(id);
+        return turmaDao.get(id);
     }
     
     public ArrayList<Turma> ArrayTurma() {
-        return dao.getArray();
+        return turmaDao.getArray();
     }
     
     public int AlterarTurmaLote(int turmaDeId, int turmaParaId) {
-        return dao.updateLote(turmaDeId, turmaParaId);
+        return turmaDao.updateLote(turmaDeId, turmaParaId);
     }
     
 }

@@ -26,6 +26,8 @@ import static view.MainFrame.eif;
  * @author gabriel
  */
 public class ConfigInternalFrame extends javax.swing.JInternalFrame {
+    
+    private final ConfigController configController;
 
     /**
      * Creates new form configInternalFrame
@@ -33,24 +35,26 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
     public ConfigInternalFrame() {
         initComponents();
         
+        configController = ConfigController.getInstance();
+        
         salvarBtn.setEnabled(false);
         
-        bkpDiario.setSelected( ConfigController.isSetAutoBackup() );
+        bkpDiario.setSelected( configController.isSetAutoBackup() );
         
-        String last_backup = ConfigController.getLastBackupDate();
+        String last_backup = configController.getLastBackupDate();
         backupLabel.setText(last_backup);
         backupLabel.setFont(new Font("Dialog", Font.BOLD, 16));
         
-        int prazo_default = ConfigController.getPrazoDefault();
+        int prazo_default = configController.getPrazoDefault();
         prazoField.setText(String.valueOf(prazo_default));
         
-        Double valor = ConfigController.getAppConfigTaxaJuros();
+        Double valor = configController.getAppConfigTaxaJuros();
         String s = String.format("%1$,.2f", valor);
         //String s = NumberFormat.getCurrencyInstance().format(valor);
         taxaField.setText(""+s);
        
         LocalDate date = new LocalDate(System.currentTimeMillis());
-        footer.setText(date.getYear() + " - Gabriel Dewes - JBiblioteca ");
+        footer.setText("2015 - "+ date.getYear() + " - JBiblioteca - Gabriel Dewes");
     }
 
     /**
@@ -335,7 +339,7 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
 
     private void footerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_footerMouseClicked
         try {
-            Desktop.getDesktop().browse(new URI("http://gabrieldewes.github.io"));
+            Desktop.getDesktop().browse(new URI("https://gabrieldewes.github.io"));
         } catch (IOException | URISyntaxException ex) {
             Logger.getLogger(ConfigInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -343,7 +347,7 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
         try {
-            Desktop.getDesktop().browse(new URI("http://gabrieldewes.github.io"));
+            Desktop.getDesktop().browse(new URI("https://gabrieldewes.github.io"));
         } catch (IOException | URISyntaxException ex) {
             Logger.getLogger(ConfigInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -374,14 +378,14 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
             int i = Integer.valueOf(prazo);
             Runnable t1 = () -> {
                 try {
-                    if (ConfigController.saveTaxaJuros(d)) {
+                    if (configController.saveTaxaJuros(d)) {
                         String s = String.format("%1$,.2f", d);
                         taxaField.setText(""+s);
                         salvarBtn.setEnabled(false);
                         if (eif != null)
                             EmprestimoInternalFrame.juros_dia = d;
                     }
-                    if (ConfigController.savePrazoDefault(i)) {
+                    if (configController.savePrazoDefault(i)) {
                         prazoField.setText(""+i);
                         salvarBtn.setEnabled(false);
                     }
@@ -401,7 +405,7 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
     private void bkpDiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bkpDiarioActionPerformed
         Runnable t1 = () -> {
             try {
-                ConfigController.setAutoBackup(bkpDiario.isSelected());
+                configController.setAutoBackup(bkpDiario.isSelected());
             } catch (Exception e1) {
             }
         };
@@ -441,7 +445,7 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
                 Runnable t2 = () -> {
                     try {
                         LocalDateTime ldt = new LocalDateTime(System.currentTimeMillis());
-                        ConfigController.saveLastBackupDate("'"+ldt.toString()+"'");
+                        configController.saveLastBackupDate("'"+ldt.toString()+"'");
                         backupLabel.setText(ldt.toDate().toLocaleString());
 
                     } catch (Exception e1) {

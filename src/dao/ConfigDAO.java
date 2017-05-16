@@ -6,11 +6,6 @@
 package dao;
 
 import database.DBHelper;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -18,15 +13,17 @@ import java.util.logging.Logger;
  */
 public class ConfigDAO {
     
-    static DBHelper helper;
-    static PreparedStatement stmt;
+    private static ConfigDAO instance;
+    private static DBHelper helper;
 
     public ConfigDAO() {
-        try {
-            helper = new DBHelper();
-        } catch (SQLException ex) {
-            Logger.getLogger(ExemplarDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        helper = DBHelper.getInstance();
+    }
+    
+    public static ConfigDAO getInstance() {
+        if (instance == null)
+            instance = new ConfigDAO();
+        return instance;
     }
     
     public boolean setAutoBkp(boolean flag) {

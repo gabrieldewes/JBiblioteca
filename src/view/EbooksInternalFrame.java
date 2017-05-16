@@ -229,7 +229,7 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
                     codigo = codigo.replace(" ", "");
                     String x = xField.getText();
                     String y = yField.getText();
-                    if (LivroController.Salvar(codigo.trim(), "",  titulo.trim(), autor.trim(), x.trim(), y.trim())) {
+                    if (LivroController.getInstance().Salvar(codigo.trim(), "",  titulo.trim(), autor.trim(), x.trim(), y.trim())) {
                         option = JOptionPane.OK_CANCEL_OPTION;
                         if (lif != null) {
                             lif.updateLivroTableModel("");

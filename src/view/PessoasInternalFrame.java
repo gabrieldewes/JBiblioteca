@@ -21,6 +21,8 @@ import static view.MainFrame.tif;
  * @author Dewes
  */
 public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
+    
+    private final PessoaController pessoaController;
 
     static PessoasAddInternalFrame paif;
     static PessoasAttInternalFrame patif;
@@ -29,6 +31,9 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
     
     public PessoasInternalFrame( MainFrame mf ) {
         initComponents();
+        
+        pessoaController = PessoaController.getInstance();
+        
         PessoaTable.setAutoCreateRowSorter(true);
         updateTableModel("");
         mfthis = mf;
@@ -36,10 +41,10 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
     
     void updateTableModel(String buscar) {
         if (!"".equals(buscar)) {
-            PessoaTable.setModel(PessoaController.Buscar(buscar));
+            PessoaTable.setModel(pessoaController.Buscar(buscar));
         }
         else {
-            PessoaTable.setModel(PessoaController.Listar());
+            PessoaTable.setModel(pessoaController.Listar());
         }
         PessoaTable.getColumnModel().getColumn(0).setMinWidth(0);
         PessoaTable.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -240,7 +245,7 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
             if (response == JOptionPane.YES_OPTION) {
                 int id = Integer.valueOf( PessoaTable.getValueAt( PessoaTable.getSelectedRow() , 0 ).toString() );
                 System.out.println("Botão mandou ID "+ id);
-                if (PessoaController.Apagar(id)) {
+                if (pessoaController.Apagar(id)) {
                     updateTableModel("");
                 }
             } 

@@ -19,24 +19,34 @@ import model.Livro;
  * @author gabriel
  */
 public class LivroController {
-           
-    static LivroDAO dao;
-    static ExemplarDAO edao;
-    static GenericDAO gendao;
     
-    public static boolean Salvar(String codigo, String isbn, String titulo, String autor, String x, String y) {
+    private static LivroController instance;
+           
+    private static LivroDAO livroDao;
+    private static ExemplarDAO exemplarDao;
+    
+    public LivroController() {
+        livroDao = LivroDAO.getInstance();
+        exemplarDao = ExemplarDAO.getInstance();
+    }
+    
+    public static LivroController getInstance() {
+        if (instance == null)
+            instance = new LivroController();
+        return instance;
+    }
+    
+    public boolean Salvar(String codigo, String isbn, String titulo, String autor, String x, String y) {
         if (!"".equals(titulo)) {
             if (!"".equals(codigo)) {
                 if (!Existe(titulo)) {
-                    if (!ExemplarController.Existe(codigo)) {
+                    if (!exemplarDao.exists(codigo)) {
                         Livro l = new Livro(0, isbn, titulo.trim(), autor.trim());
                         Exemplar e = new Exemplar(0, 0, codigo.replace(" ", ""), "", x.trim(), y.trim());
-                        dao = new LivroDAO();
-                        int id = dao.save(l);
+                        int id = livroDao.save(l);
                         e.setId_livro(id);
-                        edao = new ExemplarDAO();
                         if (e.getId_livro() != 0)
-                            return edao.save(e);
+                            return exemplarDao.save(e);
                         else JOptionPane.showMessageDialog(null, "Não foi possível salvar. Tente novamente", "Atenção", JOptionPane.WARNING_MESSAGE);
                     } else JOptionPane.showMessageDialog(null, "Este código já está cadastrado.", "Atenção", JOptionPane.WARNING_MESSAGE);
                 } else JOptionPane.showMessageDialog(null, "Este título já está cadastrado.", "Atenção", JOptionPane.WARNING_MESSAGE);
@@ -45,63 +55,53 @@ public class LivroController {
         return false;
     }
     
-    public static boolean Alterar(Livro ex, String isbn, String titulo, String autor) {
+    public boolean Alterar(Livro ex, String isbn, String titulo, String autor) {
         if (!"".equals(titulo)) {
             if (!ex.equals( new Livro(ex.getId_livro(), isbn, titulo, autor) )) {
                 if (!ex.getTitulo().equals(titulo)) {
                     if (!Existe(titulo)) {
                         ex.setAutor(autor);
                         ex.setTitulo(titulo);
-                        dao = new LivroDAO();
-                        return dao.update(ex);
+                        return livroDao.update(ex);
                     } else JOptionPane.showMessageDialog(null, "Este título já está cadastrado.", "Atenção", JOptionPane.WARNING_MESSAGE);
                 }
                 else {
                     ex.setAutor(autor);
-                    dao = new LivroDAO();
-                    return dao.update(ex);
+                    return livroDao.update(ex);
                 }
             } else return true;
         } else JOptionPane.showMessageDialog(null, "Título não pode ser em branco.", "Atenção", JOptionPane.WARNING_MESSAGE);
         return false;
     }
     
-    public static boolean Apagar(int id) {
-        edao = new ExemplarDAO();
-        if (!edao.checkExemplarEmprestimoByLivro(id)) {
-            edao = new ExemplarDAO();
-            if (edao.delete("id_livro", id)) {
-                dao = new LivroDAO();
-                return dao.delete(id);
+    public boolean Apagar(int id) {
+        if (!exemplarDao.checkExemplarEmprestimoByLivro(id)) {
+            if (exemplarDao.delete("id_livro", id)) {
+                return livroDao.delete(id);
             }
             
         } else JOptionPane.showMessageDialog(null, "Este título possui exemplares com empréstimos pendentes.", "Atenção", JOptionPane.WARNING_MESSAGE);
       return false;  
     }
     
-    public static TableModel Listar() {
-        dao = new LivroDAO();
-        return dao.list();
+    public TableModel Listar() {
+        return livroDao.list();
     }
     
-    public static TableModel Buscar(String str) {
-        dao = new LivroDAO();
-        return dao.listLike(str);
+    public TableModel Buscar(String str) {
+        return livroDao.listLike(str);
     }
     
-    public static Livro Pegar(int id) {
-        dao = new LivroDAO();
-        return dao.get(id);
+    public Livro Pegar(int id) {
+        return livroDao.get(id);
     }
     
-    public static boolean Existe(String codigo) {
-        dao = new LivroDAO();
-        return dao.exists(codigo);
+    public boolean Existe(String codigo) {
+        return livroDao.exists(codigo);
     }
     
-    public static List<Livro> ArrayLivro(String like) {
-        dao = new LivroDAO();
-        return dao.getArray(like);
+    public List<Livro> ArrayLivro(String like) {
+        return livroDao.getArray(like);
     }
     
 }

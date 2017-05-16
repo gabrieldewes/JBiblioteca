@@ -19,6 +19,8 @@ import org.sqlite.SQLiteConnection;
  */
 public class DBHelper extends SQLiteConnection {
     
+    private static DBHelper instance;
+    
     private static final String DB_DRIVER = "jdbc:sqlite:";
     public static final java.io.File DATABASE = new java.io.File(
             System.getProperty("user.home")
@@ -29,6 +31,14 @@ public class DBHelper extends SQLiteConnection {
     
     public DBHelper() throws SQLException {
         super(DB_DRIVER, DATABASE.getAbsolutePath());
+    }
+    
+    public static DBHelper getInstance() {
+        if (instance == null)
+            try {
+                instance = new DBHelper();
+            } catch (SQLException ex) {}
+        return instance;
     }
     
     public void onUpgrade(DBHelper db, int oldVersion, int newVersion) {

@@ -22,10 +22,14 @@ public class PessoasAddInternalFrame extends javax.swing.JInternalFrame {
 
     static ArrayList<Turma> turmas;
     static int id_turma=0;
-    private TurmaController turmaController = TurmaController.INSTANCE;
+    private final TurmaController turmaController;
+    private final PessoaController pessoaController;
     
     public PessoasAddInternalFrame() {
         initComponents();
+        
+        turmaController = TurmaController.getInstance();
+        pessoaController = PessoaController.getInstance();
         
         turmas = turmaController.ArrayTurma();
         turmaField.removeAllItems();
@@ -212,7 +216,7 @@ public class PessoasAddInternalFrame extends javax.swing.JInternalFrame {
             });
         }
         
-        if (PessoaController.Salvar(id_turma, codigo.trim(), nome.trim(), cargo)) {
+        if (pessoaController.Salvar(id_turma, codigo.trim(), nome.trim(), cargo)) {
             nomeField.setText("");
             codigoField.setText("");
             cargoField.setSelectedIndex(1);

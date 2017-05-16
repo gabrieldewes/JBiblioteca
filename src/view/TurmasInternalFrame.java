@@ -20,13 +20,15 @@ import model.TurmaEnum;
  */
 public class TurmasInternalFrame extends javax.swing.JInternalFrame {
     
-    private TurmaController turmaController = TurmaController.INSTANCE;
+    private final TurmaController turmaController;
 
     /**
      * Creates new form TurmasGeralFrame
      */
     public TurmasInternalFrame() {
         initComponents();
+        
+        turmaController = TurmaController.getInstance();
         
         updateTableModel("");
     }

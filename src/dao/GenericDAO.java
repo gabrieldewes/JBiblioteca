@@ -6,9 +6,6 @@
 package dao;
 
 import database.DBHelper;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -16,14 +13,14 @@ import java.util.logging.Logger;
  */
 public class GenericDAO {
     
-    static DBHelper helper;
+    private static GenericDAO instance;
     
-    public GenericDAO() {
-        try {
-            helper = new DBHelper();
-        } catch (SQLException ex) {
-            Logger.getLogger(GenericDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+    private DBHelper helper = DBHelper.getInstance();
+        
+    public static GenericDAO getInstance() {
+        if (instance == null)
+            instance = new GenericDAO();
+        return instance;
     }
     
     public boolean save(String table, String column, String content) {

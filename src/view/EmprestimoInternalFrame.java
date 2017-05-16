@@ -33,6 +33,10 @@ import static view.MainFrame.lif;
  * @author gabriel
  */
 public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
+    
+    private final EmprestimoController emprestimoController;
+    private final ConfigController configController;
+    private final ExemplarController exemplarController;
 
     static MainFrame mfthis;
     static double juros_dia;
@@ -40,21 +44,26 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
     
     public EmprestimoInternalFrame( MainFrame mf ) {
         initComponents();
+        
+        emprestimoController = EmprestimoController.getInstance();
+        configController = ConfigController.getInstance();
+        exemplarController = ExemplarController.getInstance();
+        
         emprestimoTable.setAutoCreateRowSorter(true);
         mfthis=mf;
         updateEmprestimoTable("");
         livroList.setModel(new DefaultListModel());
         
-        prazo_default = ConfigController.getPrazoDefault();
-        juros_dia = ConfigController.getAppConfigTaxaJuros();
+        prazo_default = configController.getPrazoDefault();
+        juros_dia = configController.getAppConfigTaxaJuros();
     }
 
     final void updateEmprestimoTable(String buscar) {
         if (!"".equals(buscar)) {
-            emprestimoTable.setModel(EmprestimoController.Listar(buscar));
+            emprestimoTable.setModel(emprestimoController.Listar(buscar));
         }
         else {
-            emprestimoTable.setModel(EmprestimoController.Listar(""));
+            emprestimoTable.setModel(emprestimoController.Listar(""));
         }
         emprestimoTable.getColumnModel().getColumn(0).setMinWidth(0);
         emprestimoTable.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -228,7 +237,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
             DevolveEmprestimoBtn.setEnabled(true); 
             RenovaEmprestimoBtn.setEnabled(true); 
             int id_emprestimo = Integer.valueOf(emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 0).toString());
-            ArrayList<Exemplar> exemplares = ExemplarController.ArrayExemplar("el.id_emprestimo", id_emprestimo, null);
+            ArrayList<Exemplar> exemplares = exemplarController.ArrayExemplar("el.id_emprestimo", id_emprestimo, null);
             DefaultListModel model = new DefaultListModel();
             exemplares.stream().forEach((e) -> {
                 model.addElement(e.getCodigo() +" - "+ e.getL().getTitulo());
@@ -246,7 +255,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
         if (idx.length > 0) {
             int id_emprestimo = Integer.valueOf(emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 0).toString());
             if (id_emprestimo != 0) {
-                Emprestimo e = EmprestimoController.Pegar(id_emprestimo);
+                Emprestimo e = emprestimoController.Pegar(id_emprestimo);
                 LocalDateTime hoje = new LocalDateTime(System.currentTimeMillis());
                 LocalDateTime fim = new LocalDateTime( e.getData_fim());
                 int dias = Days.daysBetween(hoje, fim).getDays();  
@@ -277,7 +286,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                 
                 response = JOptionPane.showConfirmDialog(null, message, "Devolução", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (response == JOptionPane.YES_OPTION) { 
-                    if (EmprestimoController.Apagar(id_emprestimo)) {
+                    if (emprestimoController.Apagar(id_emprestimo)) {
                         updateEmprestimoTable("");
                         if (lif != null)
                             lif.updateExemplarTableModel("");
@@ -324,7 +333,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
         if (idx.length > 0) {
             int id_emprestimo = Integer.valueOf(emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 0).toString());
             if (id_emprestimo != 0) {
-                Emprestimo e = EmprestimoController.Pegar(id_emprestimo);
+                Emprestimo e = emprestimoController.Pegar(id_emprestimo);
                 LocalDateTime hoje = new LocalDateTime(System.currentTimeMillis());
                 LocalDateTime fim = new LocalDateTime( e.getData_fim());
                 int dias = Days.daysBetween(hoje, fim).getDays();  
@@ -362,7 +371,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                     if (plus_days < 0)
                         plus_days = plus_days*-1;
                     System.out.println(""+plus_days);
-                    if (EmprestimoController.Renovar(id_emprestimo, plus_days)) {
+                    if (emprestimoController.Renovar(id_emprestimo, plus_days)) {
                         updateEmprestimoTable("");
                     }                             
                 } 

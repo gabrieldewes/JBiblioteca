@@ -10,6 +10,7 @@ import control.EmprestimoController;
 import control.ExemplarController;
 import control.PessoaController;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import model.Exemplar;
@@ -23,11 +24,16 @@ import static view.MainFrame.lif;
  * @author gabriel
  */
 public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame {
+    
+    private final ExemplarController exemplarController;
+    private final PessoaController pessoaController;
+    private final EmprestimoController emprestimoController;
+    private final ConfigController configController;
 
-    static ArrayList<Pessoa> pessoas;
-    static ArrayList<Exemplar> exemplares;
-    static ArrayList<Exemplar> filtrados;
-    static ArrayList<Exemplar> selecionados;
+    static List<Pessoa> pessoas;
+    static List<Exemplar> exemplares;
+    static List<Exemplar> filtrados;
+    static List<Exemplar> selecionados;
     
     static DefaultListModel model;
     static LocalDateTime ldt;
@@ -35,8 +41,14 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
     
     public EmprestimoAddInternalFrame() {
         initComponents();
+        
+        exemplarController = ExemplarController.getInstance();
+        pessoaController = PessoaController.getInstance();
+        emprestimoController = EmprestimoController.getInstance();
+        configController = ConfigController.getInstance();
+        
         /* Passando valor default salvo em Opções>Preferencias>Prazo Default */
-        prazo_default = ConfigController.getPrazoDefault();
+        prazo_default = configController.getPrazoDefault();
         diaSpinner.setValue(prazo_default);
         
         model = new DefaultListModel();
@@ -44,8 +56,8 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
         
         selecionados = new ArrayList<>();
         filtrados = new ArrayList<>();
-        pessoas = PessoaController.ArrayPessoa("");
-        exemplares = ExemplarController.ArrayExemplar(null, 0, "");
+        pessoas = pessoaController.ArrayPessoa("");
+        exemplares = exemplarController.ArrayExemplar(null, 0, "");
         updatePessoaBox();
         updateLivroBox();
         
@@ -458,11 +470,11 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
         pessoaBox.setEnabled(true);
         String str = buscaPessoaField.getText();
         if (!"".equals(str) && str.length() > 2) {
-            pessoas = PessoaController.ArrayPessoa(str);
+            pessoas = pessoaController.ArrayPessoa(str);
             updatePessoaBox();
         }
         else {
-            pessoas = PessoaController.ArrayPessoa("");
+            pessoas = pessoaController.ArrayPessoa("");
             updatePessoaBox();
         }
     }//GEN-LAST:event_buscaPessoaFieldKeyReleased
@@ -492,7 +504,7 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
             model.removeAllElements();
             livroList.setModel(model);
             selecionados.clear(); 
-            exemplares = ExemplarController.ArrayExemplar(null, 0, "");
+            exemplares = exemplarController.ArrayExemplar(null, 0, "");
             updateLivroBox();
             //System.out.println(" LISTA VAZIA? "+ selecionados.isEmpty() );
         }
@@ -543,7 +555,7 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
                int plus_days = Integer.valueOf(diaSpinner.getValue().toString());
                LocalDateTime inicio = new LocalDateTime(System.currentTimeMillis());
                LocalDateTime fim = inicio.plusDays(plus_days);
-               if (EmprestimoController.Salvar(alugador.getId_pessoa(), selecionados, inicio, fim)) {
+               if (emprestimoController.Salvar(alugador.getId_pessoa(), selecionados, inicio, fim)) {
                    Runnable t1 = () -> {
                         if (eif != null)
                             eif.updateEmprestimoTable("");
@@ -623,10 +635,10 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
     }//GEN-LAST:event_addListLivroBtnActionPerformed
 
     private void buscaLivroFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscaLivroFieldKeyReleased
-        filtrados = ExemplarController.ArrayExemplar(null, 0, "");
+        filtrados = exemplarController.ArrayExemplar(null, 0, "");
         String str = buscaLivroField.getText();
         if (!"".equals(str) && str.length() > 2) {
-            filtrados = ExemplarController.ArrayExemplar(null, 0, str);
+            filtrados = exemplarController.ArrayExemplar(null, 0, str);
             updateLivroFiltradoBox();
         }
         else {

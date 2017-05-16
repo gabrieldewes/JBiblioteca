@@ -25,7 +25,8 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
     static Pessoa ex;
     static int id_turma;
     static ArrayList<Turma> turmas;
-    private TurmaController turmaController = TurmaController.INSTANCE;
+    private final TurmaController turmaController;
+    private final PessoaController pessoaController;
 
     @Override
     public Insets insets() {
@@ -35,13 +36,16 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
     public PessoasAttInternalFrame( int id ) {
         initComponents();
         
+        turmaController = TurmaController.getInstance();
+        pessoaController = PessoaController.getInstance();
+        
         turmas = turmaController.ArrayTurma();
         turmaField.removeAllItems();
         turmas.stream().forEach((t) -> {
             turmaField.addItem( t.getNome() );
         });
         
-        ex = PessoaController.Pegar(id);
+        ex = pessoaController.Pegar(id);
         nomeField.setText( ex.getNome() );
         codigoField.setText( ex.getCodigo() );
         cargoField.setSelectedItem( PessoaEnum.get( ex.getCargo() ));
@@ -237,7 +241,7 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
             id_turma=0;
         }
         
-        if (PessoaController.Alterar(ex, id_turma, codigo, nome, cargo)) {
+        if (pessoaController.Alterar(ex, id_turma, codigo, nome, cargo)) {
             pif.updateTableModel("");
             this.dispose();
         }

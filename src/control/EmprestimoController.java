@@ -9,6 +9,7 @@ import dao.EmprestimoDAO;
 import dao.ExemplarDAO;
 import dao.GenericDAO;
 import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 import model.Emprestimo;
@@ -23,10 +24,23 @@ import org.joda.time.Period;
  */
 public class EmprestimoController {
     
-    static EmprestimoDAO dao;
-    static GenericDAO gendao;
+    private static EmprestimoController instance;
     
-    public static boolean Salvar(int id_pessoa, ArrayList<Exemplar> exemplares, LocalDateTime inicio, LocalDateTime fim) {
+    private static EmprestimoDAO emprestimoDao;
+    private static ExemplarDAO exemplarDao;
+    private static GenericDAO gendao;
+    
+    public EmprestimoController() {
+        emprestimoDao = EmprestimoDAO.getInstance();
+    }
+    
+    public static EmprestimoController getInstance() {
+        if (instance == null) 
+            instance = new EmprestimoController();
+        return instance;
+    }
+    
+    public boolean Salvar(int id_pessoa, List<Exemplar> exemplares, LocalDateTime inicio, LocalDateTime fim) {
         if (!exemplares.isEmpty()) {
             if (id_pessoa != 0) {
                 gendao=new GenericDAO();
@@ -36,16 +50,14 @@ public class EmprestimoController {
                         id_exemplar.add(e.getId_exemplar());
                     });
                     Emprestimo e = new Emprestimo(0, id_pessoa, id_exemplar, inicio, fim);
-                    dao = new EmprestimoDAO();
-                    int id = dao.save(e);
+                    int id = emprestimoDao.save(e);
                     if (id != 0) {
                         e.setId_emprestimo(id);
-                        dao = new EmprestimoDAO();
-                        if (dao.saveForeignBatch(e)) {
+                        if (emprestimoDao.saveForeignBatch(e)) {
                             Runnable t1 = () -> {
                                 try {
-                                    ExemplarDAO edao = new ExemplarDAO();
-                                    edao.setSituation(id_exemplar, "Alugado");
+                                    exemplarDao = ExemplarDAO.getInstance();
+                                    exemplarDao.setSituation(id_exemplar, "Alugado");
                                 } catch (Exception e1) {
                                 }
                             };
@@ -59,9 +71,8 @@ public class EmprestimoController {
         return false;
     }
     
-    public static boolean Renovar(int id, int plus_days) {
-        dao = new EmprestimoDAO();
-        Emprestimo e = dao.get(id);
+    public boolean Renovar(int id, int plus_days) {
+        Emprestimo e = emprestimoDao.get(id);
         if (e != null) {
             LocalDateTime hoje = new LocalDateTime( System.currentTimeMillis() );
             LocalDateTime fim = new LocalDateTime( e.getData_fim() );
@@ -71,29 +82,24 @@ public class EmprestimoController {
                 e.setData_fim(hoje.plusDays(plus_days));
             else
                 e.setData_fim(fim.plusDays(plus_days));
-            dao = new EmprestimoDAO();
-            return dao.update(e);
+            return emprestimoDao.update(e);
         }
         return false;
     }
     
-    public static Emprestimo Pegar(int id) {
-        dao = new EmprestimoDAO();
-        return dao.get(id);
+    public Emprestimo Pegar(int id) {
+        return emprestimoDao.get(id);
     }
     
-    public static boolean Apagar(int id_emprestimo) {
-        dao = new EmprestimoDAO();
-        Emprestimo e = dao.get(id_emprestimo);
+    public boolean Apagar(int id_emprestimo) {
+        Emprestimo e = emprestimoDao.get(id_emprestimo);
         if (e != null) {
-            dao = new EmprestimoDAO();
-            if (dao.deleteForeign(id_emprestimo)) {
-                dao = new EmprestimoDAO();
-                if (dao.delete(id_emprestimo)) {
+            if (emprestimoDao.deleteForeign(id_emprestimo)) {
+                if (emprestimoDao.delete(id_emprestimo)) {
                     Runnable t1 = () -> {
                         try {
-                            ExemplarDAO edao = new ExemplarDAO();
-                            edao.setSituation(e.getId_exemplar(), "");
+                            exemplarDao = ExemplarDAO.getInstance();
+                            exemplarDao.setSituation(e.getId_exemplar(), "");
                         } catch (Exception e1) {
                         }
                     };
@@ -106,19 +112,18 @@ public class EmprestimoController {
         return false;
     }  
     
-    public static TableModel Listar(String busca) {
+    public TableModel Listar(String busca) {
         TableModel tb;
-        dao = new EmprestimoDAO();
         if (!"".equals(busca)) {
-            tb = UpdateTablemodel(dao.list(busca));
+            tb = UpdateTablemodel(emprestimoDao.list(busca));
         }
         else {
-            tb = UpdateTablemodel(dao.list(""));
+            tb = UpdateTablemodel(emprestimoDao.list(""));
         }
         return tb;
     }
     
-    private static TableModel UpdateTablemodel( TableModel tb ) {
+    private TableModel UpdateTablemodel( TableModel tb ) {
         LocalDateTime hoje = new LocalDateTime(System.currentTimeMillis());
         for (int i=0; i<tb.getRowCount(); i++){
             String in = tb.getValueAt(i, 3).toString();

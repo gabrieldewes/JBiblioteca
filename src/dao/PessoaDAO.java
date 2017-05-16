@@ -21,15 +21,19 @@ import model.Pessoa;
  */
 public class PessoaDAO {
     
-    private static DBHelper helper;
-    private static PreparedStatement stmt;
+    private static PessoaDAO instance;
+    
+    private final DBHelper helper;
+    private PreparedStatement stmt;
     
     public PessoaDAO() {
-        try {
-            helper = new DBHelper();
-        } catch (SQLException ex) {
-            Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        helper = DBHelper.getInstance();
+    }
+    
+    public static PessoaDAO getInstance() {
+        if (instance == null) 
+            instance = new PessoaDAO();
+        return instance;
     }
 
     public boolean save(Pessoa p) {

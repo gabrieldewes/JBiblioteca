@@ -6,19 +6,11 @@
 package view;
 
 import control.ConfigController;
-import control.ExemplarController;
-import control.LivroController;
-import database.Database;
 import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import model.Livro;
-import org.joda.time.LocalDateTime;
-import static view.LivrosInternalFrame.titulos;
 
 /**
  *
@@ -399,7 +391,7 @@ public class MainFrame extends javax.swing.JFrame {
             "Deseja realmente encerrar?", "JBiblioteca", 
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-            ConfigController.doDailyBackup();  
+            ConfigController.getInstance().doDailyBackup();  
             System.exit(0);
         }
     }//GEN-LAST:event_formWindowClosing

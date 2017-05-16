@@ -16,9 +16,12 @@ import static view.MainFrame.lif;
  */
 public class LivrosAddInternalFrame extends javax.swing.JInternalFrame {
     
-
+    private final LivroController livroController;
+    
     public LivrosAddInternalFrame() {
         initComponents();
+        
+        livroController = LivroController.getInstance();
     }
 
     @SuppressWarnings("unchecked")
@@ -216,7 +219,7 @@ public class LivrosAddInternalFrame extends javax.swing.JInternalFrame {
         String x = xField.getText();
         String y = yField.getText();
 
-        if (LivroController.Salvar(codigo, isbn, titulo, autor, x, y)) {
+        if (livroController.Salvar(codigo, isbn, titulo, autor, x, y)) {
             codigoField.setText("");
             tituloField.setText("");
             autorField.setText("");

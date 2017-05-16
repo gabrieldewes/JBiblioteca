@@ -19,47 +19,52 @@ import org.joda.time.Period;
  */
 public class ConfigController {
     
-    static GenericDAO dao;
-    static ConfigDAO cdao;
+    private static ConfigController instance;
     
-    public static boolean saveTaxaJuros(double d) {
-        cdao = new ConfigDAO();
+    private static GenericDAO gdao;
+    private static ConfigDAO cdao;
+    
+    public ConfigController() {
+        gdao = GenericDAO.getInstance();
+        cdao = ConfigDAO.getInstance();
+    }
+    
+    public static ConfigController getInstance() {
+        if (instance == null)
+            instance = new ConfigController();
+        return instance;
+    }
+    
+    public boolean saveTaxaJuros(double d) {
         return cdao.saveTaxaJuros(d);
     }
     
     public static boolean savePrazoDefault(int i) {
-        cdao = new ConfigDAO();
         return cdao.savePrazoDefault(i);
     }
     
-    public static boolean saveLastBackupDate(String date) {
-        dao = new GenericDAO();
-        return dao.update("app_config", "last_backup", date);
+    public boolean saveLastBackupDate(String date) {
+        return gdao.update("app_config", "last_backup", date);
     }
     
-    public static String getLastBackupDate() {
-        dao = new GenericDAO();
-        String s = dao.get("app_config", "last_backup");
+    public String getLastBackupDate() {
+        String s = gdao.get("app_config", "last_backup");
         LocalDateTime ldt = new LocalDateTime(s);
         s = ""+ldt.toDate().toLocaleString()+"";
         return s;
     }
     
-    public static boolean setAutoBackup(boolean flag) {
-        cdao = new ConfigDAO();
+    public boolean setAutoBackup(boolean flag) {
         return cdao.setAutoBkp(flag);
     }
     
-    public static boolean isSetAutoBackup() {
-        cdao = new ConfigDAO();
+    public boolean isSetAutoBackup() {
         return cdao.isSetAutoBackup();
     }
     
-    public static boolean doDailyBackup() {
-        cdao = new ConfigDAO();
+    public boolean doDailyBackup() {
         if (cdao.isSetAutoBackup()) {
-            dao = new GenericDAO();
-            String s = dao.get("app_config", "last_backup");
+            String s = gdao.get("app_config", "last_backup");
             LocalDateTime hoje = new LocalDateTime( System.currentTimeMillis() );
             LocalDateTime last_bkp = new LocalDateTime( s );
             Period p = new Period(hoje, last_bkp);
@@ -70,7 +75,7 @@ public class ConfigController {
                         + ".jbiblioteca"+ System.getProperty("file.separator")+ "jbiblioteca_bkp.db");
                 try {  
                     Database.backupDatabase(file);
-                    ConfigController.saveLastBackupDate("'"+hoje.toString()+"'");
+                    this.saveLastBackupDate("'"+hoje.toString()+"'");
                 } catch (Exception ex) {
                     Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -80,23 +85,19 @@ public class ConfigController {
         return false;  
     }
     
-    public static double getAppConfigTaxaJuros() {
-        cdao = new ConfigDAO();
+    public double getAppConfigTaxaJuros() {
         return cdao.getTaxaJuros();
     }
     
-    public static int getDbVersion() {
-        cdao = new ConfigDAO();
+    public int getDbVersion() {
         return cdao.getDBVersion();
     }
     
-    public static boolean setDbVersion(int ver) {
-        cdao = new ConfigDAO();
+    public boolean setDbVersion(int ver) {
         return cdao.saveDBVersion(ver);
     }
     
-    public static int getPrazoDefault() {
-        cdao = new ConfigDAO();
+    public int getPrazoDefault() {
         return cdao.getPrazoDefault();
     }
 }

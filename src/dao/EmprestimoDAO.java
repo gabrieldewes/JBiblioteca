@@ -5,7 +5,6 @@
  */
 package dao;
 
-import static dao.ExemplarDAO.helper;
 import database.DBHelper;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,15 +22,19 @@ import org.joda.time.LocalDateTime;
  */
 public class EmprestimoDAO {
     
-    static DBHelper helper;
-    static PreparedStatement stmt;
+    private static EmprestimoDAO instance;
+    
+    private final DBHelper helper;
+    private PreparedStatement stmt;
 
     public EmprestimoDAO() {
-        try {
-            helper = new DBHelper();
-        } catch (SQLException ex) {
-            Logger.getLogger(ExemplarDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        helper = DBHelper.getInstance();
+    }
+    
+    public static EmprestimoDAO getInstance() {
+        if (instance == null)
+            instance = new EmprestimoDAO();
+        return instance;
     }
     
     public int save(Emprestimo e) {

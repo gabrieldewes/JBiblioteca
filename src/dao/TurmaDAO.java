@@ -14,19 +14,21 @@ import model.Turma;
  *
  * @author Dewes
  */
-public class TurmaDAO implements DAO {
+public class TurmaDAO /*implements DAO<Turma>*/ {
     
-    public static TurmaDAO INSTANCE = new TurmaDAO();
+    public static TurmaDAO instance;
     
     private static DBHelper helper;
     private static PreparedStatement stmt;
     
     public TurmaDAO() {
-        try {
-            helper = new DBHelper();
-        } catch (SQLException ex) {
-            Logger.getLogger(TurmaDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        helper = DBHelper.getInstance();
+    }
+    
+    public static TurmaDAO getInstance() {
+        if (instance == null)
+            instance = new TurmaDAO();
+        return instance;
     }
     
     public boolean save(Turma t) {
@@ -49,13 +51,13 @@ public class TurmaDAO implements DAO {
         return helper.rowExists(restrict);
     }
     
-    @Override
+    //@Override
     public boolean delete(int id) {
         String query = "DELETE FROM turma WHERE id_turma="+ id +"; ";
         return helper.rawSQL(query);
     } 
     
-    @Override
+    //@Override
     public Turma get(int id) {
         final String select = "SELECT * FROM turma WHERE id_turma=?; ";
         Turma t=null;
@@ -119,26 +121,5 @@ public class TurmaDAO implements DAO {
         }
         return turmas;
     }
-
-    @Override
-    public boolean save(Object obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean update(Object obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public TableModel getAll(String like) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<Object> getArray(String like) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     
 }

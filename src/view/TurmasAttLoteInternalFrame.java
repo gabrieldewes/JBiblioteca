@@ -33,7 +33,7 @@ import model.Turma;
  */
 public class TurmasAttLoteInternalFrame extends javax.swing.JInternalFrame {
     
-    private TurmaController turmaController = TurmaController.INSTANCE;
+    private final TurmaController turmaController;
     private List<Turma> turmas;
 
     /**
@@ -41,6 +41,8 @@ public class TurmasAttLoteInternalFrame extends javax.swing.JInternalFrame {
      */
     public TurmasAttLoteInternalFrame() {
         initComponents();
+        
+        turmaController = TurmaController.getInstance();
         
         turmas = turmaController.ArrayTurma();
         

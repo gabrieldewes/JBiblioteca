@@ -21,15 +21,19 @@ import model.Livro;
  */
 public class LivroDAO {
     
-    static DBHelper helper;
-    static PreparedStatement stmt;
+    private static LivroDAO instance;
+    
+    private final DBHelper helper;
+    private PreparedStatement stmt;
     
     public LivroDAO() {
-        try {
-            helper = new DBHelper();
-        } catch (SQLException ex) {
-            Logger.getLogger(PessoaDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        helper = DBHelper.getInstance();
+    }
+    
+    public static LivroDAO getInstance() {
+        if (instance == null)
+            instance = new LivroDAO();
+        return instance;
     }
     
     public int save(Livro l) {
@@ -72,7 +76,7 @@ public class LivroDAO {
             if (l!=null) 
                 System.out.println("Return "+ l.toString() +" from query "+ query);
             stmt.close();
-            helper.close();
+            //helper.close();
         } catch (SQLException ex) {
             Logger.getLogger(LivroDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -133,7 +137,7 @@ public class LivroDAO {
             } 
             System.out.println("Return "+ livros.size() +" items from query "+ query);
             stmt.close();
-            helper.close();
+            //helper.close();
         } catch (SQLException ex) {
             Logger.getLogger(LivroDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

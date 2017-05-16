@@ -34,13 +34,20 @@ import static view.MainFrame.lif;
  * @author Dewes
  */
 public class ExemplarAddInternalFrame extends javax.swing.JInternalFrame {
+    
+    private final ExemplarController exemplarController;
+    private final LivroController livroController;
 
     static List<Livro> livros;
     static List<Livro> filtrados;
     
     public ExemplarAddInternalFrame() {
         initComponents();
-        livros = LivroController.ArrayLivro("");
+        
+        exemplarController = ExemplarController.getInstance();
+        livroController = LivroController.getInstance();
+        
+        livros = livroController.ArrayLivro("");
         updateLivroBox(livros);
     }
     
@@ -233,7 +240,7 @@ public class ExemplarAddInternalFrame extends javax.swing.JInternalFrame {
     private void buscaLivroFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscaLivroFieldKeyReleased
         String str = buscaLivroField.getText();
         if (!"".equals(str.trim()) && str.trim().length() > 3) {
-            filtrados = LivroController.ArrayLivro(str.trim());
+            filtrados = livroController.ArrayLivro(str.trim());
             updateLivroBox(filtrados);
         }
         else {
@@ -253,7 +260,7 @@ public class ExemplarAddInternalFrame extends javax.swing.JInternalFrame {
         codigo = codigo.replace(" ", "");
         String x = xField.getText();
         String y = yField.getText();
-        if (ExemplarController.Salvar(id_livro, codigo.trim(), x.trim(), y.trim())) {
+        if (exemplarController.Salvar(id_livro, codigo.trim(), x.trim(), y.trim())) {
             if (lif != null) {
                 lif.updateLivroTableModel("");
                 lif.updateExemplarTableModel("");

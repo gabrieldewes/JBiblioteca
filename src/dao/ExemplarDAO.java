@@ -22,15 +22,19 @@ import model.Livro;
  */
 public class ExemplarDAO {
     
-    static DBHelper helper;
-    static PreparedStatement stmt;
+    private static ExemplarDAO instance;
+    
+    private final DBHelper helper;
+    private PreparedStatement stmt;
     
     public ExemplarDAO() {
-        try {
-            helper = new DBHelper();
-        } catch (SQLException ex) {
-            Logger.getLogger(ExemplarDAO.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        helper = DBHelper.getInstance();
+    }
+    
+    public static ExemplarDAO getInstance() {
+        if (instance == null) 
+            instance = new ExemplarDAO();
+        return instance;
     }
     
     public boolean save(Exemplar e) {

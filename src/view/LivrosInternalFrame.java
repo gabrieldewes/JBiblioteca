@@ -26,6 +26,9 @@ import static view.MainFrame.lif;
  * @author Dewes
  */
 public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
+    
+    private final ExemplarController exemplarController;
+    private final LivroController livroController;
 
     static LivrosAddInternalFrame paif;
     static MainFrame mfthis;
@@ -34,6 +37,10 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
     
     public LivrosInternalFrame( MainFrame mf ) {
         initComponents();
+        
+        exemplarController = ExemplarController.getInstance();
+        livroController = LivroController.getInstance();
+        
         LivroTable.setAutoCreateRowSorter(true);
         ExemplarTable.setAutoCreateRowSorter(true);
         updateLivroTableModel("");
@@ -43,10 +50,10 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
     
     void updateLivroTableModel(String buscar) {
         if (!"".equals(buscar)) {
-            LivroTable.setModel(LivroController.Buscar(buscar));
+            LivroTable.setModel(livroController.Buscar(buscar));
         }
         else {
-            LivroTable.setModel(LivroController.Listar());
+            LivroTable.setModel(livroController.Listar());
         }
         LivroTable.getColumnModel().getColumn(0).setMinWidth(0);
         LivroTable.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -55,10 +62,10 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
     
     void updateExemplarTableModel(String buscar) {
         if (!"".equals(buscar)) {
-            ExemplarTable.setModel(ExemplarController.Buscar(buscar));
+            ExemplarTable.setModel(exemplarController.Buscar(buscar));
         }
         else {
-            ExemplarTable.setModel(ExemplarController.Listar());
+            ExemplarTable.setModel(exemplarController.Listar());
         }
         ExemplarTable.getColumnModel().getColumn(0).setMinWidth(0);
         ExemplarTable.getColumnModel().getColumn(0).setPreferredWidth(0);
@@ -367,7 +374,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
             if (response == JOptionPane.YES_OPTION) {
                 int id = Integer.valueOf( LivroTable.getValueAt( LivroTable.getSelectedRow() , 0 ).toString() );
-                if (LivroController.Apagar(id)) {
+                if (livroController.Apagar(id)) {
                     updateLivroTableModel("");
                     updateExemplarTableModel("");
                 }
@@ -394,7 +401,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             };
             
             int id = Integer.valueOf( LivroTable.getValueAt(LivroTable.getSelectedRow(), 0).toString() );
-            Livro ex = LivroController.Pegar(id);
+            Livro ex = livroController.Pegar(id);
             tituloField.setText( ex.getTitulo() );
             autorField.setText( ex.getAutor() );
             
@@ -405,7 +412,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                     String titulo = tituloField.getText();
                     String autor = autorField.getText();
                     String isbn=null;
-                    if (LivroController.Alterar(ex, isbn, titulo, autor)) {
+                    if (livroController.Alterar(ex, isbn, titulo, autor)) {
                         option = JOptionPane.OK_CANCEL_OPTION;
                         if (lif != null) {
                             lif.updateLivroTableModel("");
@@ -450,7 +457,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             };
             
             int id = Integer.valueOf( LivroTable.getValueAt(LivroTable.getSelectedRow(), 0).toString() );
-            Livro l = LivroController.Pegar(id);
+            Livro l = livroController.Pegar(id);
             titulo.setText( l.getTitulo() );
             
             int option = 1;
@@ -460,7 +467,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                     String codigo = codigoField.getText();
                     String x = xField.getText();
                     String y = yField.getText();
-                    if (ExemplarController.Salvar(l.getId_livro(), codigo, x, y)) {
+                    if (exemplarController.Salvar(l.getId_livro(), codigo, x, y)) {
                         option = JOptionPane.OK_CANCEL_OPTION;
                         if (lif != null) {
                             lif.updateLivroTableModel("");
@@ -579,7 +586,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (response == JOptionPane.OK_OPTION) {
                      int id = Integer.valueOf( ExemplarTable.getValueAt( ExemplarTable.getSelectedRow() , 0 ).toString() );
-                    if (ExemplarController.Alterar(
+                    if (exemplarController.Alterar(
                             id, codigo.getText().trim(), 
                             corredor.getText().trim(), prateleira.getText().trim())) {
                         updateLivroTableModel("");
@@ -611,7 +618,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
              if (response == JOptionPane.YES_OPTION) {
                  int id = Integer.valueOf( ExemplarTable.getValueAt( ExemplarTable.getSelectedRow() , 0 ).toString() );
-                 if (ExemplarController.Apagar(id)) {
+                 if (exemplarController.Apagar(id)) {
                      updateLivroTableModel("");
                      updateExemplarTableModel("");
                  }
