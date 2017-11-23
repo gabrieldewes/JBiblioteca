@@ -6,6 +6,7 @@
 package view;
 
 import control.ConfigController;
+import database.DBUtil;
 import database.Database;
 import java.awt.Cursor;
 import java.awt.Desktop;
@@ -16,6 +17,7 @@ import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalDateTime;
 import static view.MainFrame.eif;
@@ -40,7 +42,7 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         
         bkpDiario.setSelected( configController.isSetAutoBackup() );
         
-        //String last_backup = configController.getLastBackupDate();
+        // String last_backup = configController.getLastBackupDate();
         String last_backup = configController.getLastBackupToString();
         backupLabel.setText(last_backup);
         backupLabel.setFont(new Font("Dialog", Font.BOLD, 16));
@@ -50,12 +52,20 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         
         Double valor = configController.getAppConfigTaxaJuros();
         String s = String.format("%1$,.2f", valor);
-        //String s = NumberFormat.getCurrencyInstance().format(valor);
+        // String s = NumberFormat.getCurrencyInstance().format(valor);
         taxaField.setText(""+s);
        
         LocalDate date = new LocalDate(System.currentTimeMillis());
         footer.setText("© 2015 - "+ date.getYear() + " · Gabriel Dewes");
         appVersion.setText(configController.getAppVersion());
+    }
+    
+    void openBrowser(String uri) {
+        try {
+            Desktop.getDesktop().browse(new URI(uri));
+        } catch (IOException | URISyntaxException ex) {
+            Logger.getLogger(ConfigInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -79,10 +89,11 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel5 = new javax.swing.JPanel();
         BackupBtn = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        RecoverLocalBackupBtn = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         backupLabel = new javax.swing.JLabel();
         bkpDiario = new javax.swing.JCheckBox();
+        RemoteBackupBtn = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         footer = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -190,18 +201,18 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         BackupBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        BackupBtn.setText("Realizar Backup Agora");
+        BackupBtn.setText("Realizar Backup Local");
         BackupBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 BackupBtnActionPerformed(evt);
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        jButton1.setText("Restaurar arquivo de backup");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        RecoverLocalBackupBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        RecoverLocalBackupBtn.setText("Restaurar Backup Local");
+        RecoverLocalBackupBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                RecoverLocalBackupBtnActionPerformed(evt);
             }
         });
 
@@ -210,10 +221,18 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         backupLabel.setText("jLabel4");
 
         bkpDiario.setSelected(true);
-        bkpDiario.setText("Ativar backup Diário (recomendado)");
+        bkpDiario.setText("Backup Diário ao Sair");
         bkpDiario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 bkpDiarioActionPerformed(evt);
+            }
+        });
+
+        RemoteBackupBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        RemoteBackupBtn.setText("Realizar Backup Online");
+        RemoteBackupBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                RemoteBackupBtnActionPerformed(evt);
             }
         });
 
@@ -225,16 +244,20 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(BackupBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(BackupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(RemoteBackupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(backupLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(0, 83, Short.MAX_VALUE))
-                            .addComponent(backupLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(bkpDiario))
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addComponent(bkpDiario))
+                                .addGap(0, 49, Short.MAX_VALUE))))
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(RecoverLocalBackupBtn)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -248,10 +271,12 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(backupLabel)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(bkpDiario)
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(RemoteBackupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(bkpDiario))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(RecoverLocalBackupBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -299,6 +324,14 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         appVersion.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         appVersion.setForeground(new java.awt.Color(51, 51, 51));
         appVersion.setText("jLabel5");
+        appVersion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                appVersionMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                appVersionMouseEntered(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -351,19 +384,11 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void footerMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_footerMouseClicked
-        try {
-            Desktop.getDesktop().browse(new URI("https://gabrieldewes.github.io"));
-        } catch (IOException | URISyntaxException ex) {
-            Logger.getLogger(ConfigInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        openBrowser("https://gabrieldewes.github.io");
     }//GEN-LAST:event_footerMouseClicked
 
     private void jLabel1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseClicked
-        try {
-            Desktop.getDesktop().browse(new URI("https://gabrieldewes.github.io"));
-        } catch (IOException | URISyntaxException ex) {
-            Logger.getLogger(ConfigInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        openBrowser("https://gabrieldewes.github.io");
     }//GEN-LAST:event_jLabel1MouseClicked
 
     private void jLabel1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel1MouseEntered
@@ -405,60 +430,98 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
             
         }
         catch (NumberFormatException n) {
-            System.err.println("Exception "+n.getMessage());
+            // System.err.println("Exception "+n.getMessage());
             JOptionPane.showMessageDialog(null, "Campo numérico inválido.");
         }
 
     }//GEN-LAST:event_salvarBtnActionPerformed
 
     private void bkpDiarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bkpDiarioActionPerformed
-        try {
-            configController.setAutoBackup(bkpDiario.isSelected());
-        } catch (Exception e1) {}
+        configController.setAutoBackup(bkpDiario.isSelected());
     }//GEN-LAST:event_bkpDiarioActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
-            java.io.File file = new java.io.File(
-                System.getProperty("user.home")
-                + System.getProperty("file.separator")
-                + ".jbiblioteca"
-                + System.getProperty("file.separator")
-                + "jbiblioteca_bkp.db");
-            Database.checkDatabase();
-            Database.recoverBackupDatabase(file);
-            JOptionPane.showMessageDialog(null, "O arquivo de backup foi recuperado com êxito.");
-        } catch (Exception e1) {
-            JOptionPane.showMessageDialog(null, "Não foi encontrado arquivo de backup! ");
+    private void RecoverLocalBackupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RecoverLocalBackupBtnActionPerformed
+        
+        RecoverLocalBackupBtn.setEnabled(false);
+        int dialogResult = JOptionPane
+                .showConfirmDialog (null, "Tem certeza que deseja substituir o banco de dados atual pelo último backup local?", 
+                        "Recuperar Backup Local",
+                        JOptionPane.YES_NO_OPTION);
+        if (dialogResult == JOptionPane.YES_OPTION) {
+
+            if (DBUtil.recoverLocalBackup()) {
+              JOptionPane.showMessageDialog(null, "O arquivo de backup local foi recuperado com êxito.");
+            } else {
+              JOptionPane.showMessageDialog(null, "Não foi encontrado o arquivo de backup local.");
+            }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+        RecoverLocalBackupBtn.setEnabled(true);
+        
+    }//GEN-LAST:event_RecoverLocalBackupBtnActionPerformed
 
     private void BackupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackupBtnActionPerformed
-        try {
-            java.io.File file = new java.io.File(
-                System.getProperty("user.home")
-                + System.getProperty("file.separator")
-                + ".jbiblioteca"
-                + System.getProperty("file.separator")
-                + "jbiblioteca_bkp.db");
-            Database.checkDatabase();
-            Database.backupDatabase(file);
-            LocalDateTime ldt = new LocalDateTime(System.currentTimeMillis());
-            configController.saveLastBackupDate("'"+ldt.toString()+"'");
-            backupLabel.setText(configController.getLastBackupToString());
-            JOptionPane.showMessageDialog(null, "O arquivo de backup foi salvo com êxito.");
-        } catch (Exception ex) {}
+
+        BackupBtn.setEnabled(false);
+        int dialogResult = JOptionPane
+                .showConfirmDialog (null, "Tem certeza que deseja substituir o último arquivo de backup local pelo banco de dados atual?", 
+                        "Realizar Backup Local",
+                        JOptionPane.YES_NO_OPTION);
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            
+            if (DBUtil.backupDatabase()) {
+                backupLabel.setText(configController.getLastBackupToString());
+                JOptionPane.showMessageDialog(null, "O arquivo de backup local foi salvo com êxito.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Não foi possível salvar o arquivo de backup local.");
+            }   
+        }
+        BackupBtn.setEnabled(true);
     }//GEN-LAST:event_BackupBtnActionPerformed
+
+    private void appVersionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_appVersionMouseClicked
+        openBrowser("https://github.com/gabrieldewes/JBiblioteca");
+    }//GEN-LAST:event_appVersionMouseClicked
+
+    private void appVersionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_appVersionMouseEntered
+        appVersion.setCursor(new Cursor(Cursor.HAND_CURSOR));
+    }//GEN-LAST:event_appVersionMouseEntered
+
+    private void RemoteBackupBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RemoteBackupBtnActionPerformed
+       
+        RemoteBackupBtn.setEnabled(false);
+        int dialogResult = JOptionPane
+                .showOptionDialog (null, 
+                        "O backup remoto serve de garantia caso o seu computador apresente alguma falha ou esteja inoperável.\r\n\r\n" 
+                            + "Os arquivos remotos não poderão ser recuperados pela aplicação ainda nesta versão,\r\n"
+                            + "e para recuperar um arquivo de backup remoto, contate o desenvolvedor.\r\n\r\n"
+                            + "Faça o backup local antes para que o arquivo esteja em sua última versão do banco de dados.\r\n\r\n"
+                            + "Agora, antes de prosseguir, verifique se o computador possui uma conexão estável com a internet.", 
+                        "Realizar Backup Online",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, 
+                        null, 
+                        new String[] { "Ok, prosseguir", "Não concordo, sair" },
+                        "default");
+        if (dialogResult == JOptionPane.YES_OPTION) {
+            String translatedResult = DBUtil.remoteBackupDatabase();
+            if (translatedResult != null) {
+                JOptionPane.showMessageDialog(null, translatedResult);
+            }
+        }
+        RemoteBackupBtn.setEnabled(true);
+        
+    }//GEN-LAST:event_RemoteBackupBtnActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BackupBtn;
+    private javax.swing.JButton RecoverLocalBackupBtn;
+    private javax.swing.JButton RemoteBackupBtn;
     private javax.swing.JLabel appVersion;
     private javax.swing.JLabel backupLabel;
     private javax.swing.JTabbedPane backupTab;
     private javax.swing.JCheckBox bkpDiario;
     private javax.swing.JLabel footer;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

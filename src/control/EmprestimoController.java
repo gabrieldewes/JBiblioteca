@@ -109,49 +109,82 @@ public class EmprestimoController {
     public TableModel Listar(String busca) {
         TableModel tb;
         if (!"".equals(busca)) {
-            tb = UpdateTablemodel(emprestimoDao.list(busca));
+            tb = humanReadableDates(emprestimoDao.list(busca));
         }
         else {
-            tb = UpdateTablemodel(emprestimoDao.list(""));
+            tb = humanReadableDates(emprestimoDao.list(""));
         }
         return tb;
     }
     
-    private TableModel UpdateTablemodel( TableModel tb ) {
-        LocalDateTime hoje = new LocalDateTime(System.currentTimeMillis());
-        for (int i=0; i<tb.getRowCount(); i++){
+    private TableModel humanReadableDates( TableModel tb ) {
+        for (int i=0; i<tb.getRowCount(); i++) {
             String in = tb.getValueAt(i, 3).toString();
             String out = tb.getValueAt(i, 4).toString();
-            LocalDateTime inicio = new LocalDateTime(in);
-            LocalDateTime fim = new LocalDateTime(out);
+            
+            LocalDateTime dateIn = new LocalDateTime(in);
+            LocalDateTime dateToOut = new LocalDateTime(out);
+            
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            //tb.setValueAt(""+inicio.getDayOfMonth()+"/"+inicio.getMonthOfYear()+"/"+inicio.getYear()+"", i, 3);
-            tb.setValueAt(sdf.format(inicio.toDate()), i, 3);
-            //tb.setValueAt(""+fim.getDayOfMonth()+"/"+fim.getMonthOfYear()+"/"+fim.getYear()+"", i, 4);
-            tb.setValueAt(sdf.format(fim.toDate()), i, 4);
-
-            Period p = new Period(hoje, fim);
-            int dias = p.getDays();
-            int horas = p.getHours();
-            int month = p.getMonths();
-            //System.out.println(dias+":"+horas+" :: ENTRE AS DATAS "+fim.toString()+" :: "+hoje.toString());
-            if (dias < 1) {
-                if (dias == 0) {
-                    tb.setValueAt("Atraso "+horas*-1+"h", i, 5); 
-                    if (horas > 0)
-                        tb.setValueAt("Restam "+horas+"h", i, 5);     
-                }
-                else
-                    tb.setValueAt("Atraso "+dias*-1+"d:"+horas*-1+"h", i, 5); 
-
-            }
-            /*else 
-                if (month >= 0)
-                    tb.setValueAt("Restam "+dias+"d:"+horas+"h", i, 5); 
-                else
-                    tb.setValueAt("Restam "+month+" meses", i, 5); */
+            
+            tb.setValueAt(sdf.format(dateIn.toDate()), i, 3);
+            tb.setValueAt(sdf.format(dateToOut.toDate()), i, 4);
+            tb.setValueAt(humanDatesDifference(dateToOut, new LocalDateTime()), i, 5);
         }
         return tb;
+    }
+    
+    private String humanDatesDifference(LocalDateTime from, LocalDateTime to) {
+        Period p = new Period(from, to);
+        int minutos = p.getMinutes();
+        int horas = p.getHours();
+        int dias = p.getDays();
+        int meses = p.getMonths();
+        int anos = p.getYears();
+        String s = "";
+        
+        //System.out.println(anos +" anos, "+ meses +" meses, "+ dias +" dias, "+ horas +" horas, "+ minutos +"min");
+        
+        if (anos>0 || meses>0 || dias>0 || (horas==0 && minutos>0)) {
+            s += "Atraso "; 
+        }
+        if (anos > 0) {
+            s += anos +"a ";
+        }
+        if (meses > 0) {
+           s += meses +"m ";     
+        }
+        if (dias > 0) {
+            s += dias +"d ";    
+        }
+        if (horas > 0) {
+            s += horas +"h ";
+        }
+        if (horas == 0 && minutos > 0) {
+            s += minutos +"min ";
+        }
+        
+        if (anos<0 || meses<0 || dias<0 || horas<0 || (horas==0 && minutos<0)) {
+            s += "Restam "; 
+        }
+        if (anos < 0) {
+            s += anos * -1 +"a ";
+        }
+        if (meses < 0) {
+           s += meses * -1 +"m ";     
+        }
+        if (dias < 0) {
+            dias = Days.daysBetween(from, to).getDays();
+            s += dias * -1 +"d ";    
+        }
+        if (horas < 0) {
+            s += horas * -1 +"h ";
+        }
+        if (horas == 0 && minutos < 0) {
+            s += minutos * -1 +"min ";
+        }
+
+        return s;
     }
         
 }

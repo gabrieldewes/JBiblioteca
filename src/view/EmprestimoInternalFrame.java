@@ -253,19 +253,30 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
     private void DevolveEmprestimoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DevolveEmprestimoBtnActionPerformed
         int idx[] = emprestimoTable.getSelectedRows();
         if (idx.length > 0) {
+            
+            if (true) throw new RuntimeException("TODO FIX IT");
+            
             int id_emprestimo = Integer.valueOf(emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 0).toString());
             if (id_emprestimo != 0) {
                 Emprestimo e = emprestimoController.Pegar(id_emprestimo);
                 LocalDateTime hoje = new LocalDateTime(System.currentTimeMillis());
                 LocalDateTime fim = new LocalDateTime( e.getData_fim());
-                int dias = Days.daysBetween(hoje, fim).getDays();  
+                int dias = Days.daysBetween(hoje, fim).getDays();
+                // System.out.println("DIAS ATRASO "+ dias);
                 dias=dias*-1;
                 double total=0.0;
                 int response;
+                // TODO TODO TODO FIX IT
                 if (dias > 0) {
                     for (int i=0; i<dias; i++) {
-                        total = e.getId_exemplar().stream().map((_item) -> juros_dia).reduce(total, (accumulator, _item) -> accumulator + _item);
+                        total = e.getId_exemplar()
+                                .stream()
+                                .map((_item) -> juros_dia)
+                                .reduce(total, (accumulator, _item) -> accumulator + _item);
+                        
+                        total += juros_dia;
                     }
+                    System.out.println("TOTAL JUROS " + total );
                 }
                 
                 JLabel nome = new JLabel();

@@ -7,6 +7,7 @@ package control;
 
 import dao.ConfigDAO;
 import dao.GenericDAO;
+import database.DBUtil;
 import database.Database;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
@@ -48,12 +49,14 @@ public class ConfigController {
         return gdao.update("app_config", "last_backup", date);
     }
     
+    /*
     public String getLastBackupDate() {
         String s = gdao.get("app_config", "last_backup");
         LocalDateTime ldt = new LocalDateTime(s);
         s = ""+ldt.toDate().toLocaleString()+"";
         return s;
     }
+    */
     
     public String getLastBackupToString() {
         String s = gdao.get("app_config", "last_backup");
@@ -74,19 +77,19 @@ public class ConfigController {
         if (cdao.isSetAutoBackup()) {
             String s = gdao.get("app_config", "last_backup");
             LocalDateTime hoje = new LocalDateTime( System.currentTimeMillis() );
-            LocalDateTime last_bkp = new LocalDateTime( s );
-            Period p = new Period(hoje, last_bkp);
+            LocalDateTime lastBackup = new LocalDateTime( s );
+            Period p = new Period(hoje, lastBackup);
             //System.out.println(p.getHours() +" # "+ p.getMinutes());
-            if (p.getDays() < 0) {
-                java.io.File file = new java.io.File(
-                        System.getProperty("user.home")+ System.getProperty("file.separator")
-                        + ".jbiblioteca"+ System.getProperty("file.separator")+ "jbiblioteca_bkp.db");
+            if (p.getHours() < 0) {
+                DBUtil.backupDatabase();
+                /*
                 try {  
-                    Database.backupDatabase(file);
+                    Database.backupDatabase();
                     this.saveLastBackupDate("'"+hoje.toString()+"'");
                 } catch (Exception ex) {
                     Logger.getLogger(ConfigController.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                */
                 return true;
             }    
         }

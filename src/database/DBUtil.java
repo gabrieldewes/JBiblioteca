@@ -1,7 +1,9 @@
 package database;
 
-import control.ConfigController;
+import api.JBibliotecaResource;
 import dao.ConfigDAO;
+import dao.GenericDAO;
+import org.joda.time.LocalDateTime;
 
 /**
  *
@@ -9,77 +11,66 @@ import dao.ConfigDAO;
  */
 public class DBUtil {
     
-    public static String VER_1[] =  {"livro", "genero", "TEXT", "Sem Gênero"};
+    public static String VER_2[] =  { "app_config", "app_version", "TEXT", "v1.0.1" };
     
-    public static String[] selectScript(int ver){
+    public static String[] selectScript(int ver) {
         switch (ver) {
-        case 1: 
-            return VER_1;
+        case 2: 
+            return VER_2;
         default:
             return null;         
         }
     }
-
-    static String[] create_ddl = {
-        "CREATE TABLE IF NOT EXISTS turma ( " +
-            "id_turma INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-            "nome TEXT NOT NULL, " +
-            "ano TEXT NOT NULL); ",
-        
-        "CREATE TABLE IF NOT EXISTS pessoa (" +
-            "id_pessoa INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-            "id_turma  INTEGER NOT NULL, " +
-            "nome TEXT DEFAULT 'Sem Nome', " +
-            "cargo TEXT NOT NULL, " +
-            "codigo TEXT NOT NULL UNIQUE, " +
-            "FOREIGN KEY (id_turma) REFERENCES turma(id_turma) ON UPDATE CASCADE ON DELETE RESTRICT ); ", 
-        
-        "CREATE TABLE IF NOT EXISTS livro (" +
-            "id_livro INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-            "isbn TEXT NOT NULL, " +
-            "titulo TEXT NOT NULL DEFAULT 'Sem título', " +
-            "autor TEXT NOT NULL); ",
-        
-        "CREATE TABLE IF NOT EXISTS exemplar (" +
-            "id_exemplar INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, " +
-            "codigo TEXT NOT NULL UNIQUE, " +
-            "disponivel TEXT NOT NULL, " +
-            "coordenada_x TEXT NOT NULL, " +
-            "coordenada_y TEXT NOT NULL, " +
-            "id_livro INTEGER NOT NULL, " +
-            "FOREIGN KEY (id_livro) REFERENCES livro(id_livro) ON UPDATE CASCADE ON DELETE CASCADE); ",
-        
-        "CREATE TABLE IF NOT EXISTS emprestimo ( "+
-            "id_emprestimo INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "+
-            "id_pessoa INTEGER NOT NULL, "+
-            "data_inicio TEXT NOT NULL, "+
-            "data_fim TEXT, "+
-            "situation TEXT, "+
-            "FOREIGN KEY(id_pessoa) REFERENCES pessoa(id_pessoa)); ",
-        
-        "CREATE TABLE IF NOT EXISTS emprestimo_livro ( "+
-            "id_emprestimo INTEGER NOT NULL, "+
-            "id_exemplar INTEGER NOT NULL, "+
-            "PRIMARY KEY(id_emprestimo,id_exemplar), "+
-            "FOREIGN KEY(id_emprestimo) REFERENCES emprestimo(id_emprestimo), "+
-            "FOREIGN KEY(id_exemplar) REFERENCES exemplar(id_exemplar) ); ",
-        
-        "CREATE TABLE IF NOT EXISTS app_config ( " +
-            "app_version TEXT, "+
-            "taxa_juros REAL,"+
-            "last_backup TEXT, "+
-	    "db_version	INTEGER, "+
-            "prazo_default INTEGER, "+
-            "auto_bkp BLOB ); ",
-        
-        "INSERT INTO app_config (app_version, taxa_juros, db_version, prazo_default, auto_bkp) VALUES ('v1.0.0-RELEASE', 0.0, 0, 7, 'true'); "
-    };
     
-    public static void updateDDL(int new_ver) {     
+    public static boolean backupDatabase() {
+        try {
+            synchronized(Database.class) {
+                Database.backupDatabase();
+                LocalDateTime hoje = new LocalDateTime( System.currentTimeMillis() );
+                return GenericDAO.getInstance().update("app_config", "last_backup", "'" + hoje.toString() + "'");
+            }
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+    
+    public static String remoteBackupDatabase() {
+        String result = JBibliotecaResource.getInstance()
+                .uploadFile(Database.DATABASE_BKP);
+        switch (result) {
+            case "OK": 
+                return "O backup remoto foi salvo com êxito.";
+            case "UNAUTHORIZED": 
+                return "Aparentemente esta aplicação não está autenticada para acessar o recurso de backup.\r\nContate o desenvolvedor.";
+            case "FORBIDDEN": 
+                return "Aparentemente esta aplicação não possui permissão suficiente para acessar o recurso de backup.\r\nContate o desenvolvedor.";
+            case "NOT_FOUND": 
+                return "Aparentemente o caminho para o recurso de backup não existe mais.\r\nContate o desenvolvedor.";
+            case "INTERNAL_SERVER_ERROR":
+                return "O servidor encontrou um erro durante o processamento e não pode completar a requisição.\r\nTente novamente em alguns minutos, caso o erro persistir contate o desenvolvedor.";
+            case "DEFAULT":
+                return "O servidor retornou uma mensagem desconhecida.\r\nContate o desenvolvedor.";
+            default: 
+                return null;
+        }
+    }
+    
+    public static boolean recoverLocalBackup() {
+        try {
+            synchronized(Database.class) {
+                Database.recoverBackupDatabase();
+                return true;
+            }
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+    
+    public static void updateDDL(int newVersion) {     
         int oldVersion = ConfigDAO.getInstance().getDBVersion();
-        if (oldVersion < new_ver) {
+        if (oldVersion < newVersion) {
             DBHelper db = DBHelper.getInstance();
-            db.onUpgrade(db, oldVersion, new_ver);
+            db.onUpgrade(db, oldVersion, newVersion);
         }
     }
     
@@ -104,10 +95,64 @@ public class DBUtil {
         db.rawLineSQL(clear_data);
     }
     
+    static String[] create_ddl = {
+        "CREATE TABLE IF NOT EXISTS turma ( "+
+            "id_turma INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "+
+            "nome TEXT NOT NULL, "+
+            "ano TEXT NOT NULL);",
+        
+        "CREATE TABLE IF NOT EXISTS pessoa ("+
+            "id_pessoa INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "+
+            "id_turma  INTEGER NOT NULL, "+
+            "nome TEXT DEFAULT 'Sem Nome', "+
+            "cargo TEXT NOT NULL, "+
+            "codigo TEXT NOT NULL UNIQUE, "+
+            "FOREIGN KEY (id_turma) REFERENCES turma(id_turma) ON UPDATE CASCADE ON DELETE RESTRICT );", 
+        
+        "CREATE TABLE IF NOT EXISTS livro ("+
+            "id_livro INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "+
+            "isbn TEXT NOT NULL, "+
+            "titulo TEXT NOT NULL DEFAULT 'Sem título', "+
+            "autor TEXT NOT NULL);",
+        
+        "CREATE TABLE IF NOT EXISTS exemplar ("+
+            "id_exemplar INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "+
+            "codigo TEXT NOT NULL UNIQUE, "+
+            "disponivel TEXT NOT NULL, "+
+            "coordenada_x TEXT NOT NULL, "+
+            "coordenada_y TEXT NOT NULL, "+
+            "id_livro INTEGER NOT NULL, "+
+            "FOREIGN KEY (id_livro) REFERENCES livro(id_livro) ON UPDATE CASCADE ON DELETE CASCADE);",
+        
+        "CREATE TABLE IF NOT EXISTS emprestimo ( "+
+            "id_emprestimo INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "+
+            "id_pessoa INTEGER NOT NULL, "+
+            "data_inicio TEXT NOT NULL, "+
+            "data_fim TEXT, "+
+            "situation TEXT, "+
+            "FOREIGN KEY(id_pessoa) REFERENCES pessoa(id_pessoa));",
+        
+        "CREATE TABLE IF NOT EXISTS emprestimo_livro ( "+
+            "id_emprestimo INTEGER NOT NULL, "+
+            "id_exemplar INTEGER NOT NULL, "+
+            "PRIMARY KEY(id_emprestimo,id_exemplar), "+
+            "FOREIGN KEY(id_emprestimo) REFERENCES emprestimo(id_emprestimo), "+
+            "FOREIGN KEY(id_exemplar) REFERENCES exemplar(id_exemplar));",
+        
+        "CREATE TABLE IF NOT EXISTS app_config ( "+
+            "app_version TEXT, "+
+            "taxa_juros REAL,"+
+            "last_backup TEXT, "+
+	    "db_version	INTEGER, "+
+            "prazo_default INTEGER, "+
+            "auto_bkp BLOB );",
+        
+        "INSERT INTO app_config (app_version, taxa_juros, db_version, prazo_default, auto_bkp) VALUES ('v1.0.1', 0.25, 0, 7, 1); "
+    };
+    
     static String[] drop_ddl = {
         "DROP TABLE IF EXISTS pessoa; ",
         "DROP TABLE IF EXISTS livro; ",
-        "DROP TABLE IF EXISTS genero; ",
         "DROP TABLE IF EXISTS turma; ",
         "DROP TABLE IF EXISTS exemplar; ",
         "DROP TABLE IF EXISTS emprestimo_livro; ",
@@ -122,11 +167,10 @@ public class DBUtil {
         "DELETE FROM exemplar; ",
         "DELETE FROM emprestimo_livro; ",
         "DELETE FROM emprestimo; ",
-        "DELETE FROM genero; ",
         "DELETE FROM app_config; "
     };
     
-    static String[] insert_data= {
+    static String[] insert_data = {
         "INSERT INTO livro (isbn, titulo, autor) VALUES ('', 'Alice no pais das maravilhas', ''); ",
         "INSERT INTO livro (isbn, titulo, autor) VALUES ('', 'Água para elefantes', 'Sara Cruen'); ",
         "INSERT INTO livro (isbn, titulo, autor) VALUES ('', 'Sol e Lua', 'Signos'); ",

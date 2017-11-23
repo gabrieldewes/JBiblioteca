@@ -1,6 +1,5 @@
 package database;
 
-import dao.ConfigDAO;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -44,17 +43,22 @@ public class DBHelper extends SQLiteConnection {
             for (int i=oldVersion; i<=newVersion; i++) {
                 vers = DBUtil.selectScript(i);
                 if (vers != null)
-                    this.updateTabelasBanco(db, vers[0], vers[1], vers[2], vers[3]);
+                    this.addColumn(db, vers[0], vers[1], vers[2], vers[3]);
             }
-            db.rawSQL("UPDATE app_config SET db_version="+ newVersion +";");
+            db.rawSQL("UPDATE app_config SET db_version=" + newVersion + ";");
         } catch (Exception e) {}
     }
     
-    private void updateTabelasBanco(DBHelper db, String table, String column, String typ, String valor) {
+    private void addColumn(DBHelper db, String table, String column, String type, String value) {
         try {
-            db.rawSQL("ALTER TABLE " + table + " ADD " + column + " " + typ);
-            if (!"".equals(valor)){
-                db.rawSQL("UPDATE "+ table +" SET "+ column +" = '"+ valor +"'");
+            db.rawSQL("ALTER TABLE " + table + " ADD " + column + " " + type + ";");
+            
+            if (value != null && !value.isEmpty()) {
+                
+                if ( !type.equals("REAL") && !type.equals("INTEGER")) {
+                    value = "\'" + value + "\'";
+                }
+                db.rawSQL("UPDATE " + table + " SET " + column + " = " + value + ";");
             }
         } catch (Exception e) {}
     }
@@ -73,7 +77,7 @@ public class DBHelper extends SQLiteConnection {
     }
     
     public TableModel getTableModel(String query) {
-        TableModel tb=null;
+        TableModel tb = null;
         try {
             try (PreparedStatement stmt = this.prepareStatement(query)) {
                 log.log(Level.INFO, query);
@@ -102,7 +106,7 @@ public class DBHelper extends SQLiteConnection {
     }
     
     public int rawSQLreturnGenKey(String query) {
-        int id=0;
+        int id = 0;
         try {
             PreparedStatement stmt = this.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
             log.log(Level.INFO, query);
@@ -117,8 +121,8 @@ public class DBHelper extends SQLiteConnection {
     }
     
     public int getSqliteSequence(String table) {
-        int id=0;
-        String query = "SELECT * FROM sqlite_sequence WHERE name='"+ table +"'; ";
+        int id = 0;
+        String query = "SELECT * FROM sqlite_sequence WHERE name='" + table + "';";
         try {
             PreparedStatement stmt = this.prepareStatement(query);
             log.log(Level.INFO, query);
@@ -162,13 +166,13 @@ public class DBHelper extends SQLiteConnection {
     }
     
     public String getString(String query) {
-        String s=null;
+        String s = null;
         try {
             PreparedStatement stmt = this.prepareStatement(query);
             log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next())
-                s=rs.getString(1);
+                s = rs.getString(1);
         } 
         catch (SQLException ex) {
             log.log(Level.SEVERE, null, ex);
@@ -177,13 +181,13 @@ public class DBHelper extends SQLiteConnection {
     }
     
     public int getInt(String query) {
-        int s=0;
+        int s = 0;
         try {
             PreparedStatement stmt = this.prepareStatement(query);
             log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next())
-                s=rs.getInt(1);
+                s = rs.getInt(1);
         } 
         catch (SQLException ex) {
             log.log(Level.SEVERE, null, ex);
@@ -192,13 +196,28 @@ public class DBHelper extends SQLiteConnection {
     }
     
     public double getDouble(String query) {
-        double s=0;
+        double s = 0;
         try {
             PreparedStatement stmt = this.prepareStatement(query);
             log.log(Level.INFO, query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next())
-                s=rs.getDouble(1);
+                s = rs.getDouble(1);
+        } 
+        catch (SQLException ex) {
+            log.log(Level.SEVERE, null, ex);
+        }
+        return s;
+    }
+    
+    public boolean getBoolean(String query) {
+        boolean s = false;
+        try {
+            PreparedStatement stmt = this.prepareStatement(query);
+            log.log(Level.INFO, query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next())
+                s = rs.getBoolean(1);
         } 
         catch (SQLException ex) {
             log.log(Level.SEVERE, null, ex);
@@ -207,7 +226,7 @@ public class DBHelper extends SQLiteConnection {
     }
     
     public int rawUpdate(String query) {
-        int s=0;
+        int s = 0;
         try {
             PreparedStatement stmt = this.prepareStatement(query);
             log.log(Level.INFO, query);

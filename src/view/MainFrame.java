@@ -391,8 +391,8 @@ public class MainFrame extends javax.swing.JFrame {
             "Deseja realmente encerrar?", "JBiblioteca", 
             JOptionPane.YES_NO_OPTION,
             JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
-            ConfigController.getInstance().doDailyBackup();  
-            System.exit(0);
+                ConfigController.getInstance().doDailyBackup();  
+                System.exit(0);
         }
     }//GEN-LAST:event_formWindowClosing
 

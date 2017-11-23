@@ -124,7 +124,7 @@ public class EmprestimoDAO {
                     "p.nome LIKE '%"+ like +"%' OR p.nome LIKE '"+ like +"%' OR p.nome LIKE '%"+ like +"' OR "+
                     "p.codigo LIKE '%"+ like +"%' OR p.codigo LIKE '"+ like +"%' OR p.codigo LIKE '%"+ like +"' OR "+
                     "ex.codigo LIKE '%"+ like +"%' OR ex.codigo LIKE '"+ like +"%' OR ex.codigo LIKE '%"+ like +"'" +
-                    "GROUP BY e.id_emprestimo; ";
+                    "GROUP BY e.id_emprestimo ";
         else
             query = 
                 "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Data de Início', e.data_fim as 'Data p/ Devolução', situation as 'Situação', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
@@ -132,7 +132,8 @@ public class EmprestimoDAO {
                     "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
                     "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
                     "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
-                    "GROUP BY e.id_emprestimo; ";
+                    "GROUP BY e.id_emprestimo " +
+                    "ORDER BY date(e.data_fim) ASC;";
         return helper.getTableModel(query);
     }
 

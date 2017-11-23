@@ -27,47 +27,47 @@ public class ConfigDAO {
     }
     
     public boolean setAutoBkp(boolean flag) {
-        String query = "UPDATE app_config SET auto_bkp='"+flag+"'; ";
+        String query = "UPDATE app_config SET auto_bkp=" + (flag ? 1 : 0) + ";";
         return helper.rawSQL(query);
     }
     
     public boolean isSetAutoBackup() {
-        String query = "SELECT auto_bkp FROM app_config WHERE auto_bkp='true'; ";
-        return helper.rowExists(query);
+        String query = "SELECT auto_bkp FROM app_config;";
+        return helper.getBoolean(query);
     }
     
     public boolean saveTaxaJuros(double d) {
-        String query = "UPDATE app_config SET taxa_juros="+d+"; ";
+        String query = "UPDATE app_config SET taxa_juros=" + d + "; ";
         return helper.rawSQL(query);
     }
     
     public boolean savePrazoDefault(int i) {
-        String query = "UPDATE app_config SET prazo_default="+i+"; ";
+        String query = "UPDATE app_config SET prazo_default=" + i + "; ";
         return helper.rawSQL(query);
     }
     
     public boolean saveDBVersion(int i) {
-        String query = "UPDATE app_config SET db_version="+i+"; ";
+        String query = "UPDATE app_config SET db_version=" + i + ";";
         return helper.rawSQL(query);
     }
     
     public double getTaxaJuros() {
-        String query = "SELECT taxa_juros FROM app_config; ";
+        String query = "SELECT taxa_juros FROM app_config;";
         return helper.getDouble(query);
     }
     
     public int getPrazoDefault() {
-        String query = "SELECT prazo_default FROM app_config; ";
+        String query = "SELECT prazo_default FROM app_config;";
         return helper.getInt(query);
     }
     
     public int getDBVersion() {
-        String query = "SELECT db_version FROM app_config; ";
+        String query = "SELECT db_version FROM app_config;";
         return helper.getInt(query);
     }
     
     public String getAppVersion() {
-        String query = "SELECT app_version FROM app_config; ";
+        String query = "SELECT app_version FROM app_config;";
         return helper.getString(query);
     }
     
