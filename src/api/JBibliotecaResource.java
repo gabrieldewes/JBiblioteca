@@ -143,6 +143,9 @@ public class JBibliotecaResource {
 
         } catch (Exception ex) {
             // ex.printStackTrace();
+            if (ex instanceof java.net.UnknownHostException) {
+                return "UNKNOWN_HOST";
+            }
         }
         return "DEFAULT";
     }

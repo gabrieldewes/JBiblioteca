@@ -48,6 +48,8 @@ public class DBUtil {
                 return "Aparentemente o caminho para o recurso de backup não existe mais.\r\nContate o desenvolvedor.";
             case "INTERNAL_SERVER_ERROR":
                 return "O servidor encontrou um erro durante o processamento e não pode completar a requisição.\r\nTente novamente em alguns minutos, caso o erro persistir contate o desenvolvedor.";
+            case "UNKNOWN_HOST":
+                return "Parece que o computador não possui acesso à internet.";
             case "DEFAULT":
                 return "O servidor retornou uma mensagem desconhecida.\r\nContate o desenvolvedor.";
             default: 
