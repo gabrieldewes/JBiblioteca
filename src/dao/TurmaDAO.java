@@ -33,12 +33,12 @@ public class TurmaDAO /*implements DAO<Turma>*/ {
     }
     
     public boolean save(Turma t) {
-        String query = "INSERT INTO turma (nome,ano) VALUES ('"+ t.getNome() +"', '"+ t.getAno() +"'); ";
+        String query = "INSERT INTO turma (nome,ano) VALUES ('"+ t.getNome() +"', ''); ";
         return helper.rawSQL(query);
     }
     
     public boolean update(Turma t) {
-        String query = "UPDATE turma SET nome = '"+ t.getNome() +"', ano = '"+ t.getAno() +"' WHERE id_turma = '"+ t.getId_turma() +"'; ";
+        String query = "UPDATE turma SET nome = '"+ t.getNome() +"' WHERE id_turma = '"+ t.getId_turma() +"'; ";
         return helper.rawSQL(query);
     }
     
@@ -71,8 +71,7 @@ public class TurmaDAO /*implements DAO<Turma>*/ {
                 while (rs.next()) {
                     t = new Turma( 
                         rs.getInt("id_turma"),  
-                        rs.getString("nome"), 
-                        rs.getString("ano") );
+                        rs.getString("nome") );
                 }
             }
             stmt.close();
@@ -83,14 +82,13 @@ public class TurmaDAO /*implements DAO<Turma>*/ {
     }
     
     public TableModel list() {
-        String query = "SELECT * FROM turma; ";
+        String query = "SELECT t.id_turma, t.nome AS 'Nome' FROM turma t; ";
         return helper.getTableModel(query);
     }
     
     public TableModel listLike(String str) {
-        String query = "SELECT * FROM turma WHERE "
-                + " nome LIKE '%"+ str +"%' OR nome LIKE '"+ str +"%' OR nome LIKE '%"+ str +"' OR "
-                + " ano LIKE '%"+ str +"%' OR ano LIKE '"+ str +"%' OR ano LIKE '%"+ str +"'; ";
+        String query = "SELECT t.id_turma, t.nome AS 'Nome' FROM turma t WHERE "
+                + " t.nome LIKE '%"+ str +"%' OR t.nome LIKE '"+ str +"%' OR t.nome LIKE '%"+ str +"'; ";
         return helper.getTableModel(query);
     }
     
@@ -106,8 +104,7 @@ public class TurmaDAO /*implements DAO<Turma>*/ {
                 while (rs.next()) {
                     t = new Turma( 
                         rs.getInt("id_turma"),  
-                        rs.getString("nome"), 
-                        rs.getString("ano") );
+                        rs.getString("nome") );
                     turmas.add(t);
                 }
             } 

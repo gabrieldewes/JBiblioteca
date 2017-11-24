@@ -545,10 +545,10 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
            if (pessoaBox.getSelectedIndex() > -1) {
                salvarEmprestimoBtn.setEnabled(false);
                String codigo_pessoa = pessoaBox.getSelectedItem().toString();
-               Pessoa alugador=new Pessoa(0,0,null,null,null);
+               Pessoa locador = new Pessoa(0,0,null,null);
                for (Pessoa p:pessoas) {
                    if (codigo_pessoa.equals(p.getCodigo())) {
-                       alugador=p;
+                       locador = p;
                        pessoas.remove(p);
                        break;
                    }
@@ -556,31 +556,28 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
                int plus_days = Integer.valueOf(diaSpinner.getValue().toString());
                LocalDateTime inicio = new LocalDateTime(System.currentTimeMillis());
                LocalDateTime fim = inicio.plusDays(plus_days);
-               if (emprestimoController.Salvar(alugador.getId_pessoa(), selecionados, inicio, fim)) {
-                   Runnable t1 = () -> {
-                        if (eif != null)
-                            eif.updateEmprestimoTable("");
-                        if (lif != null)
-                            lif.updateExemplarTableModel("");
-                        exemplares.removeAll(selecionados);
-                        updateLivroBox();
-                        updatePessoaBox();
-                        selecionados.clear();
-                        model = new DefaultListModel();
-                        diaSpinner.setValue(prazo_default);
-                        livroList.setModel(model);
-                    };
-                    new Thread(t1).start();
+               if (emprestimoController.Salvar(locador.getId_pessoa(), selecionados, inicio, fim)) {
+                    if (eif != null)
+                        eif.updateEmprestimoTable("");
+                    if (lif != null)
+                        lif.updateExemplarTableModel("");
+                    exemplares.removeAll(selecionados);
+                    updateLivroBox();
+                    updatePessoaBox();
+                    selecionados.clear();
+                    model = new DefaultListModel();
+                    diaSpinner.setValue(prazo_default);
+                    livroList.setModel(model);
                    
                     salvarEmprestimoBtn.setEnabled(true);
-                    //pessoaBox.setSelectedIndex(0);
                     pessoaLabel.setText("Código, nome, turma:");
                     buscaPessoaField.setText("");
                     buscaLivroField.setText("");
-                    //livroBox.setSelectedIndex(0);
                     codigoLabel.setText("Selecione o Código:");
                     escolhePessoaBtn.setEnabled(true);
                     pessoaBox.setEnabled(true);
+                    
+                    JOptionPane.showMessageDialog(null, "Empréstimo salvo com êxito.");
                }
                else salvarEmprestimoBtn.setEnabled(true);
            } else JOptionPane.showMessageDialog(null, "Selecione uma pessoa. ", "Atenção", JOptionPane.WARNING_MESSAGE);

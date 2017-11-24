@@ -8,7 +8,6 @@ package view;
 import control.ConfigController;
 import control.EmprestimoController;
 import control.ExemplarController;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.beans.PropertyVetoException;
 import java.text.NumberFormat;
@@ -19,7 +18,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
-import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import model.Emprestimo;
 import model.Exemplar;
@@ -104,6 +102,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        emprestimoTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         emprestimoTable.getTableHeader().setReorderingAllowed(false);
         emprestimoTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -253,30 +252,22 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
     private void DevolveEmprestimoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DevolveEmprestimoBtnActionPerformed
         int idx[] = emprestimoTable.getSelectedRows();
         if (idx.length > 0) {
-            
-            if (true) throw new RuntimeException("TODO FIX IT");
-            
+                        
             int id_emprestimo = Integer.valueOf(emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 0).toString());
+            
             if (id_emprestimo != 0) {
                 Emprestimo e = emprestimoController.Pegar(id_emprestimo);
-                LocalDateTime hoje = new LocalDateTime(System.currentTimeMillis());
+                LocalDateTime hoje = LocalDateTime.now();
                 LocalDateTime fim = new LocalDateTime( e.getData_fim());
                 int dias = Days.daysBetween(hoje, fim).getDays();
-                // System.out.println("DIAS ATRASO "+ dias);
-                dias=dias*-1;
-                double total=0.0;
+                dias = dias * -1;
+                double total = 0.0;
                 int response;
-                // TODO TODO TODO FIX IT
+                System.out.println("DIAS "+ dias);
                 if (dias > 0) {
                     for (int i=0; i<dias; i++) {
-                        total = e.getId_exemplar()
-                                .stream()
-                                .map((_item) -> juros_dia)
-                                .reduce(total, (accumulator, _item) -> accumulator + _item);
-                        
                         total += juros_dia;
                     }
-                    System.out.println("TOTAL JUROS " + total );
                 }
                 
                 JLabel nome = new JLabel();
@@ -301,6 +292,8 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                         updateEmprestimoTable("");
                         if (lif != null)
                             lif.updateExemplarTableModel("");
+                        
+                        livroList.setModel(new DefaultListModel());
                     }                              
                 } 
             }
@@ -345,15 +338,15 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
             int id_emprestimo = Integer.valueOf(emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 0).toString());
             if (id_emprestimo != 0) {
                 Emprestimo e = emprestimoController.Pegar(id_emprestimo);
-                LocalDateTime hoje = new LocalDateTime(System.currentTimeMillis());
+                LocalDateTime hoje = LocalDateTime.now();
                 LocalDateTime fim = new LocalDateTime( e.getData_fim());
                 int dias = Days.daysBetween(hoje, fim).getDays();  
-                dias=dias*-1;
-                double total=0.0;
+                dias = dias * -1;
+                double total = 0.0;
                 int response;
                 if (dias > 0) {
                     for (int i=0; i<dias; i++) {
-                        total = e.getId_exemplar().stream().map((_item) -> juros_dia).reduce(total, (accumulator, _item) -> accumulator + _item);
+                        total += juros_dia;
                     }
                 }
                 JLabel nome = new JLabel();
@@ -370,20 +363,25 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                     "Total de Exemplares: ", total_ex,
                     "Total de Juros:", juros,
                     "Dias p/ Devolução:", diaSpinner,
-                    "O juros será zerado. Renovar?"
+                    "Prosseguir com renovação?"
                 };
                 nome.setText( emprestimoTable.getValueAt(emprestimoTable.getSelectedRow(), 1).toString() );
                 juros.setText(""+ NumberFormat.getCurrencyInstance().format(total) );
                 total_ex.setText(""+e.getId_exemplar().size());
                 
-                response = JOptionPane.showConfirmDialog(null, message, "Devolução", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                response = JOptionPane.showConfirmDialog(null, message, "Renovação", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (response == JOptionPane.YES_OPTION) { 
                     int plus_days = Integer.valueOf( diaSpinner.getValue().toString() );
                     if (plus_days < 0)
-                        plus_days = plus_days*-1;
-                    System.out.println(""+plus_days);
-                    if (emprestimoController.Renovar(id_emprestimo, plus_days)) {
-                        updateEmprestimoTable("");
+                        plus_days = plus_days * -1;
+                    
+                    // System.out.println(""+plus_days);
+                    if (plus_days > 0) {
+                        if (emprestimoController.Renovar(id_emprestimo, plus_days)) {
+                            updateEmprestimoTable("");
+                            JOptionPane.showMessageDialog(null, "Empréstimo renovado por mais "+ plus_days + " dia" + (plus_days == 1 ? "." : "s."));
+                            livroList.setModel(new DefaultListModel());
+                        }
                     }                             
                 } 
             }

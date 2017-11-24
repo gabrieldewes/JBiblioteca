@@ -100,14 +100,14 @@ public class DBUtil {
     static String[] create_ddl = {
         "CREATE TABLE IF NOT EXISTS turma ( "+
             "id_turma INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "+
-            "nome TEXT NOT NULL, "+
-            "ano TEXT NOT NULL);",
+            "ano TEXT, "+
+            "nome TEXT NOT NULL);",
         
         "CREATE TABLE IF NOT EXISTS pessoa ("+
             "id_pessoa INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "+
             "id_turma  INTEGER NOT NULL, "+
             "nome TEXT DEFAULT 'Sem Nome', "+
-            "cargo TEXT NOT NULL, "+
+            "cargo TEXT, "+
             "codigo TEXT NOT NULL UNIQUE, "+
             "FOREIGN KEY (id_turma) REFERENCES turma(id_turma) ON UPDATE CASCADE ON DELETE RESTRICT );", 
         
@@ -201,39 +201,39 @@ public class DBUtil {
         "INSERT INTO exemplar (id_livro, codigo, disponivel, coordenada_x, coordenada_y) VALUES (10, '0015', '', 'x3', 'y3'); ",
         "INSERT INTO exemplar (id_livro, codigo, disponivel, coordenada_x, coordenada_y) VALUES (10, '0016', '', 'x3', 'y3'); ",
         "INSERT INTO exemplar (id_livro, codigo, disponivel, coordenada_x, coordenada_y) VALUES (10, '001100110011001100', '', 'x4', 'y4'); ",
-        "INSERT INTO turma (nome, ano) VALUES ('A1', 'Primeiro'); ",
-        "INSERT INTO turma (nome, ano) VALUES ('A2', 'Primeiro'); ",
-        "INSERT INTO turma (nome, ano) VALUES ('B1', 'Segundo'); ",
-        "INSERT INTO turma (nome, ano) VALUES ('B2', 'Segundo'); ",
-        "INSERT INTO turma (nome, ano) VALUES ('C1', 'Terceiro'); ",
-        "INSERT INTO turma (nome, ano) VALUES ('C2', 'Terceiro'); ",
-        "INSERT INTO turma (nome, ano) VALUES ('D1', 'Quarto'); ",
-        "INSERT INTO turma (nome, ano) VALUES ('D2', 'Quarto'); ",
-        "INSERT INTO turma (nome, ano) VALUES ('E1', 'Quinto'); ",
-        "INSERT INTO turma (nome, ano) VALUES ('E2', 'Quinto'); ",
-        "INSERT INTO turma (nome, ano) VALUES ('F1', 'Sexto'); ",
-        "INSERT INTO turma (nome, ano) VALUES ('F2', 'Sexto'); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00000116647210', 'Gabriel Dewes', 'Diretor(a)', 0); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00001', 'Djian Carvalho Sanchez Stielgmaier Santos', 'Diretor(a)', 0); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00002', 'Gabriela Santos', 'Diretor(a)', 0); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00003', 'Gabriela Fernandes', 'Aluno(a)', 1); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00004', 'Camila Oliveira', 'Aluno(a)', 3); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00005', 'Fernanda Caroline', 'Aluno(a)', 4); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00006', 'Alana Rapariga', 'Aluno(a)', 5); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00007', 'Ramon Lummertz', 'Aluno(a)', 5); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00008', 'Gustavo Nascimento', 'Aluno(a)', 1); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00009', 'Isabele Guilhermina', 'Funcionário(a)', 0); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00010', 'Bruna Meneguel', 'Funcionário(a)', 0); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00011', 'Gabriel Oliveira', 'Diretor(a)', 0); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00012', 'Bruna Gertz', 'Diretor(a)', 0); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00013', 'Thaynara Adriana', 'Aluno(a)', 1); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00014', 'Adriane Mattos', 'Aluno(a)', 3); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00015', 'Andressa Freitas', 'Aluno(a)', 4); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00016', 'Júlio Cesar', 'Aluno(a)', 7); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00017', 'Laura Dewes', 'Aluno(a)', 6); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00018', 'Maria Júlia', 'Aluno(a)', 6); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00019', 'Julia Farias', 'Funcionário(a)', 0); ",
-        "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES ('00020', 'Ana Julia', 'Funcionário(a)', 0); ",
+        "INSERT INTO turma (nome) VALUES ('A1'); ",
+        "INSERT INTO turma (nome) VALUES ('A2'); ",
+        "INSERT INTO turma (nome) VALUES ('B1'); ",
+        "INSERT INTO turma (nome) VALUES ('B2'); ",
+        "INSERT INTO turma (nome) VALUES ('C1'); ",
+        "INSERT INTO turma (nome) VALUES ('C2'); ",
+        "INSERT INTO turma (nome) VALUES ('D1'); ",
+        "INSERT INTO turma (nome) VALUES ('D2'); ",
+        "INSERT INTO turma (nome) VALUES ('E1'); ",
+        "INSERT INTO turma (nome) VALUES ('E2'); ",
+        "INSERT INTO turma (nome) VALUES ('F1'); ",
+        "INSERT INTO turma (nome) VALUES ('F2'); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00000116647210', 'Gabriel Dewes', 'Diretor(a)', 0); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00001', 'Djian Carvalho Sanchez Stielgmaier Santos', 0); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00002', 'Gabriela Santos', 0); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00003', 'Gabriela Fernandes', 1); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00004', 'Camila Oliveira', 3); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00005', 'Fernanda Caroline', 4); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00006', 'Alana Rapariga', 5); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00007', 'Ramon Lummertz', 5); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00008', 'Gustavo Nascimento', 1); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00009', 'Isabele Guilhermina', 0); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00010', 'Bruna Meneguel', 0); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00011', 'Gabriel Oliveira', 0); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00012', 'Bruna Gertz', 0); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00013', 'Thaynara Adriana', 1); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00014', 'Adriane Mattos', 3); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00015', 'Andressa Freitas', 4); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00016', 'Júlio Cesar', 7); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00017', 'Laura Dewes', 6); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00018', 'Maria Júlia', 6); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00019', 'Julia Farias', 0); ",
+        "INSERT INTO pessoa (codigo, nome, id_turma) VALUES ('00020', 'Ana Julia', 0); ",
     };
     
     

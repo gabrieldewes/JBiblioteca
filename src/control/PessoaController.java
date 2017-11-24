@@ -32,24 +32,22 @@ public class PessoaController {
         return instance;
     }
     
-    public boolean Salvar(int id_turma, String codigo, String nome, String cargo) {
+    public boolean Salvar(int id_turma, String codigo, String nome) {
         if (!"".equals(nome) ) {
             if (!"".equals(codigo)) {
-                if (!"".equals(cargo)) {
-                    if (!this.Existe(codigo)) {
-                        Pessoa p = new Pessoa(0, id_turma, codigo.replace(" ", ""), nome.trim(), cargo.trim());
-                        return pessoaDao.save(p);
-                    } else JOptionPane.showMessageDialog(null, "Este código já esta cadastrado. ", "Atenção", JOptionPane.WARNING_MESSAGE);
-                } else JOptionPane.showMessageDialog(null, "Cargo precisa ser selecionado. ", "Atenção", JOptionPane.WARNING_MESSAGE);   
+                if (!this.Existe(codigo)) {
+                    Pessoa p = new Pessoa(0, id_turma, codigo.replace(" ", ""), nome.trim());
+                    return pessoaDao.save(p);
+                } else JOptionPane.showMessageDialog(null, "Este código já esta cadastrado. ", "Atenção", JOptionPane.WARNING_MESSAGE);
             } else JOptionPane.showMessageDialog(null, "Código não pode estar em branco. ", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else JOptionPane.showMessageDialog(null, "Nome não pode estar em branco. ", "Atenção", JOptionPane.WARNING_MESSAGE);
         return false;
     }
     
-    public boolean Alterar(Pessoa ex, int id_turma, String codigo, String nome, String cargo) {
+    public boolean Alterar(Pessoa ex, int id_turma, String codigo, String nome) {
         if (!"".equals(nome) ) {
             if (!"".equals(codigo)) {
-                Pessoa p = new Pessoa( ex.getId_pessoa(), id_turma, codigo.replace(" ", ""), nome.trim(), cargo.trim() );
+                Pessoa p = new Pessoa( ex.getId_pessoa(), id_turma, codigo.replace(" ", ""), nome.trim() );
                 if (!ex.equals(p)) {
                     if (!ex.getCodigo().equals( codigo )) {
                         if (!this.Existe(codigo)) {

@@ -9,10 +9,7 @@ import control.PessoaController;
 import control.TurmaController;
 import java.awt.Insets;
 import java.util.ArrayList;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
 import model.Pessoa;
-import model.PessoaEnum;
 import model.Turma;
 import static view.MainFrame.pif;
 
@@ -48,10 +45,7 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
         ex = pessoaController.Pegar(id);
         nomeField.setText( ex.getNome() );
         codigoField.setText( ex.getCodigo() );
-        cargoField.setSelectedItem( PessoaEnum.get( ex.getCargo() ));
-        if ( PessoaEnum.aluno.toString().equals( ex.getCargo() ) ) {
-            turmaField.setSelectedItem( turmaController.Pegar( ex.getId_turma() ).getNome() );
-        }
+        turmaField.setSelectedItem( turmaController.Pegar( ex.getId_turma() ).getNome() );
         
     }
 
@@ -71,8 +65,6 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
         codigoField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         turmaField = new javax.swing.JComboBox<>();
-        cargoField = new javax.swing.JComboBox<>();
-        jLabel5 = new javax.swing.JLabel();
         AttPessoaBtn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
 
@@ -92,21 +84,10 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
         codigoField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel3.setText("Turma:");
+        jLabel3.setText("Turma");
 
         turmaField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         turmaField.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        cargoField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        cargoField.setModel(new DefaultComboBoxModel(PessoaEnum.values()));
-        cargoField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cargoFieldActionPerformed(evt);
-            }
-        });
-
-        jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jLabel5.setText("Cargo");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -121,18 +102,12 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
                         .addComponent(nomeField, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(64, 64, 64)
-                                .addComponent(turmaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel5))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cargoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(codigoField, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(turmaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(codigoField, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -140,20 +115,14 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(7, 7, 7)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(nomeField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel1))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(codigoField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel5)
-                        .addGap(6, 6, 6))
-                    .addComponent(cargoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nomeField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(codigoField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(turmaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3))
@@ -197,51 +166,27 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(AttPessoaBtn))
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addGap(0, 8, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void cargoFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargoFieldActionPerformed
-
-        if (cargoField.getSelectedItem().equals(PessoaEnum.aluno)) {
-            if (turmas.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Não há turmas cadastradas. Alunos precisam estar em turmas. ", "Atenção", JOptionPane.WARNING_MESSAGE);
-                cargoField.setSelectedIndex(1);
-            }
-            else {
-                turmaField.setEnabled(true);
-                turmaField.setSelectedIndex(0);
-            }
-        }
-        else {
-            turmaField.setSelectedIndex(-1);
-            turmaField.setEnabled(false);
-        }
-    }//GEN-LAST:event_cargoFieldActionPerformed
-
     private void AttPessoaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AttPessoaBtnActionPerformed
         String nome = nomeField.getText();
         String codigo = codigoField.getText();
-        String cargo = cargoField.getSelectedItem().toString();
         
         turmas = turmaController.ArrayTurma();
-        if (PessoaEnum.aluno.toString().equals(cargo)) {
-            String turma = turmaField.getSelectedItem().toString();
-            turmas.stream().filter((t) -> (t.getNome().equals( turma ))).forEach((t) -> {
-                id_turma = t.getId_turma();
-            });
-        }
-        else {
-            id_turma=0;
-        }
+        String turma = turmaField.getSelectedItem().toString();
+        turmas.stream().filter((t) -> (t.getNome().equals( turma ))).forEach((t) -> {
+            id_turma = t.getId_turma();
+        });
         
-        if (pessoaController.Alterar(ex, id_turma, codigo, nome, cargo)) {
+        if (pessoaController.Alterar(ex, id_turma, codigo, nome)) {
             pif.updateTableModel("");
             this.dispose();
         }
@@ -255,13 +200,11 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton AttPessoaBtn;
-    private javax.swing.JComboBox<String> cargoField;
     private javax.swing.JTextField codigoField;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField nomeField;
     private javax.swing.JComboBox<String> turmaField;

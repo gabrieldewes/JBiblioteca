@@ -40,9 +40,9 @@ public class TurmaController {
         return tb;
     }
     
-    public boolean Salvar(String nome, String ano) {
-        if ( ! ("".equals(nome) && "".equals(ano)) ) {
-            Turma t = new Turma(0, nome, ano);
+    public boolean Salvar(String nome) {
+        if ( !"".equals(nome) ) {
+            Turma t = new Turma(0, nome);
             if (turmaDao.save(t)) {
                 return true;
             }

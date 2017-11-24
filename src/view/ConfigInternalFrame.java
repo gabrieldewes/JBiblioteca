@@ -7,7 +7,6 @@ package view;
 
 import control.ConfigController;
 import database.DBUtil;
-import database.Database;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.Font;
@@ -17,9 +16,7 @@ import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
 import org.joda.time.LocalDate;
-import org.joda.time.LocalDateTime;
 import static view.MainFrame.eif;
 
 /**
@@ -113,7 +110,7 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Empréstimos"));
 
-        jLabel2.setText("Taxa por dias de atraso: ");
+        jLabel2.setText("Multa por dias de atraso ");
 
         taxaField.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         taxaField.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -122,7 +119,7 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
-        prazoLabel.setText("Prazo padrão para devolução (dias):");
+        prazoLabel.setText("Prazo padrão para devolução (dias)");
 
         prazoField.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         prazoField.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -154,7 +151,7 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
                     .addComponent(jLabel2)
                     .addComponent(taxaField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(prazoField, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(prazoLabel))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -412,19 +409,23 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         taxa = taxa.replaceAll(",", ".");
         String prazo = prazoField.getText();
         try {
-            Double d = Double.valueOf(taxa);
-            int i = Integer.valueOf(prazo);
+            Double jurosAoDia = Double.valueOf(taxa);
+            int prazoDefault = Integer.valueOf(prazo);
             try {
-                if (configController.saveTaxaJuros(d)) {
-                    String s = String.format("%1$,.2f", d);
+                if (configController.saveTaxaJuros(jurosAoDia)) {
+                    String s = String.format("%1$,.2f", jurosAoDia);
                     taxaField.setText(""+s);
                     salvarBtn.setEnabled(false);
-                    if (eif != null)
-                        EmprestimoInternalFrame.juros_dia = d;
+                    if (eif != null) {
+                        EmprestimoInternalFrame.juros_dia = jurosAoDia;
+                    }
                 }
-                if (configController.savePrazoDefault(i)) {
-                    prazoField.setText(""+i);
+                if (configController.savePrazoDefault(prazoDefault)) {
+                    prazoField.setText("" + prazoDefault);
                     salvarBtn.setEnabled(false);
+                    if (eif != null) {
+                        EmprestimoInternalFrame.prazo_default = prazoDefault;
+                    }
                 }
             } catch (Exception e1) {}
             

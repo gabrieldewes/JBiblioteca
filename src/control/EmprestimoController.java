@@ -46,7 +46,24 @@ public class EmprestimoController {
     public boolean Salvar(int id_pessoa, List<Exemplar> exemplares, LocalDateTime inicio, LocalDateTime fim) {
         if (!exemplares.isEmpty()) {
             if (id_pessoa != 0) {
-                if (!genericDao.restrict("emprestimo", "id_pessoa", id_pessoa)) {
+                
+                boolean pessoaPossuiEmpPendente = genericDao.restrict("emprestimo", "id_pessoa", id_pessoa);
+                boolean prosseguir;
+                
+                if (pessoaPossuiEmpPendente) {
+                    int result = JOptionPane
+                            .showConfirmDialog(null, 
+                                    "Esta pessoa possui empréstimos pendentes.\r\n\r\nDeseja prosseguir com empréstimo?", 
+                                    "Atenção", 
+                                    JOptionPane.WARNING_MESSAGE, 
+                                    JOptionPane.OK_CANCEL_OPTION);
+                    
+                    prosseguir = result == JOptionPane.OK_OPTION;
+                } else {
+                    prosseguir = true;
+                }
+                
+                if (prosseguir) {
                     ArrayList<Integer> id_exemplar = new ArrayList<>();
                     exemplares.stream().forEach((e) -> {
                         id_exemplar.add(e.getId_exemplar());
@@ -63,7 +80,8 @@ public class EmprestimoController {
                             return true;
                         }
                     }
-                } else JOptionPane.showMessageDialog(null, "Esta pessoa possui empréstimos pendentes. ", "Atenção", JOptionPane.WARNING_MESSAGE);   
+                }      
+            
             } else JOptionPane.showMessageDialog(null, "Selecione uma pessoa. ", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else JOptionPane.showMessageDialog(null, "Selecione ao menos um exemplar. ", "Atenção", JOptionPane.WARNING_MESSAGE);
         return false;
@@ -99,8 +117,8 @@ public class EmprestimoController {
                         exemplarDao.setSituation(e.getId_exemplar(), "");
                     } catch (Exception e1) {}
                     return true;
-                } else JOptionPane.showMessageDialog(null, "Erro ao executar devolução de empréstimo. Tente novamente. ", "Atenção", JOptionPane.WARNING_MESSAGE);
-            } else JOptionPane.showMessageDialog(null, "Erro ao executar devolução de empréstimo. Tente novamente", "Atenção", JOptionPane.WARNING_MESSAGE);
+                } else JOptionPane.showMessageDialog(null, "Ocorreu um erro ao prosseguir com devolução do empréstimo.\r\nTente novamente ou contate o desenvolvedor caso o erro persistir.", "Atenção", JOptionPane.WARNING_MESSAGE);
+            } else JOptionPane.showMessageDialog(null, "Ocorreu um erro ao prosseguir com devolução do empréstimo.\r\nTente novamente ou contate o desenvolvedor caso o erro persistir.", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else JOptionPane.showMessageDialog(null, "Ocorreu um erro interno. Não retornou empréstimo para o ID "+ id_emprestimo +".", "Atenção", JOptionPane.WARNING_MESSAGE);
            
         return false;
@@ -121,6 +139,7 @@ public class EmprestimoController {
         for (int i=0; i<tb.getRowCount(); i++) {
             String in = tb.getValueAt(i, 3).toString();
             String out = tb.getValueAt(i, 4).toString();
+            int diff = Integer.valueOf(tb.getValueAt(i, 5).toString());
             
             LocalDateTime dateIn = new LocalDateTime(in);
             LocalDateTime dateToOut = new LocalDateTime(out);
@@ -129,62 +148,22 @@ public class EmprestimoController {
             
             tb.setValueAt(sdf.format(dateIn.toDate()), i, 3);
             tb.setValueAt(sdf.format(dateToOut.toDate()), i, 4);
-            tb.setValueAt(humanDatesDifference(dateToOut, new LocalDateTime()), i, 5);
+            tb.setValueAt(getStringDiff(diff), i, 5);
         }
         return tb;
     }
     
-    private String humanDatesDifference(LocalDateTime from, LocalDateTime to) {
-        Period p = new Period(from, to);
-        int minutos = p.getMinutes();
-        int horas = p.getHours();
-        int dias = p.getDays();
-        int meses = p.getMonths();
-        int anos = p.getYears();
-        String s = "";
-        
-        //System.out.println(anos +" anos, "+ meses +" meses, "+ dias +" dias, "+ horas +" horas, "+ minutos +"min");
-        
-        if (anos>0 || meses>0 || dias>0 || (horas==0 && minutos>0)) {
-            s += "Atraso "; 
+    private String getStringDiff(int diff) {
+        if (diff == 0) {
+            return "Vence hoje";
         }
-        if (anos > 0) {
-            s += anos +"a ";
+        if (diff > 0) {
+            return "Atraso " + diff + (diff == 1 || diff == -1 ? " dia" : " dias");
         }
-        if (meses > 0) {
-           s += meses +"m ";     
+        if (diff < 0) {
+            return "Restam " + (diff * -1) + (diff == 1 || diff == -1 ? " dia" : " dias");
         }
-        if (dias > 0) {
-            s += dias +"d ";    
-        }
-        if (horas > 0) {
-            s += horas +"h ";
-        }
-        if (horas == 0 && minutos > 0) {
-            s += minutos +"min ";
-        }
-        
-        if (anos<0 || meses<0 || dias<0 || horas<0 || (horas==0 && minutos<0)) {
-            s += "Restam "; 
-        }
-        if (anos < 0) {
-            s += anos * -1 +"a ";
-        }
-        if (meses < 0) {
-           s += meses * -1 +"m ";     
-        }
-        if (dias < 0) {
-            dias = Days.daysBetween(from, to).getDays();
-            s += dias * -1 +"d ";    
-        }
-        if (horas < 0) {
-            s += horas * -1 +"h ";
-        }
-        if (horas == 0 && minutos < 0) {
-            s += minutos * -1 +"min ";
-        }
-
-        return s;
+        return "";
     }
         
 }

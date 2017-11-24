@@ -6,13 +6,10 @@
 package view;
 
 import control.TurmaController;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
 import javax.swing.JTextField;
 import model.Turma;
-import model.TurmaEnum;
 
 /**
  *
@@ -56,9 +53,7 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
 
         jPanel6 = new javax.swing.JPanel();
         AddTurmaBtn = new javax.swing.JButton();
-        anoField = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
         nomeField = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -84,13 +79,7 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
-        anoField.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
-        anoField.setModel(new DefaultComboBoxModel(TurmaEnum.values()));
-        anoField.setBorder(null);
-
         jLabel1.setText("Nome");
-
-        jLabel2.setText("Selecione o ano:");
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -101,16 +90,12 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(nomeField)
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addComponent(anoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(AddTurmaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel6Layout.createSequentialGroup()
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel6Layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(jLabel1))
-                            .addComponent(jLabel2))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(9, 9, 9)
+                        .addComponent(jLabel1)
+                        .addGap(0, 324, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -119,13 +104,9 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(nomeField, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(anoField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(AddTurmaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 12, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(AddTurmaBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 8, Short.MAX_VALUE))
         );
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("  Turmas  "));
@@ -230,7 +211,7 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -239,10 +220,9 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
 
     private void AddTurmaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddTurmaBtnActionPerformed
         String nome = nomeField.getText();
-        String ano = anoField.getSelectedItem().toString();
 
         if (! "".equals(nome) ) {
-            if (turmaController.Salvar(nome, ano)) {
+            if (turmaController.Salvar(nome)) {
                 nomeField.setText("");
                 updateTableModel("");
             }
@@ -259,7 +239,6 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
             if (response == JOptionPane.YES_OPTION) {
 
                     int id = Integer.valueOf( TurmaTable.getValueAt( TurmaTable.getSelectedRow() , 0 ).toString() );
-                    System.out.println("Botão mandou ID "+ id);
                     if (turmaController.Apagar(id)) {
                         updateTableModel("");
                     }
@@ -296,24 +275,20 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
         int idx[] = TurmaTable.getSelectedRows();
         if (idx.length > 0) {
             JTextField nome = new JTextField();
-            JComboBox<TurmaEnum> ano = new JComboBox();
-            ano.setModel(new DefaultComboBoxModel( TurmaEnum.values() ));
 
             Object[] message = {
-                "Nome:", nome,
-                "Ano:", ano
+                "Nome:", nome
             };
             int id = Integer.valueOf( TurmaTable.getValueAt( TurmaTable.getSelectedRow() , 0 ).toString() );
             Turma ex = turmaController.Pegar(id);
             nome.setText( ex.getNome() );
-            ano.setSelectedItem( TurmaEnum.get( ex.getAno() ) );
 
             int option=1;
             while (option != JOptionPane.OK_CANCEL_OPTION) {
                 option = JOptionPane.showConfirmDialog(null, message, "Alterar turma", JOptionPane.OK_CANCEL_OPTION);
                 if (option == JOptionPane.OK_OPTION) {  
                     
-                    Turma t = new Turma(ex.getId_turma(), nome.getText(), ano.getSelectedItem().toString() );
+                    Turma t = new Turma(ex.getId_turma(), nome.getText() );
                     if (! ex.equals(t)) {
                         if (turmaController.Alterar(t)) {
                             updateTableModel("");
@@ -346,9 +321,7 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
     private javax.swing.JTextField BuscaTurmaField;
     private javax.swing.JButton DelTurmaBtn;
     private javax.swing.JTable TurmaTable;
-    private javax.swing.JComboBox<String> anoField;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
