@@ -139,9 +139,9 @@
                                   <Component id="taxaField" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="prazoField" min="-2" pref="41" max="-2" attributes="0"/>
-                                  <Component id="prazoLabel" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="prazoField" alignment="3" min="-2" pref="41" max="-2" attributes="0"/>
+                                  <Component id="prazoLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace max="32767" attributes="0"/>
                           </Group>
@@ -151,7 +151,7 @@
                   <SubComponents>
                     <Component class="javax.swing.JLabel" name="jLabel2">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Taxa por dias de atraso: "/>
+                        <Property name="text" type="java.lang.String" value="Multa por dias de atraso "/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="taxaField">
@@ -166,7 +166,7 @@
                     </Component>
                     <Component class="javax.swing.JLabel" name="prazoLabel">
                       <Properties>
-                        <Property name="text" type="java.lang.String" value="Prazo padr&#xe3;o para devolu&#xe7;&#xe3;o (dias):"/>
+                        <Property name="text" type="java.lang.String" value="Prazo padr&#xe3;o para devolu&#xe7;&#xe3;o (dias)"/>
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="prazoField">

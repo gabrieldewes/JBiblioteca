@@ -54,10 +54,11 @@ public class MainFrame extends javax.swing.JFrame {
         verLivrosMenuItem = new javax.swing.JMenuItem();
         verPessoasMenuItem = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        verEmprestimosMenuItem = new javax.swing.JMenuItem();
-        jSeparator4 = new javax.swing.JPopupMenu.Separator();
+        historicoEmprestimosMenu = new javax.swing.JMenu();
         novoEmprestimoMenuItem = new javax.swing.JMenuItem();
+        jSeparator3 = new javax.swing.JPopupMenu.Separator();
+        verEmprestimosMenuItem = new javax.swing.JMenuItem();
+        verEmprestimosMenuItem1 = new javax.swing.JMenuItem();
         aboutMenu = new javax.swing.JMenu();
         configMenuItem = new javax.swing.JMenuItem();
         ebooksMenuItem = new javax.swing.JMenuItem();
@@ -147,16 +148,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu4.setText("Empréstimos");
-
-        verEmprestimosMenuItem.setText("Ver Todos");
-        verEmprestimosMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verEmprestimosMenuItemActionPerformed(evt);
-            }
-        });
-        jMenu4.add(verEmprestimosMenuItem);
-        jMenu4.add(jSeparator4);
+        historicoEmprestimosMenu.setText("Empréstimos");
 
         novoEmprestimoMenuItem.setText("Novo");
         novoEmprestimoMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -164,9 +156,26 @@ public class MainFrame extends javax.swing.JFrame {
                 novoEmprestimoMenuItemActionPerformed(evt);
             }
         });
-        jMenu4.add(novoEmprestimoMenuItem);
+        historicoEmprestimosMenu.add(novoEmprestimoMenuItem);
+        historicoEmprestimosMenu.add(jSeparator3);
 
-        jMenuBar1.add(jMenu4);
+        verEmprestimosMenuItem.setText("Pendentes");
+        verEmprestimosMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verEmprestimosMenuItemActionPerformed(evt);
+            }
+        });
+        historicoEmprestimosMenu.add(verEmprestimosMenuItem);
+
+        verEmprestimosMenuItem1.setText("Histórico");
+        verEmprestimosMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                verEmprestimosMenuItem1ActionPerformed(evt);
+            }
+        });
+        historicoEmprestimosMenu.add(verEmprestimosMenuItem1);
+
+        jMenuBar1.add(historicoEmprestimosMenu);
 
         aboutMenu.setText("Sobre");
 
@@ -439,6 +448,10 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void verEmprestimosMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verEmprestimosMenuItem1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_verEmprestimosMenuItem1ActionPerformed
+
     public static void OpenMainFrame() {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -463,17 +476,18 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem configMenuItem;
     public javax.swing.JDesktopPane desktop;
     private javax.swing.JMenuItem ebooksMenuItem;
+    private javax.swing.JMenu historicoEmprestimosMenu;
     private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator2;
-    private javax.swing.JPopupMenu.Separator jSeparator4;
+    private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JMenuItem novoEmprestimoMenuItem;
     private javax.swing.JMenuItem verEmprestimosMenuItem;
+    private javax.swing.JMenuItem verEmprestimosMenuItem1;
     private javax.swing.JMenuItem verLivrosMenuItem;
     private javax.swing.JMenuItem verPessoasMenuItem;
     // End of variables declaration//GEN-END:variables

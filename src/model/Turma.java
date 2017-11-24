@@ -5,8 +5,6 @@
  */
 package model;
 
-import java.util.Objects;
-
 /**
  *
  * @author Dewes
@@ -14,45 +12,10 @@ import java.util.Objects;
 public class Turma {
     private int id_turma;
     private String nome;
-    private String ano;
 
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 67 * hash + this.id_turma;
-        hash = 67 * hash + Objects.hashCode(this.nome);
-        hash = 67 * hash + Objects.hashCode(this.ano);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Turma other = (Turma) obj;
-        if (this.id_turma != other.id_turma) {
-            return false;
-        }
-        if (!Objects.equals(this.nome, other.nome)) {
-            return false;
-        }
-        if (!Objects.equals(this.ano, other.ano)) {
-            return false;
-        }
-        return true;
-    }
-
-    public Turma(int id_turma, String nome, String ano) {
+    public Turma(int id_turma, String nome) {
         this.id_turma = id_turma;
         this.nome = nome;
-        this.ano = ano;
     }
 
     public int getId_turma() {
@@ -67,10 +30,5 @@ public class Turma {
     public void setNome(String nome) {
         this.nome = nome;
     }
-    public String getAno() {
-        return ano;
-    }
-    public void setAno(String ano) {
-        this.ano = ano;
-    }
+
 }

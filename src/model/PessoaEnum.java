@@ -8,7 +8,7 @@ package model;
 /**
  *
  * @author Dewes
- */
+ *
 public enum PessoaEnum {
     aluno(1, "Aluno(a)"), 
     prof(2, "Professor(a)"), 
@@ -38,3 +38,4 @@ public enum PessoaEnum {
     }
 
 }
+*/

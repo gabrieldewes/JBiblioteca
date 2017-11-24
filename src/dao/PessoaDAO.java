@@ -41,7 +41,7 @@ public class PessoaDAO {
         final String query = "INSERT INTO pessoa (codigo, nome, cargo, id_turma) VALUES "
                 + "('"+ p.getCodigo() +"', "
                 + "'"+ p.getNome() +"', "
-                + "'"+ p.getCargo() +"', "
+                + "'', "
                 + p.getId_turma() +"); ";
         return helper.rawSQL(query);
     }
@@ -50,7 +50,6 @@ public class PessoaDAO {
         final String update = "UPDATE pessoa SET " + 
                 "nome='"+ p.getNome() +
                 "', codigo='"+ p.getCodigo() +
-                "', cargo='"+ p.getCargo() +
                 "', id_turma="+ p.getId_turma()+
                 " WHERE id_pessoa="+ p.getId_pessoa() +"; ";
         return helper.rawSQL(update);
@@ -75,8 +74,7 @@ public class PessoaDAO {
                         rs.getInt("id_pessoa"), 
                         rs.getInt("id_turma"),
                         rs.getString("codigo"),
-                        rs.getString("nome"), 
-                        rs.getString("cargo"));
+                        rs.getString("nome"));
                 }
             }
             stmt.close();
@@ -92,19 +90,18 @@ public class PessoaDAO {
     }
     
     public TableModel list() {
-        final String query = "SELECT p.id_pessoa, p.codigo AS 'Código', p.nome AS 'Nome', t.nome as 'Turma', p.cargo as 'Cargo' FROM pessoa p "
+        final String query = "SELECT p.id_pessoa, p.codigo AS 'Código', p.nome AS 'Nome', t.nome as 'Turma' FROM pessoa p "
                 + " LEFT JOIN turma t ON p.id_turma = t.id_turma ORDER BY p.nome ASC; ";
         return helper.getTableModel(query);
     }
     
     public TableModel listLike(String str) {
-        String query = "SELECT p.id_pessoa, p.codigo AS 'Código', p.nome AS 'Nome', t.nome as 'Turma', p.cargo as 'Cargo' "
+        String query = "SELECT p.id_pessoa, p.codigo AS 'Código', p.nome AS 'Nome', t.nome as 'Turma' "
                 + "FROM pessoa p "
                 + "LEFT JOIN turma t ON p.id_turma = t.id_turma WHERE "
                 + "p.nome LIKE '%"+ str +"%' OR p.nome LIKE '"+ str +"%' OR p.nome LIKE '%"+ str +"' OR "
                 + "p.codigo LIKE '%"+ str +"%' OR p.codigo LIKE '"+ str +"%' OR p.codigo LIKE '%"+ str +"' OR "
-                + "t.nome LIKE '%"+ str +"%' OR t.nome LIKE '"+ str +"%' OR t.nome LIKE '%"+ str +"' OR "
-                + "p.cargo LIKE '%"+ str +"%' OR p.cargo LIKE '"+ str +"%' OR p.cargo LIKE '%"+ str +"' "
+                + "t.nome LIKE '%"+ str +"%' OR t.nome LIKE '"+ str +"%' OR t.nome LIKE '%"+ str +"' "
                 + "ORDER BY p.nome ASC; ";
         
         return helper.getTableModel(query);
@@ -134,8 +131,7 @@ public class PessoaDAO {
                         rs.getInt("id_pessoa"),
                         rs.getInt("id_turma"),  
                         rs.getString("codigo"), 
-                        rs.getString("nome"),
-                        rs.getString("cargo"));
+                        rs.getString("nome"));
                     pessoas.add(p);
                 }
             } 
