@@ -55,7 +55,7 @@ public class DBHelper extends SQLiteConnection {
             
             if (value != null && !value.isEmpty()) {
                 
-                if ( !type.equals("REAL") && !type.equals("INTEGER")) {
+                if ( type.equals("TEXT") ) {
                     value = "\'" + value + "\'";
                 }
                 db.rawSQL("UPDATE " + table + " SET " + column + " = " + value + ";");

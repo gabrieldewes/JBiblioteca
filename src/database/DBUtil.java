@@ -12,6 +12,8 @@ import org.joda.time.LocalDateTime;
 public class DBUtil {
     
     public static String VER_2[] =  { "app_config", "app_version", "TEXT", "v1.0.1" };
+    public static String VER_3[] =  { "emprestimo", "deleted", "BLOB", "0" };
+    public static String VER_4[] =  { "emprestimo_livro", "deleted", "BLOB", "0" };
     
     public static String[] selectScript(int ver) {
         switch (ver) {
