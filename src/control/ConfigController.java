@@ -8,10 +8,7 @@ package control;
 import dao.ConfigDAO;
 import dao.GenericDAO;
 import database.DBUtil;
-import database.Database;
 import java.text.SimpleDateFormat;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.joda.time.LocalDateTime;
 import org.joda.time.Period;
 
@@ -75,13 +72,21 @@ public class ConfigController {
     
     public boolean doDailyBackup() {
         if (cdao.isSetAutoBackup()) {
-            String s = gdao.get("app_config", "last_backup");
-            LocalDateTime hoje = new LocalDateTime( System.currentTimeMillis() );
-            LocalDateTime lastBackup = new LocalDateTime( s );
-            Period p = new Period(hoje, lastBackup);
-            //System.out.println(p.getHours() +" # "+ p.getMinutes());
-            if (p.getHours() < 0) {
-                DBUtil.backupDatabase();
+            // String s = gdao.get("app_config", "last_backup");
+            // LocalDateTime hoje = LocalDateTime.now();
+            // LocalDateTime lastBackup = new LocalDateTime( s );
+            // Period p = new Period(hoje, lastBackup);
+            // System.out.println(p.getHours() +" # "+ p.getMinutes());
+            // if (p.getHours() < 0) {
+            int dias = cdao.getLastBackupInDays();
+            System.out.println("DIAS DIFF BACKUP ::: " + dias);
+            if (dias < 0) {
+                // DBUtil.backupDatabase();
+                
+                new Thread( () -> {
+                    // String result = DBUtil.remoteBackupDatabase();
+                    System.out.println("Remote backup result ::: " );
+                }).start();
                 /*
                 try {  
                     Database.backupDatabase();
@@ -102,10 +107,6 @@ public class ConfigController {
     
     public int getDbVersion() {
         return cdao.getDBVersion();
-    }
-    
-    public String getAppVersion() {
-        return cdao.getAppVersion();
     }
     
     public boolean setDbVersion(int ver) {

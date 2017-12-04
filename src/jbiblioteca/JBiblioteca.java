@@ -20,7 +20,7 @@ public class JBiblioteca {
         MainFrame.OpenMainFrame();   
         try {
             Database.checkDatabase();
-            DBUtil.updateDDL(2);
+            // DBUtil.updateDDL(2);
             // DBUtil.dropDDL();
             // DBUtil.createDDL();
             // DBUtil.populate();

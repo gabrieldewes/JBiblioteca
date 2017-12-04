@@ -11,14 +11,15 @@ import org.joda.time.LocalDateTime;
  */
 public class DBUtil {
     
-    public static String VER_2[] =  { "app_config", "app_version", "TEXT", "v1.0.1" };
-    public static String VER_3[] =  { "emprestimo", "deleted", "BLOB", "0" };
-    public static String VER_4[] =  { "emprestimo_livro", "deleted", "BLOB", "0" };
+    public static String VER_2[] =  { "emprestimo", "deleted", "BLOB", "0" };
+    public static String VER_3[] =  { "emprestimo_livro", "deleted", "BLOB", "0" };
     
     public static String[] selectScript(int ver) {
         switch (ver) {
-        case 2: 
+        /*case 2: 
             return VER_2;
+        case 3: 
+            return VER_3;*/
         default:
             return null;         
         }
@@ -28,7 +29,7 @@ public class DBUtil {
         try {
             synchronized(Database.class) {
                 Database.backupDatabase();
-                LocalDateTime hoje = new LocalDateTime( System.currentTimeMillis() );
+                LocalDateTime hoje = LocalDateTime.now();
                 return GenericDAO.getInstance().update("app_config", "last_backup", "'" + hoje.toString() + "'");
             }
         } catch (Exception ex) {
@@ -39,24 +40,7 @@ public class DBUtil {
     public static String remoteBackupDatabase() {
         String result = JBibliotecaResource.getInstance()
                 .uploadFile(Database.DATABASE_BKP);
-        switch (result) {
-            case "OK": 
-                return "O backup remoto foi salvo com êxito.";
-            case "UNAUTHORIZED": 
-                return "Aparentemente esta aplicação não está autenticada para acessar o recurso de backup.\r\nContate o desenvolvedor.";
-            case "FORBIDDEN": 
-                return "Aparentemente esta aplicação não possui permissão suficiente para acessar o recurso de backup.\r\nContate o desenvolvedor.";
-            case "NOT_FOUND": 
-                return "Aparentemente o caminho para o recurso de backup não existe mais.\r\nContate o desenvolvedor.";
-            case "INTERNAL_SERVER_ERROR":
-                return "O servidor encontrou um erro durante o processamento e não pode completar a requisição.\r\nTente novamente em alguns minutos, caso o erro persistir contate o desenvolvedor.";
-            case "UNKNOWN_HOST":
-                return "Parece que o computador não possui acesso à internet.";
-            case "DEFAULT":
-                return "O servidor retornou uma mensagem desconhecida.\r\nContate o desenvolvedor.";
-            default: 
-                return null;
-        }
+        return result;
     }
     
     public static boolean recoverLocalBackup() {

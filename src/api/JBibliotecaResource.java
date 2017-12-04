@@ -24,12 +24,15 @@
 package api;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -124,7 +127,7 @@ public class JBibliotecaResource {
                     case 200: 
                         return "NOT_FOUND";
                     default:
-                        return "DEFAULT";
+                        return "" + responseCode;
                 }
 
                 /*
@@ -147,7 +150,29 @@ public class JBibliotecaResource {
                 return "UNKNOWN_HOST";
             }
         }
-        return "DEFAULT";
+        return "NO_RETURN";
+    }
+    
+    public File downloadFile() {
+        try {
+            URL url = new URL("http://127.0.0.1/scripts/file.php");
+            
+            ReadableByteChannel readableByteChannel = Channels.newChannel(url.openStream());
+            
+            FileOutputStream fileOutputStream = new FileOutputStream("teste.db");
+            
+            fileOutputStream.getChannel().transferFrom(readableByteChannel, 0, Long.MAX_VALUE);
+            
+            return null;
+        } catch (Exception ex) {
+            
+        }
+        return null;
+    }
+    
+    public static void main(String[] args) {
+        
+        JBibliotecaResource.getInstance().downloadFile();
     }
     
 }

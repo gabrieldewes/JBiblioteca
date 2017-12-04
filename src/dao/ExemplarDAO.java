@@ -73,7 +73,6 @@ public class ExemplarDAO {
     
     public Exemplar get(int id) {
         Exemplar e=null;
-        Livro l=null;
         final String query = "SELECT * FROM exemplar e " +
                     " INNER JOIN livro l ON e.id_livro = l.id_livro " +
                     " WHERE e.id_exemplar=?; ";
@@ -91,7 +90,7 @@ public class ExemplarDAO {
                         rs.getString("disponivel"),
                         rs.getString("coordenada_x"),
                         rs.getString("coordenada_y"),
-                            l = new Livro(
+                            new Livro(
                                 rs.getInt("id_livro"), 
                                 rs.getString("isbn"),
                                 rs.getString("titulo"),
