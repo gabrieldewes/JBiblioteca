@@ -75,14 +75,7 @@ public class ConfigController {
     
     public boolean doDailyBackup() {
         if (cdao.isSetAutoBackup()) {
-            // String s = gdao.get("app_config", "last_backup");
-            // LocalDateTime hoje = LocalDateTime.now();
-            // LocalDateTime lastBackup = new LocalDateTime( s );
-            // Period p = new Period(hoje, lastBackup);
-            // System.out.println(p.getHours() +" # "+ p.getMinutes());
-            // if (p.getHours() < 0) {
             int dias = cdao.getLastBackupInDays();
-            System.out.println("DIAS DIFF BACKUP ::: " + dias);
             if (dias > 0) {
                 DBUtil.backupDatabase();
                 return true;

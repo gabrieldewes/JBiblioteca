@@ -173,14 +173,17 @@ public class EmprestimoController {
         for (int i=0; i<tb.getRowCount(); i++) {
             String in = tb.getValueAt(i, 3).toString();
             String out = tb.getValueAt(i, 4).toString();
+            String del = tb.getValueAt(i, 5).toString();
             
             LocalDateTime dateIn = new LocalDateTime(in);
             LocalDateTime dateToOut = new LocalDateTime(out);
+            LocalDateTime dateDelivery = new LocalDateTime(del);
             
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             
             tb.setValueAt(sdf.format(dateIn.toDate()), i, 3);
             tb.setValueAt(sdf.format(dateToOut.toDate()), i, 4);
+            tb.setValueAt(sdf.format(dateDelivery.toDate()), i, 5);
         }
         return tb;
     }

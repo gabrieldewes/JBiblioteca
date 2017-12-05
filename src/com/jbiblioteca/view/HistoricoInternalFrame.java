@@ -24,6 +24,9 @@
 package com.jbiblioteca.view;
 
 import com.jbiblioteca.controller.EmprestimoController;
+import java.awt.event.KeyEvent;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -37,6 +40,21 @@ public class HistoricoInternalFrame extends javax.swing.JInternalFrame {
         initComponents();
         this.mainFrame = mainFrame;
         updateHistoricoTable("");
+        apagarHistoricoBtn.setEnabled(false);
+        
+        historicoTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                int idx[] = historicoTable.getSelectedRows();
+                if (idx.length > 0) {
+                    apagarHistoricoBtn.setText("Apagar selecionados");
+                    apagarHistoricoBtn.setEnabled(true);
+                } else {
+                    apagarHistoricoBtn.setText("Apagar");
+                    apagarHistoricoBtn.setEnabled(false);
+                }
+            }
+        });
     }
     
     final void updateHistoricoTable(String buscar) {
@@ -55,8 +73,17 @@ public class HistoricoInternalFrame extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane2 = new javax.swing.JScrollPane();
+        historicoScrollPane = new javax.swing.JScrollPane();
         historicoTable = new javax.swing.JTable();
+        buscaHistoricoField = new javax.swing.JTextField();
+        buscaHistoricoBtn = new javax.swing.JButton();
+        apagarHistoricoBtn = new javax.swing.JButton();
+
+        setClosable(true);
+        setIconifiable(true);
+        setMaximizable(true);
+        setResizable(true);
+        setTitle("Histórico");
 
         historicoTable.setFont(new java.awt.Font("Dialog", 0, 13)); // NOI18N
         historicoTable.setModel(new javax.swing.table.DefaultTableModel(
@@ -72,31 +99,92 @@ public class HistoricoInternalFrame extends javax.swing.JInternalFrame {
         ));
         historicoTable.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         historicoTable.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(historicoTable);
+        historicoScrollPane.setViewportView(historicoTable);
+
+        buscaHistoricoField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        buscaHistoricoField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                buscaHistoricoFieldKeyPressed(evt);
+            }
+        });
+
+        buscaHistoricoBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        buscaHistoricoBtn.setText("Buscar");
+        buscaHistoricoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buscaHistoricoBtnActionPerformed(evt);
+            }
+        });
+
+        apagarHistoricoBtn.setText("Apagar");
+        apagarHistoricoBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                apagarHistoricoBtnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(historicoScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(buscaHistoricoField, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(buscaHistoricoBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(apagarHistoricoBtn)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(buscaHistoricoBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buscaHistoricoField)
+                    .addComponent(apagarHistoricoBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(historicoScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 282, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buscaHistoricoFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscaHistoricoFieldKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String search = buscaHistoricoField.getText();
+            updateHistoricoTable(search);
+        }
+    }//GEN-LAST:event_buscaHistoricoFieldKeyPressed
+
+    private void buscaHistoricoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaHistoricoBtnActionPerformed
+        String search = buscaHistoricoField.getText();
+        updateHistoricoTable(search);
+    }//GEN-LAST:event_buscaHistoricoBtnActionPerformed
+
+    private void apagarHistoricoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_apagarHistoricoBtnActionPerformed
+        int idx[] = historicoTable.getSelectedRows();
+        if (idx.length > 0) {
+            int[] id_emprestimos = new int[idx.length];
+            for (int i=0; i<idx.length; i++) {
+                id_emprestimos[i] = Integer.valueOf(historicoTable.getValueAt(idx[i], 0).toString());
+                
+                System.out.println("ID EMPRSTIMO " + id_emprestimos[i]);
+            }
+        }
+    }//GEN-LAST:event_apagarHistoricoBtnActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton apagarHistoricoBtn;
+    private javax.swing.JButton buscaHistoricoBtn;
+    private javax.swing.JTextField buscaHistoricoField;
+    private javax.swing.JScrollPane historicoScrollPane;
     private javax.swing.JTable historicoTable;
-    private javax.swing.JScrollPane jScrollPane2;
     // End of variables declaration//GEN-END:variables
 }

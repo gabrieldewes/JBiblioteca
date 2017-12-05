@@ -13,6 +13,7 @@ public class DBUtil {
     
     public static String VER_2[] =  { "emprestimo", "deleted", "BLOB NOT NULL DEFAULT 0", "0" };
     public static String VER_3[] =  { "emprestimo_livro", "deleted", "BLOB NOT NULL DEFAULT 0", "0" };
+    public static String VER_4[] =  { "emprestimo", "data_entrega", "TEXT", null };
     
     public static String[] selectScript(int ver) {
         switch (ver) {
@@ -20,6 +21,8 @@ public class DBUtil {
             return VER_2;
         case 3: 
             return VER_3;
+        case 4:
+            return VER_4;
         default:
             return null;         
         }
@@ -121,6 +124,7 @@ public class DBUtil {
             "id_pessoa INTEGER NOT NULL, "+
             "data_inicio TEXT NOT NULL, "+
             "data_fim TEXT, "+
+            "data_entrega TEXT, "+
             "situation TEXT, "+
             "deleted BLOB NOT NULL, "+
             "FOREIGN KEY(id_pessoa) REFERENCES pessoa(id_pessoa));",

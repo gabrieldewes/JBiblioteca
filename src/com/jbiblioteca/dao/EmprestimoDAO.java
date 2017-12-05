@@ -73,10 +73,10 @@ public class EmprestimoDAO {
     }
     
     public boolean logicalDelete(int id) {
-        String query = "UPDATE emprestimo SET deleted = 1 WHERE id_emprestimo="+ id +";";
+        String query = "UPDATE emprestimo SET deleted = 1, data_entrega = '"+ LocalDateTime.now().toString() +"' WHERE id_emprestimo="+ id +";";
         return helper.rawSQL(query);
     }
-    
+
     public boolean deleteForeign(int id) {
         final String query = "DELETE FROM emprestimo_livro WHERE id_emprestimo="+ id +"; ";
         return helper.rawSQL(query);
@@ -85,11 +85,6 @@ public class EmprestimoDAO {
     public boolean logicalDeleteForeign(int id) {
         String query = "UPDATE emprestimo_livro SET deleted = 1 WHERE id_emprestimo="+ id +";";
         return helper.rawSQL(query);
-    }
-    
-    public void setEmprestimoDevolvido(int id) {
-        //String query = "UPDATE emprestimo_livro SET deleted = 1 WHERE id_emprestimo="+ id +";";
-        //return helper.rawSQL(query);
     }
     
     public Emprestimo get(int id) {
@@ -133,13 +128,13 @@ public class EmprestimoDAO {
     }
     
     public TableModel listHistory(String like) {
-        return list(like, true);
+        return list(like, true, 0, 10);
     }
     
     public TableModel list(String like, boolean deleted) {
         String query;
         int logicDelete = deleted ? 1 : 0;
-        if (!"".equals(like))
+        if (!"".equals(like.trim()))
             query = 
                 "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Data de Início', e.data_fim as 'Data p/ Devolução', cast((julianday('now') - julianday(e.data_fim)) AS Integer) AS 'Status', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
                     "FROM emprestimo e " +
@@ -163,7 +158,35 @@ public class EmprestimoDAO {
                     "ORDER BY date(e.data_fim) ASC;";
         return helper.getTableModel(query);
     }
-
     
+    public TableModel list(String like, boolean deleted, int offset, int limit) {
+        String query;
+        int logicDelete = deleted ? 1 : 0;
+        if (!"".equals(like.trim()))
+            query = 
+                "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Início', e.data_fim as 'Devolução', e.data_entrega AS 'Entrega', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
+                    "FROM emprestimo e " +
+                    "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
+                    "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
+                    "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
+                    "WHERE (e.deleted = "+ logicDelete +" AND el.deleted = "+ logicDelete + ") AND " +
+                    "(p.nome LIKE '%"+ like +"%' OR p.nome LIKE '"+ like +"%' OR p.nome LIKE '%"+ like +"' OR " +
+                    "p.codigo LIKE '%"+ like +"%' OR p.codigo LIKE '"+ like +"%' OR p.codigo LIKE '%"+ like +"' OR " +
+                    "ex.codigo LIKE '%"+ like +"%' OR ex.codigo LIKE '"+ like +"%' OR ex.codigo LIKE '%"+ like +"')" +
+                    "GROUP BY e.id_emprestimo " +
+                    "LIMIT "+ offset +", "+ limit +";";
+        else
+            query = 
+                "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Início', e.data_fim as 'Devolução', e.data_entrega AS 'Entrega', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
+                    "FROM emprestimo e " +
+                    "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
+                    "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
+                    "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
+                    "WHERE (e.deleted = "+ logicDelete +" AND el.deleted = "+ logicDelete +") " +
+                    "GROUP BY e.id_emprestimo " +
+                    "ORDER BY date(e.data_fim) ASC " +
+                    "LIMIT "+ offset +", "+ limit +";";
+        return helper.getTableModel(query);
+    }
 
 }

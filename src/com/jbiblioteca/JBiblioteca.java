@@ -13,7 +13,7 @@ public class JBiblioteca {
         
         MainFrame.OpenMainFrame();   
         DBUtil.checkDatabase();
-        DBUtil.updateDDL(3);
+        DBUtil.updateDDL(4);
         // DBUtil.dropDDL();
         // DBUtil.createDDL();
         // DBUtil.populate();
