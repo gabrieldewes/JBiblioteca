@@ -23,15 +23,12 @@
  */
 package com.jbiblioteca.api;
 
-import com.jbiblioteca.data.GlobalConstants;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
-import java.net.InetAddress;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.channels.Channels;
@@ -64,23 +61,8 @@ public class JBibliotecaResource {
     private static final String API_URL = "http://dewes.pe.hu/";
     private static final String J_SCRIPTS_PATH = "jbiblioteca/scripts/";
     private static final String BACKUP_URL = API_URL + J_SCRIPTS_PATH + "backup.php";
-    
-    public static boolean checkRemoteServer() {
-        try {
-            GlobalConstants.REMOTE_SERVER_IS_REACHABLE = InetAddress
-                    .getByName("31.170.165.162")
-                    .isReachable(10000);
-        } catch(IOException ex) {
-            ex.printStackTrace();
-            GlobalConstants.REMOTE_SERVER_IS_REACHABLE = false;
-        }
-        return GlobalConstants.REMOTE_SERVER_IS_REACHABLE;
-    }
         
-    public String uploadFile(File file) {
-        
-        if ( !checkRemoteServer()) return "SERVER_UNREACHABLE";
-        
+    public String uploadFile(File file) {        
         String charset = "UTF-8";
         String boundary = Long.toHexString(System.currentTimeMillis());
         String CRLF = "\r\n";
