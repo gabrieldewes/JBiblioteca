@@ -18,23 +18,23 @@ import javax.swing.JOptionPane;
  */
 public class MainFrame extends javax.swing.JFrame {
     
-    static PessoasInternalFrame pif;
-    static PessoasAddInternalFrame paif;
-    static PessoasAttInternalFrame patif;
-    static TurmasInternalFrame tif;
-    static LivrosInternalFrame lif;
-    static LivrosAddInternalFrame laif;
-    static EmprestimoAddInternalFrame eaif;
-    static EmprestimoInternalFrame eif;
-    static ConfigInternalFrame cif;
-    static EbooksInternalFrame ebif;
-    static ExemplarAddInternalFrame exaif;
-    static TurmasAttLoteInternalFrame talif;
+    static PessoasInternalFrame pessoasInternalFrame;
+    static PessoasAddInternalFrame pessoasAddInternalFrame;
+    static PessoasAttInternalFrame pessoasAttInternalFrame;
+    static TurmasInternalFrame turmasInternalFrame;
+    static LivrosInternalFrame livrosInternalFrame;
+    static LivrosAddInternalFrame livrosAddInternalFrame;
+    static EmprestimoAddInternalFrame emprestimoAddInternalFrame;
+    static EmprestimoInternalFrame emprestimoInternalFrame;
+    static ConfigInternalFrame configInternalFrame;
+    static EbooksInternalFrame ebooksInternalFrame;
+    static ExemplarAddInternalFrame exemplarAddInternalFrame;
+    static TurmasAttLoteInternalFrame turmasAttLoteInternalFrame;
+    static HistoricoInternalFrame historicoInternalFrame;
 
     public MainFrame() {
         initComponents();
         this.setIconImage(new ImageIcon(getClass().getResource("jbiblioteca.png")).getImage());
-        
     }
     
 
@@ -58,7 +58,7 @@ public class MainFrame extends javax.swing.JFrame {
         novoEmprestimoMenuItem = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
         verEmprestimosMenuItem = new javax.swing.JMenuItem();
-        verEmprestimosMenuItem1 = new javax.swing.JMenuItem();
+        verHistoricoMenuItem = new javax.swing.JMenuItem();
         aboutMenu = new javax.swing.JMenu();
         configMenuItem = new javax.swing.JMenuItem();
         ebooksMenuItem = new javax.swing.JMenuItem();
@@ -167,13 +167,13 @@ public class MainFrame extends javax.swing.JFrame {
         });
         historicoEmprestimosMenu.add(verEmprestimosMenuItem);
 
-        verEmprestimosMenuItem1.setText("Histórico");
-        verEmprestimosMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+        verHistoricoMenuItem.setText("Histórico");
+        verHistoricoMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                verEmprestimosMenuItem1ActionPerformed(evt);
+                verHistoricoMenuItemActionPerformed(evt);
             }
         });
-        historicoEmprestimosMenu.add(verEmprestimosMenuItem1);
+        historicoEmprestimosMenu.add(verHistoricoMenuItem);
 
         jMenuBar1.add(historicoEmprestimosMenu);
 
@@ -216,13 +216,13 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cadastrarMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cadastrarMenuItemActionPerformed
-        if (paif == null || paif.isClosed()) {
-            paif = new PessoasAddInternalFrame();
-            paif.setVisible(true);
-            desktop.add(paif);
+        if (pessoasAddInternalFrame == null || pessoasAddInternalFrame.isClosed()) {
+            pessoasAddInternalFrame = new PessoasAddInternalFrame();
+            pessoasAddInternalFrame.setVisible(true);
+            desktop.add(pessoasAddInternalFrame);
         }
         try {
-            paif.setSelected(true);
+            pessoasAddInternalFrame.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -230,58 +230,58 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_cadastrarMenuItemActionPerformed
 
     private void verPessoasMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verPessoasMenuItemActionPerformed
-        if (pif == null || pif.isClosed()) {
-            pif = new PessoasInternalFrame(this);
-            pif.setVisible(true);
-            desktop.add(pif);
+        if (pessoasInternalFrame == null || pessoasInternalFrame.isClosed()) {
+            pessoasInternalFrame = new PessoasInternalFrame(this);
+            pessoasInternalFrame.setVisible(true);
+            desktop.add(pessoasInternalFrame);
         }
         else
             try {
-                if (pif.isIcon())
-                    pif.setIcon(false);
+                if (pessoasInternalFrame.isIcon())
+                    pessoasInternalFrame.setIcon(false);
                 
             } 
             catch (PropertyVetoException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         try {
-            pif.setSelected(true);
+            pessoasInternalFrame.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_verPessoasMenuItemActionPerformed
 
     private void novoEmprestimoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoEmprestimoMenuItemActionPerformed
-        if (eaif == null || eaif.isClosed()) {
-            eaif = new EmprestimoAddInternalFrame();
-            eaif.setVisible(true);
-            desktop.add(eaif);
+        if (emprestimoAddInternalFrame == null || emprestimoAddInternalFrame.isClosed()) {
+            emprestimoAddInternalFrame = new EmprestimoAddInternalFrame();
+            emprestimoAddInternalFrame.setVisible(true);
+            desktop.add(emprestimoAddInternalFrame);
         }
         
         try {
-                eaif.setSelected(true);
+                emprestimoAddInternalFrame.setSelected(true);
             } catch (PropertyVetoException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
     }//GEN-LAST:event_novoEmprestimoMenuItemActionPerformed
 
     private void verLivrosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verLivrosMenuItemActionPerformed
-        if (lif == null || lif.isClosed()) {
-            lif = new LivrosInternalFrame(this);
-            lif.setVisible(true);
-            desktop.add(lif);
+        if (livrosInternalFrame == null || livrosInternalFrame.isClosed()) {
+            livrosInternalFrame = new LivrosInternalFrame(this);
+            livrosInternalFrame.setVisible(true);
+            desktop.add(livrosInternalFrame);
         }
         else
             try {
-                if (lif.isIcon())
-                    lif.setIcon(false);
+                if (livrosInternalFrame.isIcon())
+                    livrosInternalFrame.setIcon(false);
 
             } 
             catch (PropertyVetoException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         try {
-            lif.setSelected(true);
+            livrosInternalFrame.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -325,57 +325,57 @@ public class MainFrame extends javax.swing.JFrame {
                     }
                 }
             }*/
-        if (exaif == null || exaif.isClosed()) {
-            exaif = new ExemplarAddInternalFrame();
-            exaif.setVisible(true);
-            desktop.add(exaif);
+        if (exemplarAddInternalFrame == null || exemplarAddInternalFrame.isClosed()) {
+            exemplarAddInternalFrame = new ExemplarAddInternalFrame();
+            exemplarAddInternalFrame.setVisible(true);
+            desktop.add(exemplarAddInternalFrame);
         }
         else
             try {
-                if (exaif.isIcon())
-                    exaif.setIcon(false);
+                if (exemplarAddInternalFrame.isIcon())
+                    exemplarAddInternalFrame.setIcon(false);
 
             } 
             catch (PropertyVetoException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         try {
-            exaif.setSelected(true);
+            exemplarAddInternalFrame.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     private void verEmprestimosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verEmprestimosMenuItemActionPerformed
-        if (eif == null || eif.isClosed()) {
-            eif = new EmprestimoInternalFrame(this);
-            eif.setVisible(true);
-            desktop.add(eif);
+        if (emprestimoInternalFrame == null || emprestimoInternalFrame.isClosed()) {
+            emprestimoInternalFrame = new EmprestimoInternalFrame(this);
+            emprestimoInternalFrame.setVisible(true);
+            desktop.add(emprestimoInternalFrame);
         }
         else
             try {
-                if (eif.isIcon())
-                    eif.setIcon(false);
+                if (emprestimoInternalFrame.isIcon())
+                    emprestimoInternalFrame.setIcon(false);
 
             } 
             catch (PropertyVetoException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         try {
-            eif.setSelected(true);
+            emprestimoInternalFrame.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_verEmprestimosMenuItemActionPerformed
 
     private void addLivroMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addLivroMenuItemActionPerformed
-        if (laif == null || laif.isClosed()) {
-            laif = new LivrosAddInternalFrame();
-            laif.setVisible(true);
-            desktop.add(laif);
+        if (livrosAddInternalFrame == null || livrosAddInternalFrame.isClosed()) {
+            livrosAddInternalFrame = new LivrosAddInternalFrame();
+            livrosAddInternalFrame.setVisible(true);
+            desktop.add(livrosAddInternalFrame);
         }
         try {
-            laif.setSelected(true);
+            livrosAddInternalFrame.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -383,13 +383,13 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void configMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_configMenuItemActionPerformed
 
-        if (cif == null || cif.isClosed()) {
-            cif = new ConfigInternalFrame();
-            cif.setVisible(true);
-            desktop.add(cif);
+        if (configInternalFrame == null || configInternalFrame.isClosed()) {
+            configInternalFrame = new ConfigInternalFrame();
+            configInternalFrame.setVisible(true);
+            desktop.add(configInternalFrame);
         }
         try {
-            cif.setSelected(true);
+            configInternalFrame.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }  
@@ -406,51 +406,69 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     private void ebooksMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ebooksMenuItemActionPerformed
-        if (ebif == null || ebif.isClosed()) {
-            ebif = new EbooksInternalFrame();
-            ebif.setVisible(true);
-            desktop.add(ebif);
+        if (ebooksInternalFrame == null || ebooksInternalFrame.isClosed()) {
+            ebooksInternalFrame = new EbooksInternalFrame();
+            ebooksInternalFrame.setVisible(true);
+            desktop.add(ebooksInternalFrame);
         }
         else 
             try {
-                if (ebif.isIcon())
-                    ebif.setIcon(false);
+                if (ebooksInternalFrame.isIcon())
+                    ebooksInternalFrame.setIcon(false);
             } 
             catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            ebif.setSelected(true);
+            ebooksInternalFrame.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_ebooksMenuItemActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        if (tif == null || tif.isClosed()) {
-            tif = new TurmasInternalFrame();
-            tif.setVisible(true);
-            desktop.add(tif);
+        if (turmasInternalFrame == null || turmasInternalFrame.isClosed()) {
+            turmasInternalFrame = new TurmasInternalFrame();
+            turmasInternalFrame.setVisible(true);
+            desktop.add(turmasInternalFrame);
         }
         else 
             try {
-                if (tif.isIcon())
-                    tif.setIcon(false);
+                if (turmasInternalFrame.isIcon())
+                    turmasInternalFrame.setIcon(false);
             } 
             catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
-            tif.setSelected(true);
+            turmasInternalFrame.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void verEmprestimosMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verEmprestimosMenuItem1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_verEmprestimosMenuItem1ActionPerformed
+    private void verHistoricoMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verHistoricoMenuItemActionPerformed
+        if (historicoInternalFrame == null || historicoInternalFrame.isClosed()) {
+            historicoInternalFrame = new HistoricoInternalFrame(this);
+            historicoInternalFrame.setVisible(true);
+            desktop.add(historicoInternalFrame);
+        }
+        else
+            try {
+                if (historicoInternalFrame.isIcon())
+                    historicoInternalFrame.setIcon(false);
+
+            } 
+            catch (PropertyVetoException ex) {
+                Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        try {
+            historicoInternalFrame.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_verHistoricoMenuItemActionPerformed
 
     public static void OpenMainFrame() {
         try {
@@ -487,7 +505,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JMenuItem novoEmprestimoMenuItem;
     private javax.swing.JMenuItem verEmprestimosMenuItem;
-    private javax.swing.JMenuItem verEmprestimosMenuItem1;
+    private javax.swing.JMenuItem verHistoricoMenuItem;
     private javax.swing.JMenuItem verLivrosMenuItem;
     private javax.swing.JMenuItem verPessoasMenuItem;
     // End of variables declaration//GEN-END:variables

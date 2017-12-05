@@ -17,7 +17,6 @@ import com.jbiblioteca.model.Emprestimo;
 import com.jbiblioteca.model.Exemplar;
 import org.joda.time.Days;
 import org.joda.time.LocalDateTime;
-import org.joda.time.Period;
 
 /**
  *
@@ -68,7 +67,7 @@ public class EmprestimoController {
                     exemplares.stream().forEach((e) -> {
                         id_exemplar.add(e.getIdExemplar());
                     });
-                    Emprestimo e = new Emprestimo(0, id_pessoa, id_exemplar, inicio, fim);
+                    Emprestimo e = new Emprestimo(0, id_pessoa, id_exemplar, inicio, fim, false);
                     int id = emprestimoDao.save(e);
                     if (id != 0) {
                         e.setId_emprestimo(id);
@@ -76,13 +75,15 @@ public class EmprestimoController {
                             try {
                                 exemplarDao = ExemplarDAO.getInstance();
                                 exemplarDao.setSituation(id_exemplar, "Alugado");
+                                // TODO setEmprestimoDevolvido
+                                // TODO ESCOLHER DATA DE DEVOLUÇÃO
                             } catch (Exception e1) {}
                             return true;
                         }
                     }
                 }      
             
-            } else JOptionPane.showMessageDialog(null, "Selecione uma pessoa. ", "Atenção", JOptionPane.WARNING_MESSAGE);
+            } else JOptionPane.showMessageDialog(null, "Selecione uma pessoa.", "Atenção", JOptionPane.WARNING_MESSAGE);
         } else JOptionPane.showMessageDialog(null, "Selecione ao menos um exemplar. ", "Atenção", JOptionPane.WARNING_MESSAGE);
         return false;
     }
@@ -107,6 +108,7 @@ public class EmprestimoController {
         return emprestimoDao.get(id);
     }
     
+    /*
     public boolean Apagar(int id_emprestimo) {
         Emprestimo e = emprestimoDao.get(id_emprestimo);
         if (e != null) {
@@ -122,17 +124,31 @@ public class EmprestimoController {
         } else JOptionPane.showMessageDialog(null, "Ocorreu um erro interno. Não retornou empréstimo para o ID "+ id_emprestimo +".", "Atenção", JOptionPane.WARNING_MESSAGE);
            
         return false;
-    }  
+    }
+    */ 
+    public boolean Arquivar(int id_emprestimo) {
+        Emprestimo e = emprestimoDao.get(id_emprestimo);
+        if (e != null) {
+            if (emprestimoDao.logicalDeleteForeign(id_emprestimo)) {
+                if (emprestimoDao.logicalDelete(id_emprestimo)) {
+                    try {
+                        exemplarDao = ExemplarDAO.getInstance();
+                        exemplarDao.setSituation(e.getId_exemplar(), "");
+                    } catch (Exception e1) {}
+                    return true;
+                } else JOptionPane.showMessageDialog(null, "Ocorreu um erro ao prosseguir com devolução do empréstimo.\r\nTente novamente ou contate o desenvolvedor caso o erro persistir.", "Atenção", JOptionPane.WARNING_MESSAGE);
+            } else JOptionPane.showMessageDialog(null, "Ocorreu um erro ao prosseguir com devolução do empréstimo.\r\nTente novamente ou contate o desenvolvedor caso o erro persistir.", "Atenção", JOptionPane.WARNING_MESSAGE);
+        } else JOptionPane.showMessageDialog(null, "Ocorreu um erro interno. Não retornou empréstimo para o ID "+ id_emprestimo +".", "Atenção", JOptionPane.WARNING_MESSAGE);
+           
+        return false;
+    }
     
     public TableModel Listar(String busca) {
-        TableModel tb;
-        if (!"".equals(busca)) {
-            tb = humanReadableDates(emprestimoDao.list(busca));
-        }
-        else {
-            tb = humanReadableDates(emprestimoDao.list(""));
-        }
-        return tb;
+        return humanReadableDates(emprestimoDao.list(busca));
+    }
+    
+    public TableModel ListarArquivo(String busca) {
+        return historyParser(emprestimoDao.listHistory(busca));
     }
     
     private TableModel humanReadableDates( TableModel tb ) {
@@ -149,6 +165,22 @@ public class EmprestimoController {
             tb.setValueAt(sdf.format(dateIn.toDate()), i, 3);
             tb.setValueAt(sdf.format(dateToOut.toDate()), i, 4);
             tb.setValueAt(getStringDiff(diff), i, 5);
+        }
+        return tb;
+    }
+    
+    private TableModel historyParser( TableModel tb ) {
+        for (int i=0; i<tb.getRowCount(); i++) {
+            String in = tb.getValueAt(i, 3).toString();
+            String out = tb.getValueAt(i, 4).toString();
+            
+            LocalDateTime dateIn = new LocalDateTime(in);
+            LocalDateTime dateToOut = new LocalDateTime(out);
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            
+            tb.setValueAt(sdf.format(dateIn.toDate()), i, 3);
+            tb.setValueAt(sdf.format(dateToOut.toDate()), i, 4);
         }
         return tb;
     }

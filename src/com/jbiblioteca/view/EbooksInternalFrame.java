@@ -34,8 +34,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
-import static com.jbiblioteca.view.MainFrame.lif;
 import java.awt.event.KeyEvent;
+import static com.jbiblioteca.view.MainFrame.livrosInternalFrame;
 
 /**
  *
@@ -237,9 +237,9 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
                     String y = yField.getText();
                     if (LivroController.getInstance().Salvar(codigo.trim(), "",  titulo.trim(), autor.trim(), x.trim(), y.trim())) {
                         option = JOptionPane.OK_CANCEL_OPTION;
-                        if (lif != null) {
-                            lif.updateLivroTableModel("");
-                            lif.updateExemplarTableModel("");
+                        if (livrosInternalFrame != null) {
+                            livrosInternalFrame.updateLivroTableModel("");
+                            livrosInternalFrame.updateExemplarTableModel("");
                         }
                     }
                 }

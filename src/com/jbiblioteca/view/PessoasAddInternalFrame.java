@@ -9,7 +9,7 @@ import com.jbiblioteca.controller.PessoaController;
 import com.jbiblioteca.controller.TurmaController;
 import java.util.ArrayList;
 import com.jbiblioteca.model.Turma;
-import static com.jbiblioteca.view.MainFrame.pif;
+import static com.jbiblioteca.view.MainFrame.pessoasInternalFrame;
 
 /**
  *
@@ -172,8 +172,8 @@ public class PessoasAddInternalFrame extends javax.swing.JInternalFrame {
         if (pessoaController.Salvar(id_turma, codigo.trim(), nome.trim())) {
             nomeField.setText("");
             codigoField.setText("");
-            if (pif != null)
-                pif.updateTableModel("");
+            if (pessoasInternalFrame != null)
+                pessoasInternalFrame.updateTableModel("");
         }
         
     }//GEN-LAST:event_AddPessoaBtnActionPerformed

@@ -12,9 +12,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import static com.jbiblioteca.view.MainFrame.talif;
-import static com.jbiblioteca.view.MainFrame.tif;
 import com.sun.glass.events.KeyEvent;
+import static com.jbiblioteca.view.MainFrame.turmasAttLoteInternalFrame;
+import static com.jbiblioteca.view.MainFrame.turmasInternalFrame;
 
 
 /**
@@ -286,35 +286,35 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_BuscaPessoaBtnActionPerformed
 
     private void turmasBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_turmasBtnActionPerformed
-        if (tif == null || tif.isClosed()) {
-            tif = new TurmasInternalFrame();
-            tif.setVisible(true);
-            mfthis.desktop.add(tif);
+        if (turmasInternalFrame == null || turmasInternalFrame.isClosed()) {
+            turmasInternalFrame = new TurmasInternalFrame();
+            turmasInternalFrame.setVisible(true);
+            mfthis.desktop.add(turmasInternalFrame);
         }
         else 
             try {
-                if (tif.isIcon())
-                    tif.setIcon(false);
+                if (turmasInternalFrame.isIcon())
+                    turmasInternalFrame.setIcon(false);
             } 
             catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
-            tif.setSelected(true);
+            turmasInternalFrame.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_turmasBtnActionPerformed
 
     private void btnAlterarTurmasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarTurmasActionPerformed
-        if (talif == null || talif.isClosed()) {
-            talif = new TurmasAttLoteInternalFrame();
-            talif.setVisible(true);
-            mfthis.desktop.add(talif);
+        if (turmasAttLoteInternalFrame == null || turmasAttLoteInternalFrame.isClosed()) {
+            turmasAttLoteInternalFrame = new TurmasAttLoteInternalFrame();
+            turmasAttLoteInternalFrame.setVisible(true);
+            mfthis.desktop.add(turmasAttLoteInternalFrame);
         }
         try {
-            talif.setSelected(true);
+            turmasAttLoteInternalFrame.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(TurmasAttLoteInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
         }

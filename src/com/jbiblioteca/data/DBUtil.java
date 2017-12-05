@@ -11,15 +11,15 @@ import org.joda.time.LocalDateTime;
  */
 public class DBUtil {
     
-    public static String VER_2[] =  { "emprestimo", "deleted", "BLOB", "0" };
-    public static String VER_3[] =  { "emprestimo_livro", "deleted", "BLOB", "0" };
+    public static String VER_2[] =  { "emprestimo", "deleted", "BLOB NOT NULL DEFAULT 0", "0" };
+    public static String VER_3[] =  { "emprestimo_livro", "deleted", "BLOB NOT NULL DEFAULT 0", "0" };
     
     public static String[] selectScript(int ver) {
         switch (ver) {
-        /*case 2: 
+        case 2: 
             return VER_2;
         case 3: 
-            return VER_3;*/
+            return VER_3;
         default:
             return null;         
         }
@@ -122,11 +122,13 @@ public class DBUtil {
             "data_inicio TEXT NOT NULL, "+
             "data_fim TEXT, "+
             "situation TEXT, "+
+            "deleted BLOB NOT NULL, "+
             "FOREIGN KEY(id_pessoa) REFERENCES pessoa(id_pessoa));",
         
         "CREATE TABLE IF NOT EXISTS emprestimo_livro ( "+
             "id_emprestimo INTEGER NOT NULL, "+
             "id_exemplar INTEGER NOT NULL, "+
+            "deleted BLOB NOT NULL, "+
             "PRIMARY KEY(id_emprestimo,id_exemplar), "+
             "FOREIGN KEY(id_emprestimo) REFERENCES emprestimo(id_emprestimo), "+
             "FOREIGN KEY(id_exemplar) REFERENCES exemplar(id_exemplar));",

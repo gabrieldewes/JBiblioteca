@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
 import org.joda.time.LocalDate;
-import static com.jbiblioteca.view.MainFrame.eif;
+import static com.jbiblioteca.view.MainFrame.emprestimoInternalFrame;
 
 /**
  *
@@ -438,14 +438,14 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
                     String s = String.format("%1$,.2f", jurosAoDia);
                     taxaField.setText(""+s);
                     salvarBtn.setEnabled(false);
-                    if (eif != null) {
+                    if (emprestimoInternalFrame != null) {
                         EmprestimoInternalFrame.juros_dia = jurosAoDia;
                     }
                 }
                 if (configController.savePrazoDefault(prazoDefault)) {
                     prazoField.setText("" + prazoDefault);
                     salvarBtn.setEnabled(false);
-                    if (eif != null) {
+                    if (emprestimoInternalFrame != null) {
                         EmprestimoInternalFrame.prazo_default = prazoDefault;
                     }
                 }

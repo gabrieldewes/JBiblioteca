@@ -72,9 +72,24 @@ public class EmprestimoDAO {
         return helper.rawSQL(query);
     }
     
+    public boolean logicalDelete(int id) {
+        String query = "UPDATE emprestimo SET deleted = 1 WHERE id_emprestimo="+ id +";";
+        return helper.rawSQL(query);
+    }
+    
     public boolean deleteForeign(int id) {
         final String query = "DELETE FROM emprestimo_livro WHERE id_emprestimo="+ id +"; ";
         return helper.rawSQL(query);
+    }
+    
+    public boolean logicalDeleteForeign(int id) {
+        String query = "UPDATE emprestimo_livro SET deleted = 1 WHERE id_emprestimo="+ id +";";
+        return helper.rawSQL(query);
+    }
+    
+    public void setEmprestimoDevolvido(int id) {
+        //String query = "UPDATE emprestimo_livro SET deleted = 1 WHERE id_emprestimo="+ id +";";
+        //return helper.rawSQL(query);
     }
     
     public Emprestimo get(int id) {
@@ -90,6 +105,7 @@ public class EmprestimoDAO {
         int id_pessoa=0;
         LocalDateTime data_inicio=null;
         LocalDateTime data_fim=null;
+        boolean deleted = false;
         try {
             stmt = helper.prepareStatement(query);
             log.log(Level.INFO, query);
@@ -100,9 +116,10 @@ public class EmprestimoDAO {
                     id_pessoa = rs.getInt("id_pessoa");
                     data_inicio = new LocalDateTime( rs.getString("data_inicio") );
                     data_fim = new LocalDateTime( rs.getString("data_fim") );
+                    deleted = rs.getBoolean("deleted");
                     ids.add( rs.getInt("id_exemplar") );
                 }
-                e = new Emprestimo(id_emprestimo, id_pessoa, ids, data_inicio, data_fim);
+                e = new Emprestimo(id_emprestimo, id_pessoa, ids, data_inicio, data_fim, deleted);
             }                
             stmt.close();
         } catch (SQLException ex) {
@@ -112,7 +129,16 @@ public class EmprestimoDAO {
     }
     
     public TableModel list(String like) {
+        return list(like, false);
+    }
+    
+    public TableModel listHistory(String like) {
+        return list(like, true);
+    }
+    
+    public TableModel list(String like, boolean deleted) {
         String query;
+        int logicDelete = deleted ? 1 : 0;
         if (!"".equals(like))
             query = 
                 "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Data de Início', e.data_fim as 'Data p/ Devolução', cast((julianday('now') - julianday(e.data_fim)) AS Integer) AS 'Status', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
@@ -120,11 +146,11 @@ public class EmprestimoDAO {
                     "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
                     "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
                     "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
-                    "WHERE "+
-                    "p.nome LIKE '%"+ like +"%' OR p.nome LIKE '"+ like +"%' OR p.nome LIKE '%"+ like +"' OR "+
-                    "p.codigo LIKE '%"+ like +"%' OR p.codigo LIKE '"+ like +"%' OR p.codigo LIKE '%"+ like +"' OR "+
-                    "ex.codigo LIKE '%"+ like +"%' OR ex.codigo LIKE '"+ like +"%' OR ex.codigo LIKE '%"+ like +"'" +
-                    "GROUP BY e.id_emprestimo ";
+                    "WHERE (e.deleted = "+ logicDelete +" AND el.deleted = "+ logicDelete + ") AND " +
+                    "(p.nome LIKE '%"+ like +"%' OR p.nome LIKE '"+ like +"%' OR p.nome LIKE '%"+ like +"' OR " +
+                    "p.codigo LIKE '%"+ like +"%' OR p.codigo LIKE '"+ like +"%' OR p.codigo LIKE '%"+ like +"' OR " +
+                    "ex.codigo LIKE '%"+ like +"%' OR ex.codigo LIKE '"+ like +"%' OR ex.codigo LIKE '%"+ like +"')" +
+                    "GROUP BY e.id_emprestimo;";
         else
             query = 
                 "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Data de Início', e.data_fim as 'Data p/ Devolução', cast((julianday('now') - julianday(e.data_fim)) AS Integer) AS 'Status', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
@@ -132,6 +158,7 @@ public class EmprestimoDAO {
                     "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
                     "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
                     "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
+                    "WHERE (e.deleted = "+ logicDelete +" AND el.deleted = "+ logicDelete +") " +
                     "GROUP BY e.id_emprestimo " +
                     "ORDER BY date(e.data_fim) ASC;";
         return helper.getTableModel(query);

@@ -103,12 +103,12 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verEmprestimosMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="verEmprestimosMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="verHistoricoMenuItem">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Hist&#xf3;rico"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verEmprestimosMenuItem1ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="verHistoricoMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

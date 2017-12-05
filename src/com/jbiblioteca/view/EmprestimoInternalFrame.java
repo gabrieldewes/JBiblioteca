@@ -23,9 +23,9 @@ import com.jbiblioteca.model.Emprestimo;
 import com.jbiblioteca.model.Exemplar;
 import org.joda.time.Days;
 import org.joda.time.LocalDateTime;
-import static com.jbiblioteca.view.MainFrame.eaif;
-import static com.jbiblioteca.view.MainFrame.lif;
 import java.awt.event.KeyEvent;
+import static com.jbiblioteca.view.MainFrame.emprestimoAddInternalFrame;
+import static com.jbiblioteca.view.MainFrame.livrosInternalFrame;
 
 /**
  *
@@ -58,12 +58,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
     }
 
     final void updateEmprestimoTable(String buscar) {
-        if (!"".equals(buscar)) {
-            emprestimoTable.setModel(emprestimoController.Listar(buscar));
-        }
-        else {
-            emprestimoTable.setModel(emprestimoController.Listar(""));
-        }
+        emprestimoTable.setModel(emprestimoController.Listar(buscar));
         emprestimoTable.getColumnModel().getColumn(0).setMinWidth(0);
         emprestimoTable.getColumnModel().getColumn(0).setPreferredWidth(0);
         emprestimoTable.getColumnModel().getColumn(0).setMaxWidth(0);
@@ -264,7 +259,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                 dias = dias * -1;
                 double total = 0.0;
                 int response;
-                System.out.println("DIAS "+ dias);
+                // System.out.println("DIAS "+ dias);
                 if (dias > 0) {
                     for (int i=0; i<dias; i++) {
                         total += juros_dia;
@@ -289,10 +284,11 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                 
                 response = JOptionPane.showConfirmDialog(null, message, "Devolução", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (response == JOptionPane.YES_OPTION) { 
-                    if (emprestimoController.Apagar(id_emprestimo)) {
+                    // if (emprestimoController.Apagar(id_emprestimo)) {
+                    if (emprestimoController.Arquivar(id_emprestimo)) {
                         updateEmprestimoTable("");
-                        if (lif != null)
-                            lif.updateExemplarTableModel("");
+                        if (livrosInternalFrame != null)
+                            livrosInternalFrame.updateExemplarTableModel("");
                         
                         livroList.setModel(new DefaultListModel());
                     }                              
@@ -305,13 +301,13 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_DevolveEmprestimoBtnActionPerformed
 
     private void novoEmprestimoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_novoEmprestimoBtnActionPerformed
-        if (eaif == null || eaif.isClosed()) {
-            eaif = new EmprestimoAddInternalFrame();
-            eaif.setVisible(true);
-            mfthis.desktop.add(eaif);
+        if (emprestimoAddInternalFrame == null || emprestimoAddInternalFrame.isClosed()) {
+            emprestimoAddInternalFrame = new EmprestimoAddInternalFrame();
+            emprestimoAddInternalFrame.setVisible(true);
+            mfthis.desktop.add(emprestimoAddInternalFrame);
         }
         try {
-            eaif.setSelected(true);
+            emprestimoAddInternalFrame.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(EmprestimoInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
         }

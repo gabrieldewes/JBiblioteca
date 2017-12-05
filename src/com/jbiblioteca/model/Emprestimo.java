@@ -6,8 +6,6 @@
 package com.jbiblioteca.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
 import org.joda.time.LocalDateTime;
 
 /**
@@ -16,21 +14,25 @@ import org.joda.time.LocalDateTime;
  */
 public class Emprestimo {
     
-    private int id_emprestimo, id_pessoa;
+    private int id_emprestimo;
+    private int id_pessoa;
     private ArrayList<Integer> id_exemplar;
-    private LocalDateTime data_inicio, data_fim;
+    private LocalDateTime data_inicio;
+    private LocalDateTime data_fim;
+    private boolean deleted;
 
     @Override
     public String toString() {
         return "Emprestimo{" + "id_emprestimo=" + id_emprestimo + ", id_pessoa=" + id_pessoa + ", id_exemplar=" + id_exemplar + ", data_inicio=" + data_inicio + ", data_fim=" + data_fim + '}';
     }
 
-    public Emprestimo(int id_emprestimo, int id_pessoa, ArrayList<Integer> id_exemplar, LocalDateTime data_inicio, LocalDateTime data_fim) {
+    public Emprestimo(int id_emprestimo, int id_pessoa, ArrayList<Integer> id_exemplar, LocalDateTime data_inicio, LocalDateTime data_fim, boolean deleted) {
         this.id_emprestimo = id_emprestimo;
         this.id_pessoa = id_pessoa;
         this.id_exemplar = id_exemplar;
         this.data_inicio = data_inicio;
         this.data_fim = data_fim;
+        this.deleted = deleted;
     }
 
     public int getId_emprestimo() {
@@ -71,6 +73,10 @@ public class Emprestimo {
 
     public void setData_fim(LocalDateTime data_fim) {
         this.data_fim = data_fim;
+    }
+    
+    public boolean isDeleted() {
+        return this.deleted;
     }
 
 }

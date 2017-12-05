@@ -27,7 +27,7 @@ import com.jbiblioteca.controller.ExemplarController;
 import com.jbiblioteca.controller.LivroController;
 import java.util.List;
 import com.jbiblioteca.model.Livro;
-import static com.jbiblioteca.view.MainFrame.lif;
+import static com.jbiblioteca.view.MainFrame.livrosInternalFrame;
 
 /**
  *
@@ -261,9 +261,9 @@ public class ExemplarAddInternalFrame extends javax.swing.JInternalFrame {
         String x = xField.getText();
         String y = yField.getText();
         if (exemplarController.Salvar(id_livro, codigo.trim(), x.trim(), y.trim())) {
-            if (lif != null) {
-                lif.updateLivroTableModel("");
-                lif.updateExemplarTableModel("");
+            if (livrosInternalFrame != null) {
+                livrosInternalFrame.updateLivroTableModel("");
+                livrosInternalFrame.updateExemplarTableModel("");
             }
             codigoField.setText("");
             xField.setText("");

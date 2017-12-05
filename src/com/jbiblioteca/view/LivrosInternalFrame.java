@@ -18,9 +18,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import com.jbiblioteca.model.Livro;
 import com.jbiblioteca.model.Pessoa;
-import static com.jbiblioteca.view.MainFrame.exaif;
-import static com.jbiblioteca.view.MainFrame.lif;
 import java.awt.event.KeyEvent;
+import static com.jbiblioteca.view.MainFrame.exemplarAddInternalFrame;
+import static com.jbiblioteca.view.MainFrame.livrosInternalFrame;
 
 /**
  *
@@ -413,9 +413,9 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                     String isbn=null;
                     if (livroController.Alterar(ex, isbn, titulo, autor)) {
                         option = JOptionPane.OK_CANCEL_OPTION;
-                        if (lif != null) {
-                            lif.updateLivroTableModel("");
-                            lif.updateExemplarTableModel("");
+                        if (livrosInternalFrame != null) {
+                            livrosInternalFrame.updateLivroTableModel("");
+                            livrosInternalFrame.updateExemplarTableModel("");
                         }
                     }
                 }
@@ -468,9 +468,9 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                     String y = yField.getText();
                     if (exemplarController.Salvar(l.getId_livro(), codigo, x, y)) {
                         option = JOptionPane.OK_CANCEL_OPTION;
-                        if (lif != null) {
-                            lif.updateLivroTableModel("");
-                            lif.updateExemplarTableModel("");
+                        if (livrosInternalFrame != null) {
+                            livrosInternalFrame.updateLivroTableModel("");
+                            livrosInternalFrame.updateExemplarTableModel("");
                         }
                     }
                 }
@@ -538,22 +538,22 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                     }
                 }
             }*/
-        if (exaif == null || exaif.isClosed()) {
-            exaif = new ExemplarAddInternalFrame();
-            exaif.setVisible(true);
-            mfthis.desktop.add(exaif);
+        if (exemplarAddInternalFrame == null || exemplarAddInternalFrame.isClosed()) {
+            exemplarAddInternalFrame = new ExemplarAddInternalFrame();
+            exemplarAddInternalFrame.setVisible(true);
+            mfthis.desktop.add(exemplarAddInternalFrame);
         }
         else
             try {
-                if (exaif.isIcon())
-                    exaif.setIcon(false);
+                if (exemplarAddInternalFrame.isIcon())
+                    exemplarAddInternalFrame.setIcon(false);
 
             } 
             catch (PropertyVetoException ex) {
                 Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
             }
         try {
-            exaif.setSelected(true);
+            exemplarAddInternalFrame.setSelected(true);
         } catch (PropertyVetoException ex) {
             Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
         }

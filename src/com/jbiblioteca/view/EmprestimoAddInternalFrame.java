@@ -16,10 +16,10 @@ import javax.swing.JOptionPane;
 import com.jbiblioteca.model.Exemplar;
 import com.jbiblioteca.model.Pessoa;
 import org.joda.time.LocalDateTime;
-import static com.jbiblioteca.view.MainFrame.eif;
-import static com.jbiblioteca.view.MainFrame.lif;
 import java.awt.event.KeyEvent;
 import javax.swing.JComboBox;
+import static com.jbiblioteca.view.MainFrame.emprestimoInternalFrame;
+import static com.jbiblioteca.view.MainFrame.livrosInternalFrame;
 
 /**
  *
@@ -614,10 +614,10 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
                LocalDateTime inicio = new LocalDateTime(System.currentTimeMillis());
                LocalDateTime fim = inicio.plusDays(plus_days);
                if (emprestimoController.Salvar(locador.getId_pessoa(), selecionados, inicio, fim)) {
-                    if (eif != null)
-                        eif.updateEmprestimoTable("");
-                    if (lif != null)
-                        lif.updateExemplarTableModel("");
+                    if (emprestimoInternalFrame != null)
+                        emprestimoInternalFrame.updateEmprestimoTable("");
+                    if (livrosInternalFrame != null)
+                        livrosInternalFrame.updateExemplarTableModel("");
                     exemplares.removeAll(selecionados);
                     updateLivroBox();
                     updatePessoaBox();

@@ -3,13 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/JBiblioteca/src/database/DBUtil.java</file>
-            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/JBiblioteca/src/dao/ConfigDAO.java</file>
-            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/JBiblioteca/src/view/ConfigInternalFrame.java</file>
-            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/JBiblioteca/src/control/EmprestimoController.java</file>
-            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/JBiblioteca/src/jbiblioteca/JBiblioteca.java</file>
-            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/JBiblioteca/src/control/ConfigController.java</file>
-            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/JBiblioteca/src/dao/GenericDAO.java</file>
+            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/JBiblioteca/src/com/jbiblioteca/view/EmprestimoInternalFrame.java</file>
+            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/JBiblioteca/src/com/jbiblioteca/view/MainFrame.java</file>
+            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/JBiblioteca/src/com/jbiblioteca/controller/EmprestimoController.java</file>
+            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/JBiblioteca/src/com/jbiblioteca/dao/ExemplarDAO.java</file>
+            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/JBiblioteca/src/com/jbiblioteca/dao/EmprestimoDAO.java</file>
+            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/JBiblioteca/src/com/jbiblioteca/JBiblioteca.java</file>
+            <file>file:/C:/Users/gabri/Documents/NetBeansProjects/JBiblioteca/src/com/jbiblioteca/view/HistoricoInternalFrame.java</file>
         </group>
     </open-files>
 </project-private>

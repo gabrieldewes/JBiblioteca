@@ -68,7 +68,7 @@ public class PessoaController {
         if (!gendao.restrict("emprestimo", "id_pessoa", id)) {
             return pessoaDao.delete(id);
         }
-        else JOptionPane.showMessageDialog(null, "Não pode apagar uma pessoa com empréstimos pendentes. ", "Atenção", JOptionPane.WARNING_MESSAGE);
+        else JOptionPane.showMessageDialog(null, "Não pode apagar uma pessoa com empréstimos pendentes ou histórico. ", "Atenção", JOptionPane.WARNING_MESSAGE);
         return false;
     }
     

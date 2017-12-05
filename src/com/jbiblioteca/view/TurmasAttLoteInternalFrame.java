@@ -27,7 +27,7 @@ import com.jbiblioteca.controller.TurmaController;
 import java.util.List;
 import javax.swing.JOptionPane;
 import com.jbiblioteca.model.Turma;
-import static com.jbiblioteca.view.MainFrame.pif;
+import static com.jbiblioteca.view.MainFrame.pessoasInternalFrame;
 
 /**
  *
@@ -182,8 +182,8 @@ public class TurmasAttLoteInternalFrame extends javax.swing.JInternalFrame {
                 JOptionPane.showMessageDialog(null, result +" pessoa teve sua turma atualizada.", "Alterar Turmas", JOptionPane.INFORMATION_MESSAGE);
             else
                 JOptionPane.showMessageDialog(null, "Nenhuma pessoa teve sua turma atualizada.", "Alterar Turmas", JOptionPane.INFORMATION_MESSAGE);
-            if (pif != null)
-                pif.updateTableModel("");
+            if (pessoasInternalFrame != null)
+                pessoasInternalFrame.updateTableModel("");
             this.dispose();
         }
     }//GEN-LAST:event_btnSalvarActionPerformed

@@ -11,7 +11,7 @@ import java.awt.Insets;
 import java.util.ArrayList;
 import com.jbiblioteca.model.Pessoa;
 import com.jbiblioteca.model.Turma;
-import static com.jbiblioteca.view.MainFrame.pif;
+import static com.jbiblioteca.view.MainFrame.pessoasInternalFrame;
 
 /**
  *
@@ -187,7 +187,7 @@ public class PessoasAttInternalFrame extends javax.swing.JInternalFrame {
         });
         
         if (pessoaController.Alterar(ex, id_turma, codigo, nome)) {
-            pif.updateTableModel("");
+            pessoasInternalFrame.updateTableModel("");
             this.dispose();
         }
 

@@ -8,7 +8,7 @@ package com.jbiblioteca.view;
 import com.jbiblioteca.controller.LivroController;
 import com.jbiblioteca.model.Livro;
 import com.jbiblioteca.api.BooksService;
-import static com.jbiblioteca.view.MainFrame.lif;
+import static com.jbiblioteca.view.MainFrame.livrosInternalFrame;
 
 /**
  *
@@ -225,9 +225,9 @@ public class LivrosAddInternalFrame extends javax.swing.JInternalFrame {
             autorField.setText("");
             xField.setText("");
             yField.setText("");
-            if (lif != null) {
-                lif.updateLivroTableModel("");
-                lif.updateExemplarTableModel("");
+            if (livrosInternalFrame != null) {
+                livrosInternalFrame.updateLivroTableModel("");
+                livrosInternalFrame.updateExemplarTableModel("");
             }
         } 
 
