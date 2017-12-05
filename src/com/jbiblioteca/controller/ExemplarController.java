@@ -50,7 +50,7 @@ public class ExemplarController {
         if (!"".equals(codigo)) {
             if (id != 0) {
                 Exemplar ex = Pegar(id);
-                Exemplar e = new Exemplar(id, ex.getId_livro(), codigo, ex.getDisponivel(), corredor, prateleira);
+                Exemplar e = new Exemplar(id, ex.getIdLivro(), codigo, ex.getDisponivel(), corredor, prateleira);
                 if (ex.equals(e))
                     return true;
                 if (codigo.equals(ex.getCodigo())) {

@@ -18,6 +18,8 @@ import com.jbiblioteca.model.Pessoa;
 import org.joda.time.LocalDateTime;
 import static com.jbiblioteca.view.MainFrame.eif;
 import static com.jbiblioteca.view.MainFrame.lif;
+import java.awt.event.KeyEvent;
+import javax.swing.JComboBox;
 
 /**
  *
@@ -36,8 +38,8 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
     static List<Exemplar> selecionados;
     
     static DefaultListModel model;
-    static LocalDateTime ldt;
     static int prazo_default;
+    static boolean livroBoxHasFocus = false;
     
     public EmprestimoAddInternalFrame() {
         initComponents();
@@ -49,7 +51,8 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
         
         /* Passando valor default salvo em Opções>Preferencias>Prazo Default */
         prazo_default = configController.getPrazoDefault();
-        diaSpinner.setValue(prazo_default);
+        prazoDiaSpinner.setValue(prazo_default);
+        prazoPadraoRadio.setSelected(true);
         
         model = new DefaultListModel();
         livroList.setModel(model);
@@ -61,9 +64,12 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
         updatePessoaBox();
         updateLivroBox();
         
-        ldt = new LocalDateTime( System.currentTimeMillis() );
-        String date = " "+ ldt.getDayOfMonth() +"/"+ ldt.getMonthOfYear() +"/"+ ldt.getYear() +" ";
-        dataLabel.setText(""+ date);
+        LocalDateTime hoje = LocalDateTime.now();
+        LocalDateTime prazo = new LocalDateTime().plusDays(prazo_default);
+        String hojeToString = " "+ hoje.getDayOfMonth() +"/"+ hoje.getMonthOfYear() +"/"+ hoje.getYear() +" ";
+        String prazoToString = " "+ prazo.getDayOfMonth() +"/"+ prazo.getMonthOfYear() +"/"+ prazo.getYear() +" ";
+        dataInicioLabel.setText(""+ hojeToString);
+        dataFimLabel.setText(""+ prazoToString);
 
     }
     
@@ -71,8 +77,13 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
         pessoaBox.removeAllItems();
         pessoas.stream().forEach((p) -> {
             pessoaBox.addItem( p.getCodigo() );
-        });
-        
+        }); 
+    }
+    
+    void updateDataFimLabel(int plusDays) {
+        LocalDateTime prazo = new LocalDateTime().plusDays(plusDays);
+        String prazoToString = " "+ prazo.getDayOfMonth() +" / "+ prazo.getMonthOfYear() +" / "+ prazo.getYear() +" ";
+        dataFimLabel.setText(""+ prazoToString);
     }
     
     void updateLivroBox() {
@@ -80,6 +91,9 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
         exemplares.stream().forEach((e) -> {
             livroBox.addItem( e.getCodigo() );
         });
+        if (exemplares.isEmpty()) {
+            livroBox.addItem( "Nenhum resultado" );
+        }
         
     }
     
@@ -88,6 +102,9 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
         filtrados.stream().forEach((e) -> {
             livroBox.addItem( e.getCodigo() );
         });
+        if (filtrados.isEmpty()) {
+            livroBox.addItem( "Nenhum resultado" );
+        }
         
     }
     
@@ -128,11 +145,14 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
         livroBox = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        dataLabel = new javax.swing.JLabel();
+        dataInicioLabel = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        diaSpinner = new javax.swing.JSpinner();
-        semanaRadio = new javax.swing.JRadioButton();
-        mesRadio = new javax.swing.JRadioButton();
+        prazoDiaSpinner = new javax.swing.JSpinner();
+        prazoSemanaRadio = new javax.swing.JRadioButton();
+        prazoMesRadio = new javax.swing.JRadioButton();
+        prazoPadraoRadio = new javax.swing.JRadioButton();
+        jLabel5 = new javax.swing.JLabel();
+        dataFimLabel = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         salvarEmprestimoBtn = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
@@ -148,7 +168,15 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
         pessoaLabel.setText("Código, nome ou turma:");
 
         buscaPessoaField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        buscaPessoaField.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buscaPessoaFieldMouseClicked(evt);
+            }
+        });
         buscaPessoaField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                buscaPessoaFieldKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 buscaPessoaFieldKeyReleased(evt);
             }
@@ -246,8 +274,11 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
 
         buscaLivroField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         buscaLivroField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                buscaLivroFieldKeyReleased(evt);
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                buscaLivroFieldKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                buscaLivroFieldKeyTyped(evt);
             }
         });
 
@@ -264,6 +295,16 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
 
         livroBox.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         livroBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        livroBox.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                livroBoxFocusGained(evt);
+            }
+        });
+        livroBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                livroBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -331,27 +372,40 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel3.setText("Data de Início");
 
-        dataLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        dataLabel.setText("jLabel4");
+        dataInicioLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        dataInicioLabel.setText("jLabel4");
 
         jLabel4.setText("Dias para Devolução:");
 
-        diaSpinner.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        diaSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+        prazoDiaSpinner.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        prazoDiaSpinner.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
 
-        semanaRadio.setText("Semana");
-        semanaRadio.addActionListener(new java.awt.event.ActionListener() {
+        prazoSemanaRadio.setText("Semana");
+        prazoSemanaRadio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                semanaRadioActionPerformed(evt);
+                prazoSemanaRadioActionPerformed(evt);
             }
         });
 
-        mesRadio.setText("Mês");
-        mesRadio.addActionListener(new java.awt.event.ActionListener() {
+        prazoMesRadio.setText("Mês");
+        prazoMesRadio.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mesRadioActionPerformed(evt);
+                prazoMesRadioActionPerformed(evt);
             }
         });
+
+        prazoPadraoRadio.setText("Padrão");
+        prazoPadraoRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                prazoPadraoRadioActionPerformed(evt);
+            }
+        });
+
+        jLabel5.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
+        jLabel5.setText("Encerramento");
+
+        dataFimLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        dataFimLabel.setText("jLabel4");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -363,17 +417,23 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(dataLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE))
+                        .addComponent(dataInicioLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(prazoDiaSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel4)
-                                .addComponent(diaSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(mesRadio)
-                                .addGap(18, 18, 18)
-                                .addComponent(semanaRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                                .addComponent(prazoSemanaRadio)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(prazoMesRadio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(prazoPadraoRadio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addGap(3, 3, 3)
+                        .addComponent(dataFimLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -381,16 +441,24 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dataLabel)
-                    .addComponent(jLabel3))
+                    .addComponent(jLabel3)
+                    .addComponent(dataInicioLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(diaSpinner)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(semanaRadio)
-                    .addComponent(mesRadio)))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(dataFimLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel4)
+                    .addComponent(prazoPadraoRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(prazoMesRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(prazoSemanaRadio, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(prazoDiaSpinner))
+                .addContainerGap())
         );
 
         salvarEmprestimoBtn.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
@@ -442,7 +510,7 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 381, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -465,19 +533,7 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
     }// </editor-fold>//GEN-END:initComponents
 
     private void buscaPessoaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscaPessoaFieldKeyReleased
-        escolhePessoaBtn.setEnabled(true);
-        pessoaLabel.setText("Código, nome, turma:");
-        codigoLabel.setText("Selecione o Código: ");
-        pessoaBox.setEnabled(true);
-        String str = buscaPessoaField.getText();
-        if (!"".equals(str) && str.length() > 2) {
-            pessoas = pessoaController.ArrayPessoa(str);
-            updatePessoaBox();
-        }
-        else {
-            pessoas = pessoaController.ArrayPessoa("");
-            updatePessoaBox();
-        }
+        
     }//GEN-LAST:event_buscaPessoaFieldKeyReleased
 
     private void escolhePessoaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_escolhePessoaBtnActionPerformed
@@ -485,13 +541,14 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
             String codigo = pessoaBox.getSelectedItem().toString();
             if (!"".equals(codigo) && codigo != null) {
                 if (!pessoas.isEmpty()) {
-                    for (Pessoa p:pessoas) {
+                    for (Pessoa p : pessoas) {
                         if (codigo.equals(p.getCodigo())) {
                             buscaPessoaField.setText(p.getNome());
                             escolhePessoaBtn.setEnabled(false);
                             pessoaLabel.setText("Selecionado: ");
                             codigoLabel.setText("Código: ");
                             pessoaBox.setEnabled(false);
+                            break;
                         }
                     }
                 }
@@ -553,7 +610,7 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
                        break;
                    }
                }
-               int plus_days = Integer.valueOf(diaSpinner.getValue().toString());
+               int plus_days = Integer.valueOf(prazoDiaSpinner.getValue().toString());
                LocalDateTime inicio = new LocalDateTime(System.currentTimeMillis());
                LocalDateTime fim = inicio.plusDays(plus_days);
                if (emprestimoController.Salvar(locador.getId_pessoa(), selecionados, inicio, fim)) {
@@ -566,7 +623,7 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
                     updatePessoaBox();
                     selecionados.clear();
                     model = new DefaultListModel();
-                    diaSpinner.setValue(prazo_default);
+                    prazoDiaSpinner.setValue(prazo_default);
                     livroList.setModel(model);
                    
                     salvarEmprestimoBtn.setEnabled(true);
@@ -590,15 +647,19 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private void mesRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mesRadioActionPerformed
-        diaSpinner.setValue(30);
-        semanaRadio.setSelected(false);
-    }//GEN-LAST:event_mesRadioActionPerformed
+    private void prazoMesRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prazoMesRadioActionPerformed
+        prazoDiaSpinner.setValue(30);
+        prazoSemanaRadio.setSelected(false);
+        prazoPadraoRadio.setSelected(false);
+        updateDataFimLabel(30);
+    }//GEN-LAST:event_prazoMesRadioActionPerformed
 
-    private void semanaRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_semanaRadioActionPerformed
-        diaSpinner.setValue(7);
-        mesRadio.setSelected(false);
-    }//GEN-LAST:event_semanaRadioActionPerformed
+    private void prazoSemanaRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prazoSemanaRadioActionPerformed
+        prazoDiaSpinner.setValue(7);
+        prazoMesRadio.setSelected(false);
+        prazoPadraoRadio.setSelected(false);
+        updateDataFimLabel(7);
+    }//GEN-LAST:event_prazoSemanaRadioActionPerformed
 
     private void addListLivroBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addListLivroBtnActionPerformed
         boolean add=false;
@@ -619,7 +680,7 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
             if (add) {
                 for (Exemplar e:exemplares) {
                     if (e.getCodigo().equals(codigo)) {
-                        int i = insertItemList(e.getCodigo() +" - "+ e.getL().getTitulo());
+                        int i = insertItemList(e.getCodigo() +" - "+ e.getLivro().getTitulo());
                         selecionados.add(i, e);
                         exemplares.remove(e);
                         updateLivroBox();
@@ -632,17 +693,61 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
         }
     }//GEN-LAST:event_addListLivroBtnActionPerformed
 
-    private void buscaLivroFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscaLivroFieldKeyReleased
-        filtrados = exemplarController.ArrayExemplar(null, 0, "");
-        String str = buscaLivroField.getText();
-        if (!"".equals(str) && str.length() > 2) {
-            filtrados = exemplarController.ArrayExemplar(null, 0, str);
-            updateLivroFiltradoBox();
+    private void prazoPadraoRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prazoPadraoRadioActionPerformed
+        prazoDiaSpinner.setValue(prazo_default);
+        prazoSemanaRadio.setSelected(false);
+        prazoMesRadio.setSelected(false);
+        updateDataFimLabel(prazo_default);
+    }//GEN-LAST:event_prazoPadraoRadioActionPerformed
+
+    private void livroBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_livroBoxActionPerformed
+
+        if (livroBoxHasFocus && evt.getActionCommand().equals("comboBoxChanged")) {            
+            String codSelecionado  = ((String) ((JComboBox) evt.getSource()).getSelectedItem());
+            
+            for (Exemplar ex : exemplares) {
+                
+                if (ex.getCodigo().equals(codSelecionado)) {
+                    buscaLivroField.setText(ex.getLivro().getTitulo());
+                    break;
+                }
+            }
         }
-        else {
-            updateLivroBox();
+    }//GEN-LAST:event_livroBoxActionPerformed
+
+    private void buscaLivroFieldKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscaLivroFieldKeyTyped
+        
+    }//GEN-LAST:event_buscaLivroFieldKeyTyped
+
+    private void buscaLivroFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscaLivroFieldKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String str = buscaLivroField.getText();
+            if (!"".equals(str.trim()) && !str.isEmpty()) {
+                filtrados = exemplarController.ArrayExemplar(null, 0, str);
+                updateLivroFiltradoBox();
+                livroBoxHasFocus = false;
+            }
         }
-    }//GEN-LAST:event_buscaLivroFieldKeyReleased
+    }//GEN-LAST:event_buscaLivroFieldKeyPressed
+
+    private void livroBoxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_livroBoxFocusGained
+        livroBoxHasFocus = true;
+    }//GEN-LAST:event_livroBoxFocusGained
+
+    private void buscaPessoaFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscaPessoaFieldKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String str = buscaPessoaField.getText();
+            pessoas = pessoaController.ArrayPessoa(str);
+            updatePessoaBox();
+        }
+    }//GEN-LAST:event_buscaPessoaFieldKeyPressed
+
+    private void buscaPessoaFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buscaPessoaFieldMouseClicked
+        escolhePessoaBtn.setEnabled(true);
+        pessoaLabel.setText("Código, nome ou turma:");
+        codigoLabel.setText("Selecione o código:");
+        pessoaBox.setEnabled(true);
+    }//GEN-LAST:event_buscaPessoaFieldMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -650,14 +755,15 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
     private javax.swing.JTextField buscaLivroField;
     private javax.swing.JTextField buscaPessoaField;
     private javax.swing.JLabel codigoLabel;
-    private javax.swing.JLabel dataLabel;
-    private javax.swing.JSpinner diaSpinner;
+    private javax.swing.JLabel dataFimLabel;
+    private javax.swing.JLabel dataInicioLabel;
     private javax.swing.JButton escolhePessoaBtn;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -669,11 +775,13 @@ public final class EmprestimoAddInternalFrame extends javax.swing.JInternalFrame
     private javax.swing.JComboBox<String> livroBox;
     private javax.swing.JList<String> livroList;
     private javax.swing.JLabel loadLabel;
-    private javax.swing.JRadioButton mesRadio;
     private javax.swing.JComboBox<String> pessoaBox;
     private javax.swing.JLabel pessoaLabel;
+    private javax.swing.JSpinner prazoDiaSpinner;
+    private javax.swing.JRadioButton prazoMesRadio;
+    private javax.swing.JRadioButton prazoPadraoRadio;
+    private javax.swing.JRadioButton prazoSemanaRadio;
     private javax.swing.JButton removerLivroList;
     private javax.swing.JButton salvarEmprestimoBtn;
-    private javax.swing.JRadioButton semanaRadio;
     // End of variables declaration//GEN-END:variables
 }

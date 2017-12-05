@@ -158,7 +158,7 @@
             </Property>
           </Properties>
           <Events>
-            <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="BuscaPessoaFieldKeyReleased"/>
+            <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="BuscaPessoaFieldKeyPressed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="BuscaPessoaBtn">

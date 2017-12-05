@@ -14,6 +14,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import static com.jbiblioteca.view.MainFrame.talif;
 import static com.jbiblioteca.view.MainFrame.tif;
+import com.sun.glass.events.KeyEvent;
 
 
 /**
@@ -96,8 +97,8 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
 
         BuscaPessoaField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         BuscaPessoaField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                BuscaPessoaFieldKeyReleased(evt);
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BuscaPessoaFieldKeyPressed(evt);
             }
         });
 
@@ -276,14 +277,6 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
         else { AttPessoaBtn.setEnabled(false); }
     }//GEN-LAST:event_AttPessoaBtnActionPerformed
 
-    private void BuscaPessoaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BuscaPessoaFieldKeyReleased
-        /*String search = BuscaPessoaField.getText();
-        if (search.length() > 3) {
-            updateTableModel(search);
-        }
-        else updateTableModel("");*/
-    }//GEN-LAST:event_BuscaPessoaFieldKeyReleased
-
     private void BuscaPessoaBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscaPessoaBtnActionPerformed
         String search = BuscaPessoaField.getText();
         if (!"".equals(search)) {
@@ -326,6 +319,13 @@ public final class PessoasInternalFrame extends javax.swing.JInternalFrame {
             Logger.getLogger(TurmasAttLoteInternalFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnAlterarTurmasActionPerformed
+
+    private void BuscaPessoaFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BuscaPessoaFieldKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String search = BuscaPessoaField.getText();
+            updateTableModel(search);
+        }
+    }//GEN-LAST:event_BuscaPessoaFieldKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

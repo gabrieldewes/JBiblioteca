@@ -25,6 +25,10 @@ public class DBUtil {
         }
     }
     
+    public static void checkDatabase() {
+        Database.checkDatabase();
+    }
+    
     public static boolean backupDatabase() {
         try {
             synchronized(Database.class) {

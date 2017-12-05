@@ -35,6 +35,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.ListCellRenderer;
 import static com.jbiblioteca.view.MainFrame.lif;
+import java.awt.event.KeyEvent;
 
 /**
  *
@@ -99,6 +100,11 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
 
         searchGoogleBooksField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        searchGoogleBooksField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                searchGoogleBooksFieldKeyPressed(evt);
+            }
+        });
 
         searchGoogleBooksBtn.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         searchGoogleBooksBtn.setText("Buscar");
@@ -173,8 +179,8 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
     private void ebooksListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ebooksListMouseClicked
         if (ebooksList.getSelectedIndex() > -1) {
             saveEbookBtn.setEnabled(true);
-            int index = ebooksList.getSelectedIndex();
-            System.out.println("Volume at "+index+": "+ EbookController.volumesList.get(index).getVolumeInfo().getTitle() );
+            // int index = ebooksList.getSelectedIndex();
+            // System.out.println("Volume at "+index+": "+ EbookController.volumesList.get(index).getVolumeInfo().getTitle() );
         }
         else {
             saveEbookBtn.setEnabled(false);
@@ -248,11 +254,17 @@ public final class EbooksInternalFrame extends javax.swing.JInternalFrame {
 
     private void searchGoogleBooksBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchGoogleBooksBtnActionPerformed
         String isbn = searchGoogleBooksField.getText();
-        if (isbn.trim() != null && isbn.trim().length() > 2) {
+        EbookController.UpdateEbooksList( isbn );
+        ebooksList.ensureIndexIsVisible(0);
+    }//GEN-LAST:event_searchGoogleBooksBtnActionPerformed
+
+    private void searchGoogleBooksFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchGoogleBooksFieldKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String isbn = searchGoogleBooksField.getText();
             EbookController.UpdateEbooksList( isbn );
             ebooksList.ensureIndexIsVisible(0);
         }
-    }//GEN-LAST:event_searchGoogleBooksBtnActionPerformed
+    }//GEN-LAST:event_searchGoogleBooksFieldKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

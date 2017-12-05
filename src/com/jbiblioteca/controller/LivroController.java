@@ -44,8 +44,8 @@ public class LivroController {
                         Livro l = new Livro(0, isbn, titulo.trim(), autor.trim());
                         Exemplar e = new Exemplar(0, 0, codigo.replace(" ", ""), "", x.trim(), y.trim());
                         int id = livroDao.save(l);
-                        e.setId_livro(id);
-                        if (e.getId_livro() != 0)
+                        e.setIdLivro(id);
+                        if (e.getIdLivro() != 0)
                             return exemplarDao.save(e);
                         else JOptionPane.showMessageDialog(null, "Não foi possível salvar. Tente novamente", "Atenção", JOptionPane.WARNING_MESSAGE);
                     } else JOptionPane.showMessageDialog(null, "Este código já está cadastrado.", "Atenção", JOptionPane.WARNING_MESSAGE);

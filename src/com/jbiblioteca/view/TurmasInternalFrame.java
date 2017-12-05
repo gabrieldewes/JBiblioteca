@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import static javax.swing.JOptionPane.OK_CANCEL_OPTION;
 import javax.swing.JTextField;
 import com.jbiblioteca.model.Turma;
+import java.awt.event.KeyEvent;
 
 /**
  *
@@ -146,8 +147,8 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
         });
 
         BuscaTurmaField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                BuscaTurmaFieldKeyReleased(evt);
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BuscaTurmaFieldKeyPressed(evt);
             }
         });
 
@@ -305,13 +306,12 @@ public class TurmasInternalFrame extends javax.swing.JInternalFrame {
         else {AttTurmaBtn.setEnabled(false);}
     }//GEN-LAST:event_AttTurmaBtnActionPerformed
 
-    private void BuscaTurmaFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BuscaTurmaFieldKeyReleased
-        /*String str = BuscaTurmaField.getText();
-        if (!"".equals(str)) {
+    private void BuscaTurmaFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BuscaTurmaFieldKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String str = BuscaTurmaField.getText();
             updateTableModel(str);
         }
-        else updateTableModel("");*/
-    }//GEN-LAST:event_BuscaTurmaFieldKeyReleased
+    }//GEN-LAST:event_BuscaTurmaFieldKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

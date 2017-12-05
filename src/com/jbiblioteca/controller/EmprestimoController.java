@@ -66,7 +66,7 @@ public class EmprestimoController {
                 if (prosseguir) {
                     ArrayList<Integer> id_exemplar = new ArrayList<>();
                     exemplares.stream().forEach((e) -> {
-                        id_exemplar.add(e.getId_exemplar());
+                        id_exemplar.add(e.getIdExemplar());
                     });
                     Emprestimo e = new Emprestimo(0, id_pessoa, id_exemplar, inicio, fim);
                     int id = emprestimoDao.save(e);

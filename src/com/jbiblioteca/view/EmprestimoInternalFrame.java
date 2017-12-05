@@ -25,6 +25,7 @@ import org.joda.time.Days;
 import org.joda.time.LocalDateTime;
 import static com.jbiblioteca.view.MainFrame.eaif;
 import static com.jbiblioteca.view.MainFrame.lif;
+import java.awt.event.KeyEvent;
 
 /**
  *
@@ -129,8 +130,8 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
 
         buscaEmprestimoField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
         buscaEmprestimoField.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                buscaEmprestimoFieldKeyReleased(evt);
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                buscaEmprestimoFieldKeyPressed(evt);
             }
         });
 
@@ -239,7 +240,7 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
             ArrayList<Exemplar> exemplares = exemplarController.ArrayExemplar("el.id_emprestimo", id_emprestimo, null);
             DefaultListModel model = new DefaultListModel();
             exemplares.stream().forEach((e) -> {
-                model.addElement(e.getCodigo() +" - "+ e.getL().getTitulo());
+                model.addElement(e.getCodigo() +" - "+ e.getLivro().getTitulo());
             });            
             livroList.setModel(model);
         }
@@ -318,19 +319,8 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
 
     private void buscaEmprestinoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buscaEmprestinoBtnActionPerformed
         String search = buscaEmprestimoField.getText();
-        if (!"".equals(search)) {
-            updateEmprestimoTable(search);
-        }
-        else updateEmprestimoTable("");
+        updateEmprestimoTable(search);
     }//GEN-LAST:event_buscaEmprestinoBtnActionPerformed
-
-    private void buscaEmprestimoFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscaEmprestimoFieldKeyReleased
-        /*String search = buscaEmprestimoField.getText();
-        if (search.length() > 3) {
-            updateEmprestimoTable(search);
-        }
-        else updateEmprestimoTable("");*/
-    }//GEN-LAST:event_buscaEmprestimoFieldKeyReleased
 
     private void RenovaEmprestimoBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RenovaEmprestimoBtnActionPerformed
         int idx[] = emprestimoTable.getSelectedRows();
@@ -389,6 +379,13 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
         else
             RenovaEmprestimoBtn.setEnabled(false);  
     }//GEN-LAST:event_RenovaEmprestimoBtnActionPerformed
+
+    private void buscaEmprestimoFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_buscaEmprestimoFieldKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String search = buscaEmprestimoField.getText();
+            updateEmprestimoTable(search);
+        }
+    }//GEN-LAST:event_buscaEmprestimoFieldKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

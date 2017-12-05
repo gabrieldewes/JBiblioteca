@@ -20,6 +20,7 @@ import com.jbiblioteca.model.Livro;
 import com.jbiblioteca.model.Pessoa;
 import static com.jbiblioteca.view.MainFrame.exaif;
 import static com.jbiblioteca.view.MainFrame.lif;
+import java.awt.event.KeyEvent;
 
 /**
  *
@@ -124,12 +125,10 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
         jScrollPane2.setViewportView(LivroTable);
 
         BuscaLivroField.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        BuscaLivroField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BuscaLivroFieldActionPerformed(evt);
-            }
-        });
         BuscaLivroField.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                BuscaLivroFieldKeyPressed(evt);
+            }
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 BuscaLivroFieldKeyReleased(evt);
             }
@@ -585,7 +584,7 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                 int response = JOptionPane.showConfirmDialog(null, message, "Alterar Exemplar",
                     JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (response == JOptionPane.OK_OPTION) {
-                     int id = Integer.valueOf( ExemplarTable.getValueAt( ExemplarTable.getSelectedRow() , 0 ).toString() );
+                    int id = Integer.valueOf( ExemplarTable.getValueAt( ExemplarTable.getSelectedRow() , 0 ).toString() );
                     if (exemplarController.Alterar(
                             id, codigo.getText().trim(), 
                             corredor.getText().trim(), prateleira.getText().trim())) {
@@ -597,7 +596,9 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
                 else option = JOptionPane.OK_CANCEL_OPTION;
             }
         }
-        else { AttExemplarBtn.setEnabled(false); }
+        else { 
+            AttExemplarBtn.setEnabled(false); 
+        }
     }//GEN-LAST:event_AttExemplarBtnActionPerformed
 
     private void DelExemplarBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DelExemplarBtnActionPerformed
@@ -616,20 +617,25 @@ public final class LivrosInternalFrame extends javax.swing.JInternalFrame {
             codigo.setText( ExemplarTable.getValueAt(ExemplarTable.getSelectedRow(), 1).toString() );
             int response = JOptionPane.showConfirmDialog(null, message, "Confirmar Exclusão",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-             if (response == JOptionPane.YES_OPTION) {
-                 int id = Integer.valueOf( ExemplarTable.getValueAt( ExemplarTable.getSelectedRow() , 0 ).toString() );
-                 if (exemplarController.Apagar(id)) {
-                     updateLivroTableModel("");
-                     updateExemplarTableModel("");
-                 }
-             } 
+            if (response == JOptionPane.YES_OPTION) {
+                int id = Integer.valueOf( ExemplarTable.getValueAt( ExemplarTable.getSelectedRow() , 0 ).toString() );
+                if (exemplarController.Apagar(id)) {
+                    updateLivroTableModel("");
+                    updateExemplarTableModel("");
+                }
+            } 
         }
-        else { DelExemplarBtn.setEnabled(false); }
+        else { 
+            DelExemplarBtn.setEnabled(false);
+        }
     }//GEN-LAST:event_DelExemplarBtnActionPerformed
 
-    private void BuscaLivroFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BuscaLivroFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_BuscaLivroFieldActionPerformed
+    private void BuscaLivroFieldKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_BuscaLivroFieldKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String search = BuscaLivroField.getText();
+            updateLivroTableModel(search);
+        }
+    }//GEN-LAST:event_BuscaLivroFieldKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

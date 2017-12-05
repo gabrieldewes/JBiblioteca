@@ -42,17 +42,17 @@ public class ExemplarDAO {
         String query = "INSERT INTO exemplar (codigo, disponivel, coordenada_x, coordenada_y, id_livro) VALUES ("
                 + "'"+ e.getCodigo() +"', "
                 + "'"+ e.getDisponivel() +"', "
-                + "'"+ e.getCoordenada_x() +"', "
-                + "'"+ e.getCoordenada_y() +"', "
-                + " "+ e.getId_livro() +"); ";
+                + "'"+ e.getCoordenadaX() +"', "
+                + "'"+ e.getCoordenadaY() +"', "
+                + " "+ e.getIdLivro() +"); ";
         return helper.rawSQL(query);
     }
     
     public boolean update(Exemplar e) {
         String query = "UPDATE exemplar SET "
                 + "codigo='"+ e.getCodigo() +"', "
-                + "coordenada_x='"+ e.getCoordenada_x() +"', "
-                + "coordenada_y='"+ e.getCoordenada_y() +"' WHERE id_exemplar="+ e.getId_exemplar() +"; ";
+                + "coordenada_x='"+ e.getCoordenadaX() +"', "
+                + "coordenada_y='"+ e.getCoordenadaY() +"' WHERE id_exemplar="+ e.getIdExemplar() +"; ";
         return helper.rawSQL(query);
     }
     

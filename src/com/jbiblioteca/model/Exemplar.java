@@ -5,98 +5,58 @@
  */
 package com.jbiblioteca.model;
 
-import java.util.Objects;
-
 /**
  *
  * @author gabriel
  */
 public class Exemplar {
     
-    private int id_exemplar, id_livro;
-    private String codigo, disponivel, coordenada_x, coordenada_y;
-    private Livro l;
+    private int idExemplar, idLivro;
+    private String codigo, disponivel, coordenadaX, coordenadaY;
+    private Livro livro;
 
     @Override
     public String toString() {
-        return "Exemplar{" + "id_exemplar=" + id_exemplar + ", id_livro=" + id_livro + ", codigo=" + codigo + ", disponivel=" + disponivel + '}';
+        return "Exemplar{" + "id_exemplar=" + idExemplar + ", id_livro=" + idLivro + ", codigo=" + codigo + ", disponivel=" + disponivel + '}';
+    }
+    
+    public Exemplar(String codigo) {
+        this.codigo = codigo;
     }
 
-    public Exemplar(int id_exemplar, int id_livro, String codigo, String disponivel, String coordenada_x, String coordenada_y) {
-        this.id_exemplar = id_exemplar;
-        this.id_livro = id_livro;
+    public Exemplar(int idExemplar, int idLivro, String codigo, String disponivel, String coordenadaX, String coordenadaY) {
+        this.idExemplar = idExemplar;
+        this.idLivro = idLivro;
         this.codigo = codigo;
         this.disponivel = disponivel;
-        this.coordenada_x = coordenada_x;
-        this.coordenada_y = coordenada_y;
+        this.coordenadaX = coordenadaX;
+        this.coordenadaY = coordenadaY;
     }
 
-    public Exemplar(int id_exemplar, int id_livro, String codigo, String disponivel, String coordenada_x, String coordenada_y, Livro l) {
-        this.id_exemplar = id_exemplar;
-        this.id_livro = id_livro;
+    public Exemplar(int idExemplar, int idLivro, String codigo, String disponivel, String coordenadaX, String coordenadaY, Livro livro) {
+        this.idExemplar = idExemplar;
+        this.idLivro = idLivro;
         this.codigo = codigo;
         this.disponivel = disponivel;
-        this.coordenada_x = coordenada_x;
-        this.coordenada_y = coordenada_y;
-        this.l = l;
+        this.coordenadaX = coordenadaX;
+        this.coordenadaY = coordenadaY;
+        this.livro = livro;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        return hash;
+    public int getIdExemplar() {
+        return idExemplar;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Exemplar other = (Exemplar) obj;
-        if (this.id_exemplar != other.id_exemplar) {
-            return false;
-        }
-        if (this.id_livro != other.id_livro) {
-            return false;
-        }
-        if (!Objects.equals(this.codigo, other.codigo)) {
-            return false;
-        }
-        if (!Objects.equals(this.disponivel, other.disponivel)) {
-            return false;
-        }
-        if (!Objects.equals(this.coordenada_x, other.coordenada_x)) {
-            return false;
-        }
-        if (!Objects.equals(this.coordenada_y, other.coordenada_y)) {
-            return false;
-        }
-        if (!Objects.equals(this.l, other.l)) {
-            return false;
-        }
-        return true;
+    public void setIdExemplar(int idExemplar) {
+        this.idExemplar = idExemplar;
     }
 
-    public int getId_exemplar() {
-        return id_exemplar;
+    public int getIdLivro() {
+        return idLivro;
     }
 
-    public void setId_exemplar(int id_exemplar) {
-        this.id_exemplar = id_exemplar;
-    }
-
-    public int getId_livro() {
-        return id_livro;
-    }
-
-    public void setId_livro(int id_livro) {
-        this.id_livro = id_livro;
+    public void setIdLivro(int idLivro) {
+        this.idLivro = idLivro;
     }
 
     public String getCodigo() {
@@ -115,28 +75,28 @@ public class Exemplar {
         this.disponivel = disponivel;
     }
 
-    public String getCoordenada_x() {
-        return coordenada_x;
+    public String getCoordenadaX() {
+        return coordenadaX;
     }
 
-    public void setCoordenada_x(String coordenada_x) {
-        this.coordenada_x = coordenada_x;
+    public void setCoordenadaX(String coordenadaX) {
+        this.coordenadaX = coordenadaX;
     }
 
-    public String getCoordenada_y() {
-        return coordenada_y;
+    public String getCoordenadaY() {
+        return coordenadaY;
     }
 
-    public void setCoordenada_y(String coordenada_y) {
-        this.coordenada_y = coordenada_y;
+    public void setCoordenadaY(String coordenadaY) {
+        this.coordenadaY = coordenadaY;
     }
 
-    public Livro getL() {
-        return l;
+    public Livro getLivro() {
+        return livro;
     }
 
-    public void setL(Livro l) {
-        this.l = l;
+    public void setLivro(Livro livro) {
+        this.livro = livro;
     }
 
 }
