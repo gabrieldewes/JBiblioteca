@@ -1,26 +1,22 @@
 # JBiblioteca
-Aplicação desktop para gestão de bibliotecas internas
+Aplicação desktop para gestão de empréstimos, nesse caso livros.
 
 # Informações Gerais
-Aplicação MDI, utilizando Java Swing, JDBC, SQLite, r2xml e joda-time.
-
-No Linux o arquivo de baco de dados ficará na pasta "/home/Usuario/.jbiblioteca/", no Windows, ficará em
-"C://Users/Usuario/.jbiblioteca/".
-
-O arquivo de backup se parecerá com "jbiblioteca_bkp.db"
+Interface desktop MDI com Java Swing, Java SE 8 e banco de dados SQLite versionado.
 
 # Features
-Conta com as funcionalidades:
 * Controle de pessoas e turmas;
 * Controle de títulos e exemplares de livros; 
 * Busca de livros online pela api do Google books;
 * Controle de empréstimos e devoluções;
+* Histórico de empréstimos;
 * Configuração de taxas e prazos;
-* Backup e recuperação de dados.
+* Backup e recuperação de dados;
+* Versionamento de banco de dados.
 
 ## Requisitos Mínimos
-* JRE 1.8 +
-* Java né.. já sabe.. vá ram
+* JRE 1.8+
+* muita ram
 
 ## Conclusões
 Nunca mais vou usar java swing
