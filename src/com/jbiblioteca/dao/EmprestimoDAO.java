@@ -123,29 +123,32 @@ public class EmprestimoDAO {
         return e;
     }
     
-    public TableModel list(String like) {
-        return list(like, false);
+    public TableModel listaEmprestimos(String busca) {
+        return queryEmprestimos(busca, 0, 10);
     }
     
-    public TableModel listHistory(String like) {
-        return list(like, true, 0, 10);
+    public TableModel listaHistorico(String busca, Integer pagina, Integer totalPorPagina) {
+        int total = (totalPorPagina != null ? totalPorPagina : 10);
+        int offset = pagina * total;
+        int limit = offset + total;
+        return queryHistorico(busca, offset, limit);
     }
     
-    public TableModel list(String like, boolean deleted) {
+    public TableModel queryEmprestimos(String busca, int offset, int limit) {
         String query;
-        int logicDelete = deleted ? 1 : 0;
-        if (!"".equals(like.trim()))
+        if (busca != null && !"".equals(busca.trim()))
             query = 
                 "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Data de Início', e.data_fim as 'Data p/ Devolução', cast((julianday('now') - julianday(e.data_fim)) AS Integer) AS 'Status', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
                     "FROM emprestimo e " +
                     "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
                     "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
                     "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
-                    "WHERE (e.deleted = "+ logicDelete +" AND el.deleted = "+ logicDelete + ") AND " +
-                    "(p.nome LIKE '%"+ like +"%' OR p.nome LIKE '"+ like +"%' OR p.nome LIKE '%"+ like +"' OR " +
-                    "p.codigo LIKE '%"+ like +"%' OR p.codigo LIKE '"+ like +"%' OR p.codigo LIKE '%"+ like +"' OR " +
-                    "ex.codigo LIKE '%"+ like +"%' OR ex.codigo LIKE '"+ like +"%' OR ex.codigo LIKE '%"+ like +"')" +
-                    "GROUP BY e.id_emprestimo;";
+                    "WHERE (e.deleted = 0 AND el.deleted = 0) AND " +
+                    "(p.nome LIKE '%"+ busca +"%' OR p.nome LIKE '"+ busca +"%' OR p.nome LIKE '%"+ busca +"' OR " +
+                    "p.codigo LIKE '%"+ busca +"%' OR p.codigo LIKE '"+ busca +"%' OR p.codigo LIKE '%"+ busca +"' OR " +
+                    "ex.codigo LIKE '%"+ busca +"%' OR ex.codigo LIKE '"+ busca +"%' OR ex.codigo LIKE '%"+ busca +"')" +
+                    "GROUP BY e.id_emprestimo " +
+                    "LIMIT "+ offset +", "+ limit +";";
         else
             query = 
                 "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Data de Início', e.data_fim as 'Data p/ Devolução', cast((julianday('now') - julianday(e.data_fim)) AS Integer) AS 'Status', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
@@ -153,26 +156,25 @@ public class EmprestimoDAO {
                     "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
                     "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
                     "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
-                    "WHERE (e.deleted = "+ logicDelete +" AND el.deleted = "+ logicDelete +") " +
+                    "WHERE (e.deleted = 0 AND el.deleted = 0) " +
                     "GROUP BY e.id_emprestimo " +
                     "ORDER BY date(e.data_fim) ASC;";
         return helper.getTableModel(query);
     }
     
-    public TableModel list(String like, boolean deleted, int offset, int limit) {
+    public TableModel queryHistorico(String busca, int offset, int limit) {
         String query;
-        int logicDelete = deleted ? 1 : 0;
-        if (!"".equals(like.trim()))
+        if (busca != null && !"".equals(busca.trim()))
             query = 
                 "SELECT e.id_emprestimo, p.nome AS 'Locador', p.codigo AS 'Código', e.data_inicio AS 'Início', e.data_fim as 'Devolução', e.data_entrega AS 'Entrega', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
                     "FROM emprestimo e " +
                     "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
                     "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
                     "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
-                    "WHERE (e.deleted = "+ logicDelete +" AND el.deleted = "+ logicDelete + ") AND " +
-                    "(p.nome LIKE '%"+ like +"%' OR p.nome LIKE '"+ like +"%' OR p.nome LIKE '%"+ like +"' OR " +
-                    "p.codigo LIKE '%"+ like +"%' OR p.codigo LIKE '"+ like +"%' OR p.codigo LIKE '%"+ like +"' OR " +
-                    "ex.codigo LIKE '%"+ like +"%' OR ex.codigo LIKE '"+ like +"%' OR ex.codigo LIKE '%"+ like +"')" +
+                    "WHERE (e.deleted = 1 AND el.deleted = 1) AND " +
+                    "(p.nome LIKE '%"+ busca +"%' OR p.nome LIKE '"+ busca +"%' OR p.nome LIKE '%"+ busca +"' OR " +
+                    "p.codigo LIKE '%"+ busca +"%' OR p.codigo LIKE '"+ busca +"%' OR p.codigo LIKE '%"+ busca +"' OR " +
+                    "ex.codigo LIKE '%"+ busca +"%' OR ex.codigo LIKE '"+ busca +"%' OR ex.codigo LIKE '%"+ busca +"')" +
                     "GROUP BY e.id_emprestimo " +
                     "LIMIT "+ offset +", "+ limit +";";
         else
@@ -182,7 +184,7 @@ public class EmprestimoDAO {
                     "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
                     "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
                     "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
-                    "WHERE (e.deleted = "+ logicDelete +" AND el.deleted = "+ logicDelete +") " +
+                    "WHERE (e.deleted = 1 AND el.deleted = 1) " +
                     "GROUP BY e.id_emprestimo " +
                     "ORDER BY date(e.data_fim) ASC " +
                     "LIMIT "+ offset +", "+ limit +";";

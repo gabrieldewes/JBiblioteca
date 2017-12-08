@@ -144,11 +144,11 @@ public class EmprestimoController {
     }
     
     public TableModel Listar(String busca) {
-        return humanReadableDates(emprestimoDao.list(busca));
+        return humanReadableDates(emprestimoDao.listaEmprestimos(busca));
     }
     
-    public TableModel ListarArquivo(String busca) {
-        return historyParser(emprestimoDao.listHistory(busca));
+    public TableModel ListarArquivo(String busca, int pagina, int totalPorPagina) {
+        return historyParser(emprestimoDao.listaHistorico( busca, pagina, totalPorPagina ));
     }
     
     private TableModel humanReadableDates( TableModel tb ) {

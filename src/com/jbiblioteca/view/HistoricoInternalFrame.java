@@ -24,6 +24,8 @@
 package com.jbiblioteca.view;
 
 import com.jbiblioteca.controller.EmprestimoController;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -39,26 +41,54 @@ public class HistoricoInternalFrame extends javax.swing.JInternalFrame {
     public HistoricoInternalFrame( MainFrame mainFrame ) {
         initComponents();
         this.mainFrame = mainFrame;
-        updateHistoricoTable("");
+        updateHistoricoTable();
         apagarHistoricoBtn.setEnabled(false);
         
-        historicoTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+        /*
+        this.addComponentListener(new ComponentAdapter() {
             @Override
-            public void valueChanged(ListSelectionEvent e) {
-                int idx[] = historicoTable.getSelectedRows();
-                if (idx.length > 0) {
-                    apagarHistoricoBtn.setText("Apagar selecionados");
-                    apagarHistoricoBtn.setEnabled(true);
-                } else {
-                    apagarHistoricoBtn.setText("Apagar");
-                    apagarHistoricoBtn.setEnabled(false);
-                }
+            public void componentResized(ComponentEvent e) {
+                super.componentResized(e);
+                final int resizedPageSize = 
+                        (int) (historicoTable.getParent().getSize().getHeight() / historicoTable.getRowHeight());
+                System.out.println("resized " + resizedPageSize);
+            }
+            
+        });
+        */
+
+        /*
+        historicoTable.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+            int idx[] = historicoTable.getSelectedRows();
+            if (idx.length > 0) {
+                apagarHistoricoBtn.setText("Apagar selecionados");
+                apagarHistoricoBtn.setEnabled(true);
+            } else {
+                apagarHistoricoBtn.setText("Apagar");
+                apagarHistoricoBtn.setEnabled(false);
             }
         });
+        */
     }
     
-    final void updateHistoricoTable(String buscar) {
-        historicoTable.setModel(EmprestimoController.getInstance().ListarArquivo(buscar));
+    final void updateHistoricoTable() {
+        updateHistoricoTable(null, 2, 5);
+    }
+    
+    final void updateHistoricoTable(String busca) {
+        updateHistoricoTable(busca, 0, 5);
+    }
+    
+    final void updateHistoricoTable(Integer pagina) {
+        updateHistoricoTable(null, pagina, 5);
+    }
+    
+    final void updateHistoricoTable(String busca, Integer pagina) {
+        updateHistoricoTable(busca, pagina, 10);
+    }
+    
+    final void updateHistoricoTable(String busca, Integer pagina, Integer totalPorPagina) {
+        historicoTable.setModel(EmprestimoController.getInstance().ListarArquivo(busca, pagina, totalPorPagina));
         historicoTable.getColumnModel().getColumn(0).setMinWidth(0);
         historicoTable.getColumnModel().getColumn(0).setPreferredWidth(0);
         historicoTable.getColumnModel().getColumn(0).setMaxWidth(0);
