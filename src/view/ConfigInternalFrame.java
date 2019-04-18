@@ -493,10 +493,7 @@ public class ConfigInternalFrame extends javax.swing.JInternalFrame {
         int dialogResult = JOptionPane
                 .showOptionDialog (null, 
                         "O backup remoto serve de garantia caso o seu computador apresente alguma falha ou esteja inoperável.\r\n\r\n" 
-                            + "Os arquivos remotos não poderão ser recuperados pela aplicação ainda nesta versão,\r\n"
-                            + "e para recuperar um arquivo de backup remoto, contate o desenvolvedor.\r\n\r\n"
-                            + "Faça o backup local antes para que o arquivo esteja em sua última versão do banco de dados.\r\n\r\n"
-                            + "Agora, antes de prosseguir, verifique se o computador possui uma conexão estável com a internet.", 
+                        + "Antes de prosseguir, verifique se o computador possui uma conexão estável com a internet.", 
                         "Realizar Backup Online",
                         JOptionPane.YES_NO_OPTION,
                         JOptionPane.INFORMATION_MESSAGE, 

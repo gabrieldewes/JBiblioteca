@@ -143,7 +143,7 @@ public class ExemplarDAO {
             query = 
                 "SELECT * FROM exemplar e "
               + "INNER JOIN livro l ON e.id_livro = l.id_livro "
-              + "WHERE id_exemplar NOT IN (SELECT id_exemplar FROM emprestimo_livro) ORDER BY e.codigo ASC; ";
+              + "WHERE e.id_exemplar NOT IN (SELECT id_exemplar FROM emprestimo_livro el INNER JOIN emprestimo es ON es.id_emprestimo = el.id_emprestimo WHERE es.deleted=0) ORDER BY e.codigo ASC; ";
         else if (!"".equals(like))
             query = "SELECT * FROM exemplar e "
                 + "INNER JOIN livro l ON e.id_livro = l.id_livro WHERE "

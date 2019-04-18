@@ -35,7 +35,8 @@ public class DBUtil {
     }
     
     public static String remoteBackupDatabase() {
-        String result = JBibliotecaResource.getInstance()
+        return "Aparentemente esta aplicação não está autenticada para acessar o recurso de backup.\r\nContate o desenvolvedor.";
+        /*String result = JBibliotecaResource.getInstance()
                 .uploadFile(Database.DATABASE_BKP);
         switch (result) {
             case "OK": 
@@ -54,7 +55,7 @@ public class DBUtil {
                 return "O servidor retornou uma mensagem desconhecida.\r\nContate o desenvolvedor.";
             default: 
                 return null;
-        }
+        }*/
     }
     
     public static boolean recoverLocalBackup() {
@@ -130,8 +131,10 @@ public class DBUtil {
             "id_emprestimo INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, "+
             "id_pessoa INTEGER NOT NULL, "+
             "data_inicio TEXT NOT NULL, "+
+            "data_devolucao TEXT, "+
             "data_fim TEXT, "+
             "situation TEXT, "+
+            "deleted INTEGER," +
             "FOREIGN KEY(id_pessoa) REFERENCES pessoa(id_pessoa));",
         
         "CREATE TABLE IF NOT EXISTS emprestimo_livro ( "+

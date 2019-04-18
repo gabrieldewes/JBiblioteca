@@ -24,6 +24,7 @@ import model.Exemplar;
 import org.joda.time.Days;
 import org.joda.time.LocalDateTime;
 import static view.MainFrame.eaif;
+import static view.MainFrame.hif;
 import static view.MainFrame.lif;
 
 /**
@@ -204,13 +205,14 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                         .addComponent(buscaEmprestinoBtn)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
+                        .addGap(45, 45, 45)
+                        .addComponent(RenovaEmprestimoBtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(DevolveEmprestimoBtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(RenovaEmprestimoBtn))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -288,11 +290,14 @@ public class EmprestimoInternalFrame extends javax.swing.JInternalFrame {
                 
                 response = JOptionPane.showConfirmDialog(null, message, "Devolução", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                 if (response == JOptionPane.YES_OPTION) { 
-                    if (emprestimoController.Apagar(id_emprestimo)) {
+                    if (emprestimoController.ApagarLogicamente(id_emprestimo)) {
                         updateEmprestimoTable("");
-                        if (lif != null)
+                        if (lif != null) {
                             lif.updateExemplarTableModel("");
-                        
+                        }
+                        if (hif != null && hif.isVisible()) {
+                            hif.updateHistoricoTable("");
+                        }
                         livroList.setModel(new DefaultListModel());
                     }                              
                 } 

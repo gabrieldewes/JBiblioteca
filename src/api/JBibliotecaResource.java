@@ -55,9 +55,7 @@ public class JBibliotecaResource {
     
     private JBibliotecaResource() {}
     
-    private static final String API_URL = "http://dewes.pe.hu/";
-    private static final String J_SCRIPTS_PATH = "jbiblioteca/scripts/";
-    private static final String BACKUP_URL = API_URL + J_SCRIPTS_PATH + "backup.php";
+    private static final String RESOURCE_URL = "http://localhost/backup.php";
     
     public String uploadFile(File file) {
         
@@ -66,7 +64,7 @@ public class JBibliotecaResource {
         String CRLF = "\r\n";
         
         try {
-            URLConnection connection = new URL(BACKUP_URL).openConnection();
+            URLConnection connection = new URL(RESOURCE_URL).openConnection();
             connection.setDoOutput(true);
             connection.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
             connection.setRequestProperty("X-JBiblioteca-Auth", "morrinhos");
@@ -107,11 +105,11 @@ public class JBibliotecaResource {
 
                 int responseCode = ((HttpURLConnection) connection).getResponseCode();
 
-                LOG.log(Level.INFO, "Server returned {0} from URL " + BACKUP_URL, responseCode);
+                LOG.log(Level.INFO, "Server returned {0} from URL " + RESOURCE_URL, responseCode);
 
                 switch (responseCode) {
                     case 204:
-                        return "OK";
+                        return "CREATED";
                     case 401:
                         return "UNAUTHORIZED";
                     case 403:
@@ -120,9 +118,8 @@ public class JBibliotecaResource {
                         return "NOT_FOUND";
                     case 500:
                         return "INTERNAL_SERVER_ERROR";
-                    // Hostinger retorna uma pagina 404 com statu 200 caso não encontrar um path
                     case 200: 
-                        return "NOT_FOUND";
+                        return "OK";
                     default:
                         return "DEFAULT";
                 }

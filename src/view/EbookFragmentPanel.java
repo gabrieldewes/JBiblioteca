@@ -77,11 +77,12 @@ public class EbookFragmentPanel extends javax.swing.JPanel {
                         image = ImageIO.read(url);
                         final ImageIcon imageIcon = new ImageIcon(image); 
                         imageLabel.setIcon(imageIcon);
-                        System.out.println("Thumb baixada para "+ details.get(1));
+                        // System.out.println("Thumb baixada para "+ details.get(1));
                         try {
                             EbooksInternalFrame.updateModelUI();                               
                         } catch (Exception ex) {
-                            System.out.println("Exception: "+ ex.getMessage());
+                            ex.printStackTrace();
+                            // System.out.println("Exception: "+ ex.getMessage());
                         }
                         
                     } catch (MalformedURLException ex) {

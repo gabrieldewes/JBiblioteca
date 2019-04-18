@@ -26,6 +26,7 @@ public class MainFrame extends javax.swing.JFrame {
     static LivrosAddInternalFrame laif;
     static EmprestimoAddInternalFrame eaif;
     static EmprestimoInternalFrame eif;
+    static HistoricoInternalFrame hif;
     static ConfigInternalFrame cif;
     static EbooksInternalFrame ebif;
     static ExemplarAddInternalFrame exaif;
@@ -449,7 +450,25 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void verEmprestimosMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_verEmprestimosMenuItem1ActionPerformed
-        // TODO add your handling code here:
+        if (hif == null || hif.isClosed()) {
+            hif = new HistoricoInternalFrame();
+            hif.setVisible(true);
+            desktop.add(hif);
+        }
+        else 
+            try {
+                if (hif.isIcon())
+                    hif.setIcon(false);
+            } 
+            catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        try {
+            hif.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_verEmprestimosMenuItem1ActionPerformed
 
     public static void OpenMainFrame() {

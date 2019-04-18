@@ -39,10 +39,10 @@ public class EmprestimoDAO {
     }
     
     public int save(Emprestimo e) {
-        String query = "INSERT INTO emprestimo (id_pessoa, data_inicio, data_fim) VALUES ("
+        String query = "INSERT INTO emprestimo (id_pessoa, data_inicio, data_fim, deleted) VALUES ("
                 + "'"+ e.getId_pessoa()+"', "
                 + "'"+ e.getData_inicio()+"', "
-                + " '"+ e.getData_fim()+"'); ";
+                + " '"+ e.getData_fim()+"', 0); ";
         return helper.rawSQLreturnGenKey(query);
     }
     
@@ -69,6 +69,16 @@ public class EmprestimoDAO {
     
     public boolean delete(int id) {
         final String query = "DELETE FROM emprestimo WHERE id_emprestimo="+ id +"; ";
+        return helper.rawSQL(query);
+    }
+    
+    public boolean logicDelete(int id) {
+        final String query = "UPDATE emprestimo SET data_devolucao = '"+ LocalDateTime.now() +"', deleted=1 WHERE id_emprestimo="+ id +"; ";
+        return helper.rawSQL(query);
+    }
+    
+    public boolean logicRestore(int id) {
+        final String query = "UPDATE emprestimo SET deleted=0 WHERE id_emprestimo="+ id +"; ";
         return helper.rawSQL(query);
     }
     
@@ -121,6 +131,7 @@ public class EmprestimoDAO {
                     "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
                     "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
                     "WHERE "+
+                    "e.deleted = 0 AND "+
                     "p.nome LIKE '%"+ like +"%' OR p.nome LIKE '"+ like +"%' OR p.nome LIKE '%"+ like +"' OR "+
                     "p.codigo LIKE '%"+ like +"%' OR p.codigo LIKE '"+ like +"%' OR p.codigo LIKE '%"+ like +"' OR "+
                     "ex.codigo LIKE '%"+ like +"%' OR ex.codigo LIKE '"+ like +"%' OR ex.codigo LIKE '%"+ like +"'" +
@@ -132,11 +143,38 @@ public class EmprestimoDAO {
                     "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
                     "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
                     "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
+                    "WHERE e.deleted = 0 "+
                     "GROUP BY e.id_emprestimo " +
                     "ORDER BY date(e.data_fim) ASC;";
         return helper.getTableModel(query);
     }
 
-    
+    public TableModel listHistory(String like) {
+        String query;
+        if (!"".equals(like))
+            query = 
+                "SELECT e.id_emprestimo AS 'ID', p.codigo AS 'Código', p.nome AS 'Locador', e.data_inicio AS 'Data Início', e.data_devolucao as 'Data Devolução', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
+                    "FROM emprestimo e " +
+                    "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
+                    "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
+                    "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
+                    "WHERE "+
+                    "e.deleted = 1 AND "+
+                    "p.nome LIKE '%"+ like +"%' OR p.nome LIKE '"+ like +"%' OR p.nome LIKE '%"+ like +"' OR "+
+                    "p.codigo LIKE '%"+ like +"%' OR p.codigo LIKE '"+ like +"%' OR p.codigo LIKE '%"+ like +"' OR "+
+                    "ex.codigo LIKE '%"+ like +"%' OR ex.codigo LIKE '"+ like +"%' OR ex.codigo LIKE '%"+ like +"'" +
+                    "GROUP BY e.id_emprestimo ";
+        else
+            query = 
+                "SELECT e.id_emprestimo AS 'ID', p.codigo AS 'Código', p.nome AS 'Locador', e.data_inicio AS 'Data Início', e.data_devolucao as 'Data Devolução', COUNT(el.id_exemplar) AS 'Total de Exemplares' "+
+                    "FROM emprestimo e " +
+                    "INNER JOIN emprestimo_livro el ON el.id_emprestimo = e.id_emprestimo " +
+                    "INNER JOIN exemplar ex ON ex.id_exemplar = el.id_exemplar " +
+                    "INNER JOIN pessoa p ON p.id_pessoa = e.id_pessoa " +
+                    "WHERE e.deleted = 1 "+
+                    "GROUP BY e.id_emprestimo " +
+                    "ORDER BY date(e.data_fim) ASC;";
+        return helper.getTableModel(query);
+    }
 
 }

@@ -89,6 +89,11 @@ public class PessoaDAO {
         return helper.rowExists(query);
     }
     
+    public boolean possuiEmprestimo(int id) {
+        final String query = "SELECT * FROM emprestimo e WHERE e.deleted = 0 AND  e.id_pessoa='"+ id +"'; ";
+        return helper.rowExists(query);
+    }
+    
     public TableModel list() {
         final String query = "SELECT p.id_pessoa, p.codigo AS 'Código', p.nome AS 'Nome', t.nome as 'Turma' FROM pessoa p "
                 + " LEFT JOIN turma t ON p.id_turma = t.id_turma ORDER BY p.nome ASC; ";
@@ -110,14 +115,14 @@ public class PessoaDAO {
     public ArrayList<Pessoa> getArray(String str) {
         String query;
         if ("".equals(str))
-            query = "SELECT * FROM pessoa WHERE id_pessoa NOT IN (SELECT id_pessoa FROM emprestimo); ";
+            query = "SELECT * FROM pessoa WHERE id_pessoa NOT IN (SELECT id_pessoa FROM emprestimo e WHERE e.deleted=0); ";
         else
             query = "SELECT * FROM pessoa p "
                 + " LEFT JOIN turma t ON p.id_turma = t.id_turma WHERE "
                 + " p.nome LIKE '%"+ str +"%' OR p.nome LIKE '"+ str +"%' OR p.nome LIKE '%"+ str +"' OR "
                 + " p.codigo LIKE '%"+ str +"%' OR p.codigo LIKE '"+ str +"%' OR p.codigo LIKE '%"+ str +"' OR "
                 + " t.nome LIKE '%"+ str +"%' OR t.nome LIKE '"+ str +"%' OR t.nome LIKE '%"+ str +"' "
-                + "AND id_pessoa NOT IN (SELECT id_pessoa FROM emprestimo) ORDER BY p.nome ASC; ";
+                + "AND id_pessoa NOT IN (SELECT id_pessoa FROM emprestimo e WHERE e.deleted=0) ORDER BY p.nome ASC; ";
         
         ArrayList<Pessoa> pessoas = new ArrayList<>();
         Pessoa p;

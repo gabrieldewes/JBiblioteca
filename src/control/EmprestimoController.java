@@ -8,6 +8,7 @@ package control;
 import dao.EmprestimoDAO;
 import dao.ExemplarDAO;
 import dao.GenericDAO;
+import dao.PessoaDAO;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +29,13 @@ public class EmprestimoController {
     private static EmprestimoController instance;
     
     private static EmprestimoDAO emprestimoDao;
+    private static PessoaDAO pessoaDao;
     private static ExemplarDAO exemplarDao;
     private static GenericDAO genericDao;
     
     public EmprestimoController() {
         emprestimoDao = EmprestimoDAO.getInstance();
+        pessoaDao = PessoaDAO.getInstance();
         exemplarDao = ExemplarDAO.getInstance();
         genericDao = GenericDAO.getInstance();
     }
@@ -47,7 +50,7 @@ public class EmprestimoController {
         if (!exemplares.isEmpty()) {
             if (id_pessoa != 0) {
                 
-                boolean pessoaPossuiEmpPendente = genericDao.restrict("emprestimo", "id_pessoa", id_pessoa);
+                boolean pessoaPossuiEmpPendente = pessoaDao.possuiEmprestimo(id_pessoa);
                 boolean prosseguir;
                 
                 if (pessoaPossuiEmpPendente) {
@@ -107,6 +110,10 @@ public class EmprestimoController {
         return emprestimoDao.get(id);
     }
     
+    public boolean ApagarLogicamente(int id_emprestimo) {
+        return emprestimoDao.logicDelete(id_emprestimo);
+    }
+    
     public boolean Apagar(int id_emprestimo) {
         Emprestimo e = emprestimoDao.get(id_emprestimo);
         if (e != null) {
@@ -135,6 +142,17 @@ public class EmprestimoController {
         return tb;
     }
     
+    public TableModel ListarHistorico(String busca) {
+        TableModel tb;
+        if (!"".equals(busca)) {
+            tb = historicoHumanReadableDates(emprestimoDao.listHistory(busca));
+        }
+        else {
+            tb = historicoHumanReadableDates(emprestimoDao.listHistory(""));
+        }
+        return tb;
+    }
+    
     private TableModel humanReadableDates( TableModel tb ) {
         for (int i=0; i<tb.getRowCount(); i++) {
             String in = tb.getValueAt(i, 3).toString();
@@ -149,6 +167,22 @@ public class EmprestimoController {
             tb.setValueAt(sdf.format(dateIn.toDate()), i, 3);
             tb.setValueAt(sdf.format(dateToOut.toDate()), i, 4);
             tb.setValueAt(getStringDiff(diff), i, 5);
+        }
+        return tb;
+    }
+    
+    private TableModel historicoHumanReadableDates( TableModel tb ) {
+        for (int i=0; i<tb.getRowCount(); i++) {
+            String in = tb.getValueAt(i, 3).toString();
+            String out = tb.getValueAt(i, 4).toString();
+            
+            LocalDateTime dateIn = new LocalDateTime(in);
+            LocalDateTime dateToOut = new LocalDateTime(out);
+            
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            
+            tb.setValueAt(sdf.format(dateIn.toDate()), i, 3);
+            tb.setValueAt(sdf.format(dateToOut.toDate()), i, 4);
         }
         return tb;
     }
